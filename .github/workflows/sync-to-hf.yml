@@ -16,5 +16,11 @@ jobs:
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
         run: |
+          # Xóa thư mục Database chứa các file PDF nặng không cần thiết cho web app
+          rm -rf "1. Database"
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add .
+          git commit -m "Remove large files for HF deployment" || echo "No changes to commit"
           git remote add space https://huggingface.co/spaces/HuyRD2k/TuVi-App
           git push --force https://HuyRD2k:$HF_TOKEN@huggingface.co/spaces/HuyRD2k/TuVi-App main
