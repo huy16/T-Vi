@@ -25,4 +25,4 @@ jobs:
           git add .
           git commit -m "Deploy clean version to HF"
           git remote add space https://huggingface.co/spaces/HuyRD2k/TuVi-App
-          git push --force space hf-deploy:main
+          git push --force https://HuyRD2k:$HF_TOKEN@huggingface.co/spaces/HuyRD2k/TuVi-App hf-deploy:main
