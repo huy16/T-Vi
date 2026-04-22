@@ -21,10 +21,14 @@ jobs:
           cp -r tu-vi-app deploy_hf/
           cp Dockerfile deploy_hf/
           
-          # 2. Khởi tạo Git mới trong thư mục tạm
+          # 2. Khởi tạo Git và LFS trong thư mục tạm
           cd deploy_hf
           git init
           git branch -m main
+          git lfs install
+          git lfs track "*.png"
+          git lfs track "*.jpg"
+          git lfs track "*.svg"
           git config user.name github-actions
           git config user.email github-actions@github.com
           git add .
