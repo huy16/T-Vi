@@ -1,0 +1,14 @@
+/* App-specific overrides */
+
+.chart-view-section {
+  padding: 2.5rem 0;
+  background: var(--bg-main);
+}
+
+.result-page .nhap-lai-btn {
+  position: sticky;
+  top: 0.5rem;
+  z-index: 100;
+  backdrop-filter: blur(8px);
+  background: rgba(253, 245, 238, 0.9);
+}

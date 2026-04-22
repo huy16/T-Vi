@@ -1,0 +1,42 @@
+.detail-section {
+  margin-top: 1rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border-light);
+}
+
+.detail-headline {
+  margin-bottom: 1.5rem;
+}
+
+.detail-headline h3 {
+  font-family: var(--font-heading);
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--text-heading);
+  margin-bottom: 0.35rem;
+  line-height: 1.4;
+}
+
+.detail-headline p {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+/* Ensure summary-cards inside detail sections have proper spacing */
+.detail-section .summary-card {
+  transition: all var(--transition-normal);
+}
+
+.detail-section .summary-card:hover {
+  border-color: var(--accent-rose);
+  box-shadow: var(--shadow-sm);
+}
+
+.detail-section .content-card p {
+  line-height: 1.7;
+}
+
+.detail-section .content-card strong {
+  font-weight: 600;
+}

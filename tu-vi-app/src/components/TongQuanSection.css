@@ -1,0 +1,129 @@
+.tongquan-section {
+  margin-top: 1rem;
+}
+
+/* Overview card */
+.tq-overview-card {
+  background: var(--bg-section);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-md);
+  padding: 1.5rem 1.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.tq-overview-badge {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.tq-overview-text {
+  color: var(--text-secondary);
+  font-size: 0.92rem;
+  line-height: 1.8;
+}
+
+/* Archetype card */
+.tq-archetype-card {
+  background: var(--bg-section);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-md);
+  padding: 1.5rem 1.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.tq-archetype-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.tq-archetype-icon {
+  font-size: 1.5rem;
+}
+
+.tq-archetype-title {
+  font-family: var(--font-heading);
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--text-heading);
+}
+
+.tq-archetype-desc {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  line-height: 1.7;
+  margin-bottom: 0.5rem;
+}
+
+/* Traits Grid */
+.tq-traits-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.tq-trait-card {
+  background: var(--bg-section);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+}
+
+.tq-trait-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 0.75rem;
+}
+
+.tq-trait-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.tq-trait-list li {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  padding: 0.15rem 0;
+}
+
+.tq-trait-list--warning li {
+  color: var(--text-secondary);
+}
+
+.tq-trait-list--growth li {
+  color: var(--color-good);
+}
+
+.tq-trait-text {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.tq-career-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.tq-career-tags .pill-tag {
+  font-size: 0.75rem;
+  padding: 0.25rem 0.6rem;
+}
+
+@media (max-width: 768px) {
+  .tq-traits-grid {
+    grid-template-columns: 1fr;
+  }
+}

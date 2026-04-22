@@ -1,0 +1,98 @@
+.vanhan-section {
+  margin-top: 1rem;
+}
+
+.vh-dual-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.vh-han-card {
+  background: var(--bg-section);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-md);
+  padding: 1.5rem;
+}
+
+.vh-han-card--dai {
+  border-left: 3px solid var(--accent-rose);
+}
+
+.vh-han-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.vh-han-icon {
+  font-size: 1.1rem;
+  color: var(--accent);
+}
+
+.vh-han-title {
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-heading);
+}
+
+.vh-han-badge {
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 0.2rem 0.6rem;
+  border-radius: var(--radius-full);
+  margin-left: auto;
+}
+
+.vh-han-badge--good {
+  background: var(--color-good-bg);
+  color: var(--color-good);
+  border: 1px solid rgba(107, 142, 90, 0.2);
+}
+
+.vh-han-badge--neutral {
+  background: var(--color-info-bg);
+  color: var(--color-info);
+  border: 1px solid rgba(106, 143, 168, 0.2);
+}
+
+.vh-han-meta {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  margin-bottom: 0.75rem;
+}
+
+.vh-han-stars {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-bottom: 1rem;
+}
+
+.vh-han-stars .pill-tag {
+  font-size: 0.75rem;
+  padding: 0.2rem 0.55rem;
+  font-weight: 600;
+}
+
+.vh-han-note {
+  background: var(--bg-accent-soft);
+  padding: 1rem;
+  border-radius: var(--radius-sm);
+  margin-bottom: 0.75rem;
+}
+
+.vh-han-note p {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+@media (max-width: 768px) {
+  .vh-dual-cards {
+    grid-template-columns: 1fr;
+  }
+}
