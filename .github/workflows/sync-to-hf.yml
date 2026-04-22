@@ -20,6 +20,7 @@ jobs:
           mkdir deploy_hf
           cp -r tu-vi-app deploy_hf/
           cp Dockerfile deploy_hf/
+          cp README.md deploy_hf/
           
           # 2. Khởi tạo Git và LFS trong thư mục tạm
           cd deploy_hf
