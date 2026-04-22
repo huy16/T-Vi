@@ -16,11 +16,13 @@ jobs:
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
         run: |
-          # Xóa thư mục Database chứa các file PDF nặng không cần thiết cho web app
+          # Xóa thư mục Database
           rm -rf "1. Database"
+          # Tạo một branch tạm thời (orphan) không có lịch sử để xóa sạch dấu vết file nặng
+          git checkout --orphan hf-deploy
           git config user.name github-actions
           git config user.email github-actions@github.com
           git add .
-          git commit -m "Remove large files for HF deployment" || echo "No changes to commit"
+          git commit -m "Deploy clean version to HF"
           git remote add space https://huggingface.co/spaces/HuyRD2k/TuVi-App
-          git push --force https://HuyRD2k:$HF_TOKEN@huggingface.co/spaces/HuyRD2k/TuVi-App main
+          git push --force space hf-deploy:main
