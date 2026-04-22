@@ -1,4 +1,4 @@
-FROM node:18-alpine
+FROM node:22-alpine
 
 # Thư mục làm việc trong container
 WORKDIR /app
