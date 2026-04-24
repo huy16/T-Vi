@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import './LuanGiai12Cung.css';
 import { CUNG_ICONS, CUNG_DESCRIPTIONS, getStarBrightnessTags } from '../utils/analysisContent';
+import { STAR_INFO, getMainStarFromCung } from '../utils/starImages';
 
 const CUNG_ORDER = ['Mệnh', 'Phụ Mẫu', 'Phúc Đức', 'Điền Trạch', 'Quan Lộc', 'Nô Bộc', 'Thiên Di', 'Tật Ách', 'Tài Bạch', 'Tử Tức', 'Phu Thê', 'Huynh Đệ'];
 
@@ -9,26 +10,54 @@ const CungCard = ({ cungName, cungData, onSelect }) => {
   const description = CUNG_DESCRIPTIONS[cungName] || '';
   const starTags = getStarBrightnessTags(cungData?.saoChinh || []);
   const isVoChinhDieu = starTags.length === 0;
+  
+  // Lấy tên chính tinh và thông tin bổ trợ
+  const mainStar = getMainStarFromCung(cungData?.saoChinh);
+  const starInfo = mainStar ? STAR_INFO[mainStar] : null;
 
   return (
-    <div className="lg-cung-card" onClick={() => onSelect && onSelect(cungName)}>
-      <div className="lg-cung-icon">{icon}</div>
-      <h4 className="lg-cung-name">{cungName.toUpperCase()}</h4>
-      <p className="lg-cung-desc">{description}</p>
-      <div className="lg-cung-tags">
-        {isVoChinhDieu ? (
-          <span className="pill-tag pill-tag--accent">Vô chính diệu</span>
+    <div 
+      className="lg-cung-card" 
+      onClick={() => onSelect && onSelect(cungName)}
+    >
+      <div className="lg-cung-bg-overlay" />
+
+
+      <div className="lg-cung-content">
+        {/* Cung label tag */}
+        <div className="lg-cung-label-tag">{cungName.toUpperCase()}</div>
+
+        {/* Main star name (large) */}
+        {mainStar ? (
+          <h3 className="lg-cung-star-name">{mainStar}</h3>
         ) : (
-          starTags.map((tag, idx) => (
+          <h3 className="lg-cung-star-name lg-cung-star-name--empty">Vô Chính Diệu</h3>
+        )}
+
+        {/* Star subtitle info */}
+        {starInfo && (
+          <p className="lg-cung-star-subtitle">
+            {starInfo.title} • {starInfo.subtitle}
+          </p>
+        )}
+
+        {/* Star brightness tags */}
+        <div className="lg-cung-tags">
+          {starTags.map((tag, idx) => (
             <span key={idx} className={`pill-tag ${tag.brightness ? `pill-tag--b-${tag.brightness.toLowerCase()}` : ''}`}>
               {tag.name} {tag.brightness ? `· ${tag.label}` : ''}
             </span>
-          ))
-        )}
-      </div>
-      <div className="link-arrow">
-        <span>ĐỌC TRỰC CHÍNH</span>
-        <span>→</span>
+          ))}
+        </div>
+
+        {/* Description */}
+        <p className="lg-cung-desc">{description}</p>
+
+        {/* CTA */}
+        <div className="link-arrow lg-cung-cta">
+          <span>KHÁM PHÁ</span>
+          <span>→</span>
+        </div>
       </div>
     </div>
   );

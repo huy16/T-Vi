@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useCallback } from 'react';
 import './TuViChart.css';
 import { SAO_NGU_HANH, HANH_TO_COLOR_CLASS, CHI_NGU_HANH, LEGEND_DATA } from '../utils/tuviEngine';
 import { STAR_DICTIONARY } from '../utils/starDictionary';
@@ -8,6 +8,8 @@ const StarItem = ({ name, type }) => {
   let hanhClass = '';
   let displayName = name;
   let brightnessLabel = '';
+  const [tooltipPos, setTooltipPos] = useState({ x: 0, y: 0 });
+  const [showTooltip, setShowTooltip] = useState(false);
 
   const brightnessMatch = name.match(/\s\(([MVĐHB])\)$/);
   const cleanName = name.replace(/\s\(([MVĐHB])\)$/, '').replace(/^L\./, '');
@@ -28,11 +30,36 @@ const StarItem = ({ name, type }) => {
 
   const meaning = STAR_DICTIONARY[cleanName];
 
+  const handleMouseEnter = useCallback((e) => {
+    setTooltipPos({ x: e.clientX, y: e.clientY });
+    setShowTooltip(true);
+  }, []);
+
+  const handleMouseMove = useCallback((e) => {
+    setTooltipPos({ x: e.clientX, y: e.clientY });
+  }, []);
+
+  const handleMouseLeave = useCallback(() => {
+    setShowTooltip(false);
+  }, []);
+
   return (
-    <div className={`sao-item ${type} ${brightnessClass} ${hanhClass}`}>
+    <div 
+      className={`sao-item ${type} ${brightnessClass} ${hanhClass}`}
+      onMouseEnter={meaning ? handleMouseEnter : undefined}
+      onMouseMove={meaning ? handleMouseMove : undefined}
+      onMouseLeave={meaning ? handleMouseLeave : undefined}
+    >
       <span className="star-name">{isLuu ? 'L.' : ''}{displayName}</span>
       {brightnessLabel && <span className="brightness-label"> ({brightnessLabel})</span>}
-      {meaning && <span className="star-tooltip">{meaning}</span>}
+      {meaning && showTooltip && (
+        <span 
+          className="star-tooltip star-tooltip--visible" 
+          style={{ left: tooltipPos.x + 12, top: tooltipPos.y - 10 }}
+        >
+          {meaning}
+        </span>
+      )}
     </div>
   );
 };
@@ -116,9 +143,13 @@ const Cung = ({ isCenter, data, onClick, isActive }) => {
 
       <div className="cung-body">
         <div className="chinh-tinh-area">
-          {data.saoChinh?.map((sao, idx) => (
-            <StarItem key={`ct-${idx}`} name={sao} type="main-star" />
-          ))}
+          {data.saoChinh && data.saoChinh.length > 0 ? (
+            data.saoChinh.map((sao, idx) => (
+              <StarItem key={`ct-${idx}`} name={sao} type="main-star" />
+            ))
+          ) : (
+            <div className="vo-chinh-dieu">Vô chính diệu</div>
+          )}
         </div>
         <div className="phu-tinh-col left">
           {data.saoTot?.map((sao, idx) => (
@@ -235,20 +266,24 @@ const TuViChart = ({ chartData, selectedChi, onCungSelect }) => {
     // Determine if it's a vertical boundary (between columns) or horizontal (between rows)
     const isVertical = p1[0] === p2[0]; // Same row -> between columns -> vertical line
     
-    // Detect if this is a "3-way junction" with the center panel middle
-    // These specific boundaries were requested to be centered on the T-junction (e.g. above Tý)
-    const isTTop = (midC === 1.5 && midR === 0);    // Between Ngọ and Mùi
-    const isTBottom = (midC === 1.5 && midR === 3); // Between Sửu and Tý
-    const isTLeft = (midR === 1.5 && midC === 0);   // Between Thìn and Mão
-    const isTRight = (midR === 1.5 && midC === 3);  // Between Dậu and Tuất
-
     let topVal = (midR + 0.5) * 25;
     let leftVal = (midC + 0.5) * 25;
 
-    if (isTTop) topVal = 25;
-    else if (isTBottom) topVal = 75;
-    else if (isTLeft) leftVal = 25;
-    else if (isTRight) leftVal = 75;
+    // Push all markers to the INNER border to avoid overlapping text
+    // The inner borders are at 25% and 75%
+    if (midC === 0) {
+      // Left column (Tỵ-Thìn, Thìn-Mão, Mão-Dần) -> push to right edge of the cell (25%)
+      leftVal = 25;
+    } else if (midC === 3) {
+      // Right column (Mùi-Thân, Thân-Dậu, Dậu-Tuất, Tuất-Hợi) -> push to left edge of the cell (75%)
+      leftVal = 75;
+    } else if (midR === 0) {
+      // Top row (Tỵ-Ngọ, Ngọ-Mùi) -> push to bottom edge of the cell (25%)
+      topVal = 25;
+    } else if (midR === 3) {
+      // Bottom row (Dần-Sửu, Sửu-Tý, Tý-Hợi) -> push to top edge of the cell (75%)
+      topVal = 75;
+    }
 
     return {
       style: {

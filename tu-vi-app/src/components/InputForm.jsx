@@ -68,6 +68,9 @@ const InputForm = ({ onSubmit }) => {
   const [quanHe, setQuanHe] = useState('hen_ho');
 
   // Dropdown states
+  const [showDayDropdown, setShowDayDropdown] = useState(false);
+  const [showMonthDropdown, setShowMonthDropdown] = useState(false);
+  const [showYearDropdown, setShowYearDropdown] = useState(false);
   const [showGioDropdown, setShowGioDropdown] = useState(false);
   const [showQuanHeDropdown, setShowQuanHeDropdown] = useState(false);
 
@@ -106,12 +109,11 @@ const InputForm = ({ onSubmit }) => {
   // Close dropdowns on click outside
   useEffect(() => {
     const handleClick = (e) => {
-      if (gioDropdownRef.current && !gioDropdownRef.current.contains(e.target)) {
-        setShowGioDropdown(false);
-      }
-      if (quanHeDropdownRef.current && !quanHeDropdownRef.current.contains(e.target)) {
-        setShowQuanHeDropdown(false);
-      }
+      if (gioDropdownRef.current && !gioDropdownRef.current.contains(e.target)) setShowGioDropdown(false);
+      if (quanHeDropdownRef.current && !quanHeDropdownRef.current.contains(e.target)) setShowQuanHeDropdown(false);
+      if (!e.target.closest('.date-input-wrapper--day')) setShowDayDropdown(false);
+      if (!e.target.closest('.date-input-wrapper--month')) setShowMonthDropdown(false);
+      if (!e.target.closest('.date-input-wrapper--year')) setShowYearDropdown(false);
     };
     document.addEventListener('mousedown', handleClick);
     return () => document.removeEventListener('mousedown', handleClick);
@@ -176,10 +178,6 @@ const InputForm = ({ onSubmit }) => {
           </svg>
         </div>
         <h1 className="card-title">Thông Tin Tín Chủ</h1>
-        <p className="card-subtitle">
-          Nhập chính xác ngày giờ sinh để nhận được luận giải vận
-          <br />mệnh chi tiết nhất
-        </p>
       </div>
 
       <form onSubmit={handleSubmit} className="tuvi-form" id="tuvi-input-form">
@@ -210,37 +208,60 @@ const InputForm = ({ onSubmit }) => {
               NGÀY SINH (DƯƠNG LỊCH)
             </label>
             <div className="date-inputs">
-              <div className="date-input-wrapper">
-                <input
-                  id="input-day"
-                  type="text"
-                  className="form-input form-input--date"
-                  value={day}
-                  onChange={(e) => setDay(e.target.value.replace(/\D/g, '').slice(0, 2))}
-                  maxLength={2}
-                />
+              {/* Day Select */}
+              <div className="date-input-wrapper date-input-wrapper--day">
+                <div className="custom-dropdown">
+                  <button type="button" className="dropdown-trigger dropdown-trigger--date" onClick={() => setShowDayDropdown(!showDayDropdown)}>
+                    {String(day).padStart(2, '0')}
+                  </button>
+                  {showDayDropdown && (
+                    <div className="dropdown-menu dropdown-menu--date">
+                      {Array.from({ length: 31 }, (_, i) => i + 1).map(d => (
+                        <button key={d} type="button" className="dropdown-item" onClick={() => { setDay(String(d)); setShowDayDropdown(false); }}>
+                          {String(d).padStart(2, '0')}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
                 <span className="date-label">Ngày</span>
               </div>
-              <div className="date-input-wrapper">
-                <input
-                  id="input-month"
-                  type="text"
-                  className="form-input form-input--date"
-                  value={month}
-                  onChange={(e) => setMonth(e.target.value.replace(/\D/g, '').slice(0, 2))}
-                  maxLength={2}
-                />
+
+              {/* Month Select */}
+              <div className="date-input-wrapper date-input-wrapper--month">
+                <div className="custom-dropdown">
+                  <button type="button" className="dropdown-trigger dropdown-trigger--date" onClick={() => setShowMonthDropdown(!showMonthDropdown)}>
+                    {String(month).padStart(2, '0')}
+                  </button>
+                  {showMonthDropdown && (
+                    <div className="dropdown-menu dropdown-menu--date">
+                      {Array.from({ length: 12 }, (_, i) => i + 1).map(m => (
+                        <button key={m} type="button" className="dropdown-item" onClick={() => { setMonth(String(m)); setShowMonthDropdown(false); }}>
+                          {String(m).padStart(2, '0')}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
                 <span className="date-label">Tháng</span>
               </div>
-              <div className="date-input-wrapper">
-                <input
-                  id="input-year"
-                  type="text"
-                  className="form-input form-input--date form-input--year"
-                  value={year}
-                  onChange={(e) => setYear(e.target.value.replace(/\D/g, '').slice(0, 4))}
-                  maxLength={4}
-                />
+
+              {/* Year Select */}
+              <div className="date-input-wrapper date-input-wrapper--year">
+                <div className="custom-dropdown">
+                  <button type="button" className="dropdown-trigger dropdown-trigger--date" onClick={() => setShowYearDropdown(!showYearDropdown)}>
+                    {year}
+                  </button>
+                  {showYearDropdown && (
+                    <div className="dropdown-menu dropdown-menu--date dropdown-menu--year">
+                      {Array.from({ length: 121 }, (_, i) => 2026 - i).map(y => (
+                        <button key={y} type="button" className="dropdown-item" onClick={() => { setYear(String(y)); setShowYearDropdown(false); }}>
+                          {y}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
                 <span className="date-label">Năm</span>
               </div>
             </div>
@@ -288,69 +309,35 @@ const InputForm = ({ onSubmit }) => {
               <span className="label-icon">🕐</span>
               GIỜ SINH (24H)
             </label>
-            <div className="time-row">
-              <div className="time-inputs">
-                <input
-                  id="input-hour"
-                  type="text"
-                  className="form-input form-input--time"
-                  value={unknownTime ? '--' : hour}
-                  onChange={(e) => setHour(e.target.value.replace(/\D/g, '').slice(0, 2))}
-                  disabled={unknownTime}
-                  maxLength={2}
-                />
-                <span className="time-colon">:</span>
-                <input
-                  id="input-minute"
-                  type="text"
-                  className="form-input form-input--time"
-                  value={unknownTime ? '--' : minute}
-                  onChange={(e) => setMinute(e.target.value.replace(/\D/g, '').slice(0, 2))}
-                  disabled={unknownTime}
-                  maxLength={2}
-                />
-              </div>
+            {!unknownTime && (
+              <div className="time-row">
+                <div className="time-inputs">
+                  <input
+                    id="input-hour"
+                    type="text"
+                    className="form-input form-input--time"
+                    value={hour}
+                    onChange={(e) => setHour(e.target.value.replace(/\D/g, '').slice(0, 2))}
+                    maxLength={2}
+                  />
+                  <span className="time-colon">:</span>
+                  <input
+                    id="input-minute"
+                    type="text"
+                    className="form-input form-input--time"
+                    value={minute}
+                    onChange={(e) => setMinute(e.target.value.replace(/\D/g, '').slice(0, 2))}
+                    maxLength={2}
+                  />
+                </div>
 
-              {/* Giờ Chi Dropdown */}
-              <div className="custom-dropdown" ref={gioDropdownRef}>
-                <button
-                  type="button"
-                  id="dropdown-gio"
-                  className="dropdown-trigger dropdown-trigger--gio"
-                  onClick={() => setShowGioDropdown(!showGioDropdown)}
-                  disabled={unknownTime}
-                >
-                  <span className="dropdown-emoji">{selectedGioChi.emoji}</span>
-                  <span className="dropdown-text">Giờ {selectedGioChi.name}</span>
-                  <span className={`dropdown-arrow ${showGioDropdown ? 'dropdown-arrow--open' : ''}`}>
-                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-                      <path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
-                  </span>
-                </button>
-                {showGioDropdown && (
-                  <div className="dropdown-menu dropdown-menu--gio">
-                    {GIO_CHI.map((g) => (
-                      <button
-                        key={g.key}
-                        type="button"
-                        className={`dropdown-item ${selectedGioChi.key === g.key ? 'dropdown-item--active' : ''}`}
-                        onClick={() => {
-                          setSelectedGioChi(g);
-                          setShowGioDropdown(false);
-                        }}
-                      >
-                        <span className="dropdown-item-emoji">{g.emoji}</span>
-                        <span className="dropdown-item-name">{g.name}</span>
-                        {selectedGioChi.key === g.key && (
-                          <span className="dropdown-item-dot"></span>
-                        )}
-                      </button>
-                    ))}
-                  </div>
-                )}
+                {/* Giờ Chi Badge */}
+                <div className="time-badge">
+                  <span className="time-badge-emoji">{selectedGioChi.emoji}</span>
+                  <span className="time-badge-text">Giờ {selectedGioChi.name}</span>
+                </div>
               </div>
-            </div>
+            )}
 
             {/* Không nhớ giờ */}
             <label className="checkbox-label" id="checkbox-unknown-time">
@@ -369,7 +356,7 @@ const InputForm = ({ onSubmit }) => {
           <div className="form-section form-section--relation">
             <label className="form-label">
               <span className="label-icon">💗</span>
-              MỐI QUAN HỆ
+              Mối quan hệ
             </label>
             <div className="custom-dropdown" ref={quanHeDropdownRef}>
               <button

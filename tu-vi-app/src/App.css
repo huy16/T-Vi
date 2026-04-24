@@ -1,4 +1,84 @@
-/* App-specific overrides */
+/* Header & App Styles – Oriental Parchment */
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Minimal header – just icons top right, no bar */
+.home-header {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 18px 28px;
+  z-index: 20;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+}
+
+.home-header-title {
+  display: none;
+}
+
+.home-header-actions button {
+  padding: 8px 18px;
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid rgba(160, 120, 48, 0.3);
+  transition: all 0.2s;
+  font-family: var(--font-main);
+  font-size: 0.82rem;
+  background: rgba(255, 248, 235, 0.6);
+  backdrop-filter: blur(8px);
+  color: #7a5a20;
+}
+
+.btn-login {
+  background-color: rgba(255, 248, 235, 0.6);
+  color: #7a5a20;
+}
+
+.btn-login:hover {
+  background-color: rgba(160, 120, 48, 0.12);
+  border-color: #a07830;
+}
+
+.btn-dashboard {
+  background: rgba(160, 120, 48, 0.12);
+  color: #7a5a20;
+  border-color: rgba(160, 120, 48, 0.4);
+}
+
+.btn-dashboard:hover {
+  background: rgba(160, 120, 48, 0.2);
+}
+
+.login-prompt {
+  background-color: rgba(160, 120, 48, 0.08);
+  color: #7a5a20;
+  padding: 12px;
+  border-radius: var(--radius-md);
+  margin-bottom: 16px;
+  text-align: center;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.result-login-prompt {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  margin: 20px auto;
+  max-width: 600px;
+  border: 1px dashed rgba(160, 120, 48, 0.3);
+  padding: 20px;
+}
 
 .chart-view-section {
   padding: 2.5rem 0;
@@ -10,5 +90,5 @@
   top: 0.5rem;
   z-index: 100;
   backdrop-filter: blur(8px);
-  background: rgba(253, 245, 238, 0.9);
+  background: rgba(245, 234, 214, 0.9);
 }

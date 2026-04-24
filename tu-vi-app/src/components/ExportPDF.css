@@ -1,0 +1,97 @@
+/* ===== Export PDF Button ===== */
+
+.export-pdf-wrapper {
+  position: fixed;
+  bottom: 2rem;
+  left: 2rem;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.export-pdf-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background: linear-gradient(135deg, #8b1a1a 0%, #c02020 50%, #8b1a1a 100%);
+  color: #fff;
+  border: 2px solid rgba(212, 175, 55, 0.4);
+  border-radius: 50px;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 20px rgba(139, 26, 26, 0.4),
+              0 0 0 1px rgba(212, 175, 55, 0.2);
+  transition: all 0.3s ease;
+  letter-spacing: 0.5px;
+}
+
+.export-pdf-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 28px rgba(139, 26, 26, 0.5),
+              0 0 0 2px rgba(212, 175, 55, 0.4);
+  background: linear-gradient(135deg, #a02020 0%, #d03030 50%, #a02020 100%);
+}
+
+.export-pdf-btn:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.export-pdf-btn:disabled {
+  opacity: 0.85;
+  cursor: not-allowed;
+}
+
+.export-pdf-btn.exporting {
+  background: linear-gradient(135deg, #5a3a1a 0%, #7a5a2a 50%, #5a3a1a 100%);
+  border-color: rgba(212, 175, 55, 0.6);
+}
+
+.export-icon {
+  font-size: 1.1rem;
+}
+
+.export-spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spinExport 0.8s linear infinite;
+}
+
+@keyframes spinExport {
+  to { transform: rotate(360deg); }
+}
+
+.export-progress-bar {
+  width: 160px;
+  height: 4px;
+  background: rgba(139, 26, 26, 0.2);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.export-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #d4af37, #f0c040);
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+/* PDF Export mode — styles applied to result-page during export */
+.pdf-export-mode {
+  background: #faf5eb !important;
+}
+
+.pdf-export-mode .export-pdf-wrapper {
+  display: none !important;
+}
+
+.pdf-export-mode .chatbot-container {
+  display: none !important;
+}

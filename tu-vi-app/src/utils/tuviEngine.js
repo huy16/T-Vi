@@ -179,24 +179,24 @@ export const lapLaSo = (userInfo) => {
   let cuc = getCuc(canIndex, menhPos);
 
   // Tính vị trí Tử Vi: f(Ngày sinh, Cục) - Thuật toán Zigzag chuẩn
-  // Chia ngày cho Cục, dùng thương và dư để tìm vị trí
-  let du = day % cuc;
-  let thuong = Math.floor(day / cuc);
-  let tuviPos;
-  if (du === 0) {
-    // Chia hết → Tử Vi tại Dần + thương - 1
-    tuviPos = (2 + thuong - 1) % 12;
+  // 1. Tìm x nhỏ nhất sao cho (Ngày + x) chia hết cho Cục (0 <= x < Cục)
+  let x = 0;
+  if (day % cuc === 0) {
+    x = 0;
   } else {
-    // Không chia hết → Zigzag từ base
-    let base = 2 + thuong; // Dần + số nhóm hoàn chỉnh
-    if (du % 2 === 1) {
-      // Dư lẻ → lùi
-      tuviPos = (base - Math.ceil(du / 2) + 12) % 12;
-    } else {
-      // Dư chẵn → tiến
-      tuviPos = (base + du / 2) % 12;
-    }
+    x = cuc - (day % cuc);
   }
+  let q = (day + x) / cuc;
+  let result;
+  if (x % 2 === 0) {
+    // x chẵn: Tiến x bước từ thương q
+    result = q + x;
+  } else {
+    // x lẻ: Lùi x bước từ thương q
+    result = q - x;
+  }
+  // Vị trí Tử Vi khởi từ Dần (index 2), result là số cung (1-based)
+  let tuviPos = safeMod(2 + result - 1, 12);
 
   // 3. Khởi tạo 12 Cung
   let board = {};
