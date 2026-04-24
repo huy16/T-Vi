@@ -3,12 +3,17 @@
    ===================================================== */
 
 .loading-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 99999;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 100vh;
-  background: var(--bg-gradient);
+  background: #fdfaf3; /* Match parchment theme */
   padding: 2rem;
   animation: screenFadeIn 0.5s ease;
 }

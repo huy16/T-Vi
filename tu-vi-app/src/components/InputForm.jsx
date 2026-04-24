@@ -65,14 +65,18 @@ const InputForm = ({ onSubmit }) => {
   const [minute, setMinute] = useState('00');
   const [selectedGioChi, setSelectedGioChi] = useState(GIO_CHI[1]); // Sửu by default
   const [unknownTime, setUnknownTime] = useState(false);
+  const [isLunar, setIsLunar] = useState(false);
+  const [viewYear, setViewYear] = useState('2026');
+  const [viewMonth, setViewMonth] = useState('3');
   const [quanHe, setQuanHe] = useState('hen_ho');
 
   // Dropdown states
   const [showDayDropdown, setShowDayDropdown] = useState(false);
   const [showMonthDropdown, setShowMonthDropdown] = useState(false);
   const [showYearDropdown, setShowYearDropdown] = useState(false);
-  const [showGioDropdown, setShowGioDropdown] = useState(false);
+  const [showZodiacDropdown, setShowZodiacDropdown] = useState(false);
   const [showQuanHeDropdown, setShowQuanHeDropdown] = useState(false);
+  const [showViewMonthDropdown, setShowViewMonthDropdown] = useState(false);
 
   // Lunar conversion
   const [lunarInfo, setLunarInfo] = useState(null);
@@ -98,19 +102,14 @@ const InputForm = ({ onSubmit }) => {
     }
   }, [day, month, year]);
 
-  // Auto-detect giờ Chi from hour input
-  useEffect(() => {
-    if (!unknownTime) {
-      const h = parseInt(hour) || 0;
-      setSelectedGioChi(getGioChiFromHour(h));
-    }
-  }, [hour, unknownTime]);
+  /* Auto-detect removed for simplified UI */
 
   // Close dropdowns on click outside
   useEffect(() => {
     const handleClick = (e) => {
-      if (gioDropdownRef.current && !gioDropdownRef.current.contains(e.target)) setShowGioDropdown(false);
-      if (quanHeDropdownRef.current && !quanHeDropdownRef.current.contains(e.target)) setShowQuanHeDropdown(false);
+      if (!e.target.closest('.custom-dropdown--zodiac')) setShowZodiacDropdown(false);
+      if (!e.target.closest('.custom-dropdown--quanhe')) setShowQuanHeDropdown(false);
+      if (!e.target.closest('.custom-dropdown--viewmonth')) setShowViewMonthDropdown(false);
       if (!e.target.closest('.date-input-wrapper--day')) setShowDayDropdown(false);
       if (!e.target.closest('.date-input-wrapper--month')) setShowMonthDropdown(false);
       if (!e.target.closest('.date-input-wrapper--year')) setShowYearDropdown(false);
@@ -154,8 +153,10 @@ const InputForm = ({ onSubmit }) => {
       solarDay,
       solarMonth,
       solarYear,
-      namXem: 2026,
-      thangXem: 1,
+      namXem: parseInt(viewYear) || 2026,
+      thangXem: parseInt(viewMonth) || 1,
+      isLunar,
+      quanHe,
     };
 
     onSubmit(submissionData);
@@ -168,47 +169,30 @@ const InputForm = ({ onSubmit }) => {
       <div className="card-bg-circle card-bg-circle--bottom"></div>
 
       {/* Header Icon */}
-      <div className="card-header">
-        <div className="header-icon">
-          <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M16 2L19.5 9.5L27 10.5L21.5 16L23 24L16 20L9 24L10.5 16L5 10.5L12.5 9.5L16 2Z" 
-                  stroke="#c4836c" strokeWidth="1.5" fill="none" strokeLinejoin="round"/>
-            <circle cx="16" cy="14" r="4" stroke="#c4836c" strokeWidth="1.2" fill="rgba(196,131,108,0.1)"/>
-            <path d="M12 18C12 18 14 20 16 20C18 20 20 18 20 18" stroke="#c4836c" strokeWidth="1.2" strokeLinecap="round"/>
-          </svg>
-        </div>
-        <h1 className="card-title">Thông Tin Tín Chủ</h1>
+      <div className="card-header-banner">
+        <h1 className="card-title-modern">THÔNG TIN TÍN CHỦ</h1>
       </div>
 
       <form onSubmit={handleSubmit} className="tuvi-form" id="tuvi-input-form">
 
-        {/* === HỌ VÀ TÊN === */}
-        <div className="form-section">
-          <label className="form-label">
-            <span className="label-icon">👤</span>
-            HỌ VÀ TÊN
-          </label>
+        <div className="form-section form-section--name">
+          <label className="form-label">Họ và tên</label>
           <input
             id="input-name"
             type="text"
             className="form-input"
-            placeholder="Nhập họ và tên..."
+            placeholder="NHẬP HỌ VÀ TÊN..."
             value={name}
             onChange={(e) => setName(e.target.value.toUpperCase())}
             required
           />
         </div>
 
-        {/* === NGÀY SINH + GIỚI TÍNH === */}
+        {/* === NGÀY SINH + LOẠI LỊCH === */}
         <div className="form-row form-row--split">
-          {/* Ngày sinh */}
           <div className="form-section form-section--date">
-            <label className="form-label">
-              <span className="label-icon">📅</span>
-              NGÀY SINH (DƯƠNG LỊCH)
-            </label>
+            <label className="form-label">Ngày sinh (Dương lịch)</label>
             <div className="date-inputs">
-              {/* Day Select */}
               <div className="date-input-wrapper date-input-wrapper--day">
                 <div className="custom-dropdown">
                   <button type="button" className="dropdown-trigger dropdown-trigger--date" onClick={() => setShowDayDropdown(!showDayDropdown)}>
@@ -227,7 +211,6 @@ const InputForm = ({ onSubmit }) => {
                 <span className="date-label">Ngày</span>
               </div>
 
-              {/* Month Select */}
               <div className="date-input-wrapper date-input-wrapper--month">
                 <div className="custom-dropdown">
                   <button type="button" className="dropdown-trigger dropdown-trigger--date" onClick={() => setShowMonthDropdown(!showMonthDropdown)}>
@@ -246,7 +229,6 @@ const InputForm = ({ onSubmit }) => {
                 <span className="date-label">Tháng</span>
               </div>
 
-              {/* Year Select */}
               <div className="date-input-wrapper date-input-wrapper--year">
                 <div className="custom-dropdown">
                   <button type="button" className="dropdown-trigger dropdown-trigger--date" onClick={() => setShowYearDropdown(!showYearDropdown)}>
@@ -266,128 +248,117 @@ const InputForm = ({ onSubmit }) => {
               </div>
             </div>
           </div>
+        </div>
 
-          {/* Giới tính */}
-          <div className="form-section form-section--gender">
-            <label className="form-label form-label--gender">GIỚI TÍNH</label>
-            <div className="gender-toggle">
-              <button
-                type="button"
-                id="gender-nam"
-                className={`gender-btn ${gender === 'Nam' ? 'gender-btn--active' : ''}`}
-                onClick={() => setGender('Nam')}
-              >
-                <span className="gender-icon">♂</span>
-                NAM
-              </button>
-              <button
-                type="button"
-                id="gender-nu"
-                className={`gender-btn ${gender === 'Nữ' ? 'gender-btn--active' : ''}`}
-                onClick={() => setGender('Nữ')}
-              >
-                <span className="gender-icon">♀</span>
-                NỮ
-              </button>
-            </div>
+        {/* === GIỚI TÍNH (FULL WIDTH) === */}
+        <div className="form-section">
+          <label className="form-label">Giới tính</label>
+          <div className="gender-toggle-full" style={{ pointerEvents: 'auto' }}>
+            <button
+              type="button"
+              className={`gender-btn-classic ${gender === 'Nam' ? 'active' : ''}`}
+              onClick={() => setGender('Nam')}
+            >
+              NAM
+            </button>
+            <button
+              type="button"
+              className={`gender-btn-classic ${gender === 'Nữ' ? 'active' : ''}`}
+              onClick={() => setGender('Nữ')}
+            >
+              NỮ
+            </button>
           </div>
         </div>
 
         {/* === LUNAR INFO TAG === */}
         {lunarInfo && (
           <div className="lunar-tag" id="lunar-info">
-            <span className="lunar-tag-icon">🌙</span>
             <span>{lunarDisplay}</span>
           </div>
         )}
 
-        {/* === GIỜ SINH + MỐI QUAN HỆ === */}
-        <div className="form-row form-row--split">
-          {/* Giờ sinh */}
-          <div className="form-section form-section--time">
-            <label className="form-label">
-              <span className="label-icon">🕐</span>
-              GIỜ SINH (24H)
-            </label>
-            {!unknownTime && (
-              <div className="time-row">
-                <div className="time-inputs">
-                  <input
-                    id="input-hour"
-                    type="text"
-                    className="form-input form-input--time"
-                    value={hour}
-                    onChange={(e) => setHour(e.target.value.replace(/\D/g, '').slice(0, 2))}
-                    maxLength={2}
-                  />
-                  <span className="time-colon">:</span>
-                  <input
-                    id="input-minute"
-                    type="text"
-                    className="form-input form-input--time"
-                    value={minute}
-                    onChange={(e) => setMinute(e.target.value.replace(/\D/g, '').slice(0, 2))}
-                    maxLength={2}
-                  />
-                </div>
-
-                {/* Giờ Chi Badge */}
-                <div className="time-badge">
-                  <span className="time-badge-emoji">{selectedGioChi.emoji}</span>
-                  <span className="time-badge-text">Giờ {selectedGioChi.name}</span>
-                </div>
-              </div>
-            )}
-
-            {/* Không nhớ giờ */}
-            <label className="checkbox-label" id="checkbox-unknown-time">
-              <input
-                type="checkbox"
-                className="checkbox-input"
-                checked={unknownTime}
-                onChange={(e) => setUnknownTime(e.target.checked)}
-              />
-              <span className="checkbox-custom"></span>
-              <span className="checkbox-text">Không nhớ giờ</span>
-            </label>
-          </div>
-
-          {/* Mối quan hệ */}
-          <div className="form-section form-section--relation">
-            <label className="form-label">
-              <span className="label-icon">💗</span>
-              Mối quan hệ
-            </label>
-            <div className="custom-dropdown" ref={quanHeDropdownRef}>
-              <button
-                type="button"
-                id="dropdown-quanhe"
-                className="dropdown-trigger dropdown-trigger--quanhe"
-                onClick={() => setShowQuanHeDropdown(!showQuanHeDropdown)}
-              >
-                <span className="dropdown-text">
-                  {QUAN_HE.find(q => q.value === quanHe)?.label}
-                </span>
-                <span className={`dropdown-arrow ${showQuanHeDropdown ? 'dropdown-arrow--open' : ''}`}>
-                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-                    <path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
+        {/* === GIỜ SINH === */}
+        <div className="form-section form-section--zodiac-full">
+          <label className="form-label">Giờ sinh (12 Con Giáp)</label>
+          <div className="custom-dropdown custom-dropdown--zodiac">
+            <button 
+              type="button" 
+              className="dropdown-trigger dropdown-trigger--zodiac" 
+              onClick={(e) => {
+                e.stopPropagation();
+                setShowZodiacDropdown(!showZodiacDropdown);
+              }}
+              disabled={unknownTime}
+            >
+                <span className="zodiac-trigger-content">
+                  <span className="zodiac-emoji">{selectedGioChi.emoji}</span>
+                  <span className="zodiac-name">Giờ {selectedGioChi.name}</span>
+                  <span className="zodiac-range-dim">({selectedGioChi.range})</span>
                 </span>
               </button>
-              {showQuanHeDropdown && (
-                <div className="dropdown-menu dropdown-menu--quanhe">
-                  {QUAN_HE.map((q) => (
-                    <button
-                      key={q.value}
-                      type="button"
-                      className={`dropdown-item ${quanHe === q.value ? 'dropdown-item--active' : ''}`}
+              {showZodiacDropdown && !unknownTime && (
+                <div className="dropdown-menu">
+                  {GIO_CHI.map(g => (
+                    <button 
+                      key={g.key} 
+                      type="button" 
+                      className={`dropdown-item ${selectedGioChi.key === g.key ? 'selected' : ''}`}
                       onClick={() => {
-                        setQuanHe(q.value);
-                        setShowQuanHeDropdown(false);
+                        setSelectedGioChi(g);
+                        setHour(g.range.split(':')[0]);
+                        setShowZodiacDropdown(false);
                       }}
                     >
-                      <span className="dropdown-item-name">{q.label}</span>
-                      {q.icon && <span className="dropdown-item-icon">{q.icon}</span>}
+                      <span className="zodiac-item-content">
+                        <span className="zodiac-emoji">{g.emoji}</span>
+                        <span className="zodiac-name">Giờ {g.name}</span>
+                        <span className="zodiac-range-dim">{g.range}</span>
+                      </span>
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+
+
+
+        {/* === NĂM XEM + THÁNG XEM === */}
+        <div className="form-row form-row--split">
+          <div className="form-section">
+            <label className="form-label">Năm xem</label>
+            <input 
+              type="text" 
+              className="form-input form-input--center" 
+              value={viewYear} 
+              onChange={(e) => setViewYear(e.target.value.replace(/\D/g, ''))}
+              placeholder="2026"
+            />
+          </div>
+          <div className="form-section">
+            <label className="form-label">Tháng xem (Âm lịch)</label>
+            <div className="custom-dropdown custom-dropdown--viewmonth">
+              <button 
+                type="button" 
+                className="dropdown-trigger dropdown-trigger--viewmonth" 
+                onClick={() => setShowViewMonthDropdown(!showViewMonthDropdown)}
+              >
+                Tháng {viewMonth}
+              </button>
+              {showViewMonthDropdown && (
+                <div className="dropdown-menu">
+                  {Array.from({ length: 12 }, (_, i) => i + 1).map(m => (
+                    <button 
+                      key={m} 
+                      type="button" 
+                      className={`dropdown-item ${viewMonth === String(m) ? 'selected' : ''}`}
+                      onClick={() => {
+                        setViewMonth(String(m));
+                        setShowViewMonthDropdown(false);
+                      }}
+                    >
+                      Tháng {m}
                     </button>
                   ))}
                 </div>
@@ -396,22 +367,45 @@ const InputForm = ({ onSubmit }) => {
           </div>
         </div>
 
+        {/* === MỐI QUAN HỆ === */}
+        <div className="form-section form-section--relation-full">
+          <label className="form-label">Mối quan hệ</label>
+          <div className="custom-dropdown custom-dropdown--quanhe">
+            <button 
+              type="button" 
+              className="dropdown-trigger" 
+              onClick={() => setShowQuanHeDropdown(!showQuanHeDropdown)}
+            >
+              {QUAN_HE.find(q => q.value === quanHe)?.label || 'Chọn...'}
+            </button>
+            {showQuanHeDropdown && (
+              <div className="dropdown-menu">
+                {QUAN_HE.map(q => (
+                  <button 
+                    key={q.value} 
+                    type="button" 
+                    className={`dropdown-item ${quanHe === q.value ? 'selected' : ''}`}
+                    onClick={() => {
+                      setQuanHe(q.value);
+                      setShowQuanHeDropdown(false);
+                    }}
+                  >
+                    {q.label}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+
         {/* === SUBMIT BUTTON === */}
-        <button type="submit" className="submit-btn" id="btn-submit">
-          <span className="submit-icon">
-            <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
-              <circle cx="11" cy="11" r="9" stroke="white" strokeWidth="1.5"/>
-              <path d="M11 6V11L14 14" stroke="white" strokeWidth="1.5" strokeLinecap="round"/>
-            </svg>
-          </span>
-          <span className="submit-text">LẬP LÁ SỐ TỬ VI</span>
-          <span className="submit-arrow">→</span>
+        <button type="submit" className="submit-btn-premium" id="btn-submit">
+          XEM LUẬN GIẢI
         </button>
 
         {/* === FOOTER NOTE === */}
         <p className="form-footer">
-          <span className="footer-icon">🔒</span>
-          Thông tin của bạn được bảo mật và chỉ sử dụng cho việc luận giải
+          Thông tin được bảo mật và chỉ sử dụng cho việc luận giải
         </p>
       </form>
     </div>

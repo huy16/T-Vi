@@ -1,22 +1,38 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { supabase } from '../utils/supabaseClient';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import InputForm from '../components/InputForm';
+import LoadingScreen from '../components/LoadingScreen';
+import { lapLaSo } from '../utils/tuviEngine';
 import './AuthPage.css';
+
+const QUOTES = [
+  "Vận mệnh không phải là sự sắp đặt cố định, mà là bản đồ của những khả năng.",
+  "Tri thiên mệnh để tận nhân lực, hiểu thấu sự đời để sống an nhiên.",
+  "Ngôi sao trên trời không chỉ để ngắm, mà là những chỉ dấu cho hành trình của mỗi con người.",
+  "Trong mỗi hạt cát đều có thế giới, trong mỗi lá số đều có cả một đời người.",
+  "Mệnh là cái có sẵn, Vận là cái đang xoay, thấu hiểu cả hai để làm chủ cuộc đời.",
+  "Thời gian là dòng chảy, tử vi là bến đỗ để ta soi lại bóng mình.",
+  "Cát hung họa phúc đều có căn nguyên, thấu hiểu mệnh lý để tìm đường hướng thiện."
+];
 
 const AuthPage = () => {
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
+  const [currentQuote, setCurrentQuote] = useState("");
   
+  const [isLoadingChart, setIsLoadingChart] = useState(false);
+  const [pendingData, setPendingData] = useState(null);
+
   const navigate = useNavigate();
   const { user } = useAuth();
 
+  // Pick a random quote on mount
   useEffect(() => {
-    // If user is already logged in, redirect them to home page to input chart
-    if (user) {
-      navigate('/');
-    }
-  }, [user, navigate]);
+    const randomIndex = Math.floor(Math.random() * QUOTES.length);
+    setCurrentQuote(QUOTES[randomIndex]);
+  }, []);
 
   const handleGoogleLogin = async () => {
     try {
@@ -24,7 +40,7 @@ const AuthPage = () => {
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: `${window.location.origin}/`
+          redirectTo: `${window.location.origin}/auth` 
         }
       });
       if (error) throw error;
@@ -34,39 +50,117 @@ const AuthPage = () => {
     }
   };
 
+  const handleFormSubmit = useCallback(async (data) => {
+    try {
+      setIsLoadingChart(true);
+      const generatedData = lapLaSo(data);
+      setPendingData(generatedData);
+      
+      // Save to Supabase if logged in
+      if (user) {
+        try {
+          const { error } = await supabase.from('charts').insert([{
+            user_id: user.id,
+            full_name: data.name || 'Khách',
+            gender: data.gender,
+            solar_day: data.solarDay || data.day,
+            solar_month: data.solarMonth || data.month,
+            solar_year: data.solarYear || data.year,
+            lunar_day: data.day,
+            lunar_month: data.month,
+            lunar_year: data.year,
+            birth_hour: data.hourDisplay || '',
+            chart_json: generatedData
+          }]);
+          
+          if (error) {
+            console.error("Failed to save chart to db:", error);
+          }
+        } catch (dbError) {
+          console.error("DB Save Exception:", dbError);
+        }
+      }
+    } catch (err) {
+      console.error("CRITICAL ERROR in lapLaSo engine:", err);
+      alert("Lỗi engine Tử Vi: " + err.message);
+      setIsLoadingChart(false);
+    }
+  }, [user]);
+
+  const handleLoadingComplete = useCallback(() => {
+    // Navigate back to Home with chartData to display results
+    navigate('/', { state: { chartData: pendingData } });
+  }, [pendingData, navigate]);
+
+  if (isLoadingChart) {
+    return <LoadingScreen onComplete={handleLoadingComplete} />;
+  }
+
   return (
-    <div className="auth-container">
-      <div className="auth-card">
-        <div className="auth-header">
-          <div className="auth-icon">☯</div>
-          <h2>Đăng Nhập</h2>
-          <p>Hệ thống Quản lý Lá số Tử Vi</p>
-        </div>
-
-        {errorMsg && <div className="auth-alert error">{errorMsg}</div>}
-
-        <button 
-          type="button" 
-          className="google-auth-btn" 
-          onClick={handleGoogleLogin}
-          disabled={loading}
-        >
-          <svg viewBox="0 0 24 24" width="24" height="24" xmlns="http://www.w3.org/2000/svg">
-            <g transform="matrix(1, 0, 0, 1, 27.009001, -39.238998)">
-              <path fill="#4285F4" d="M -3.264 51.509 C -3.264 50.719 -3.334 49.969 -3.454 49.239 L -14.754 49.239 L -14.754 53.749 L -8.284 53.749 C -8.574 55.229 -9.424 56.479 -10.684 57.329 L -10.684 60.329 L -6.824 60.329 C -4.564 58.239 -3.264 55.159 -3.264 51.509 Z"/>
-              <path fill="#34A853" d="M -14.754 63.239 C -11.514 63.239 -8.804 62.159 -6.824 60.329 L -10.684 57.329 C -11.764 58.049 -13.134 58.489 -14.754 58.489 C -17.884 58.489 -20.534 56.369 -21.484 53.529 L -25.464 53.529 L -25.464 56.619 C -23.494 60.539 -19.444 63.239 -14.754 63.239 Z"/>
-              <path fill="#FBBC05" d="M -21.484 53.529 C -21.734 52.809 -21.864 52.039 -21.864 51.239 C -21.864 50.439 -21.724 49.669 -21.484 48.949 L -21.484 45.859 L -25.464 45.859 C -26.284 47.479 -26.754 49.299 -26.754 51.239 C -26.754 53.179 -26.284 54.999 -25.464 56.619 L -21.484 53.529 Z"/>
-              <path fill="#EA4335" d="M -14.754 43.989 C -12.984 43.989 -11.404 44.599 -10.154 45.789 L -6.734 42.369 C -8.804 40.429 -11.514 39.239 -14.754 39.239 C -19.444 39.239 -23.494 41.939 -25.464 45.859 L -21.484 48.949 C -20.534 46.099 -17.884 43.989 -14.754 43.989 Z"/>
-            </g>
-          </svg>
-          Tiếp tục với Google
-        </button>
-
-        <div className="auth-footer">
-          <p className="auth-back-link" onClick={() => navigate('/')}>
-            ← Trở về trang chủ
+    <div className="auth-page-container">
+      <div className="input-section">
+      <div className="auth-merged-card animate-auth-entry">
+        <div className="hero-content">
+          <div className="hero-badge">☯ Tử Vi Đẩu Số Chuyên Sâu</div>
+          <h1 className="hero-title-merged">Mệnh Thư Đại Sư</h1>
+          <p className="hero-quote">
+            "{currentQuote}"
           </p>
+          <div className="hero-divider"></div>
+          <p className="hero-desc">
+            Hệ thống luận giải tử vi chuyên sâu, kết hợp tinh hoa thuật số cổ phương Đông và công nghệ hiện đại.
+          </p>
+
+          {/* Feature Highlights */}
+          <ul className="feature-highlights">
+            <li className="feature-item">
+              <span className="feature-icon">☯</span>
+              <div>
+                <strong>Luận giải 12 cung</strong>
+                <span>Phân tích chi tiết từng cung vị</span>
+              </div>
+            </li>
+            <li className="feature-item">
+              <span className="feature-icon">📊</span>
+              <div>
+                <strong>Vận hạn theo năm</strong>
+                <span>Dự báo vận trình & cơ hội</span>
+              </div>
+            </li>
+            <li className="feature-item">
+              <span className="feature-icon">🤖</span>
+              <div>
+                <strong>AI Tử Vi tư vấn</strong>
+                <span>Hỏi đáp trực tiếp với AI</span>
+              </div>
+            </li>
+          </ul>
+
+          {user && (
+            <div className="user-status-minimal">
+              <span className="user-status-dot"></span>
+              <p>Xin chào, <strong>{user.email}</strong></p>
+            </div>
+          )}
+          
+          <button onClick={() => navigate('/')} className="back-home-btn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+            Trở về trang chủ
+          </button>
         </div>
+
+        {/* Khối nhập thông tin tín chủ */}
+        <div className="form-container">
+          <InputForm onSubmit={handleFormSubmit} />
+        </div>
+
+        {/* Card footer watermark */}
+        <div className="auth-card-footer">
+          <span>☯</span> Mệnh Thư Đại Sư · Tử Vi Đẩu Số
+        </div>
+      </div>
       </div>
     </div>
   );

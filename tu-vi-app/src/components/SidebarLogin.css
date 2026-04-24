@@ -1,0 +1,83 @@
+.sidebar-login-container {
+  padding: 1.5rem;
+  background: rgba(160, 120, 48, 0.05);
+  border-radius: 12px;
+  border: 1px solid rgba(160, 120, 48, 0.15);
+  margin-bottom: 2rem;
+  position: sticky;
+  top: 2rem;
+}
+
+.sidebar-auth-title {
+  font-family: var(--font-heading);
+  font-size: 1.1rem;
+  color: #856424;
+  margin-bottom: 0.5rem;
+}
+
+.sidebar-auth-desc {
+  font-size: 0.8rem;
+  color: #5a4a3a;
+  line-height: 1.4;
+  margin-bottom: 1.2rem;
+}
+
+.sidebar-google-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  padding: 10px;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #3c4043;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.sidebar-google-btn:hover {
+  background: #f8f9fa;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.sidebar-user-box {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.user-avatar-placeholder {
+  width: 36px;
+  height: 36px;
+  background: var(--accent);
+  color: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+}
+
+.user-email {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #3a2a1a;
+  max-width: 150px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.logout-link {
+  background: none;
+  border: none;
+  color: #a32a2a;
+  font-size: 0.75rem;
+  padding: 0;
+  text-decoration: underline;
+  cursor: pointer;
+}
