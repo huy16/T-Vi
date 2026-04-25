@@ -38,9 +38,10 @@ const ChatBot = ({ chartData }) => {
         setShowTopics(true);
       } catch (err) {
         console.error("Failed to init chat:", err);
-        const errorMsg = "Thầy đang gặp chút vấn đề về pháp lực (kết nối). Con vui lòng thử tải lại trang (Ctrl+F5) nhé.";
+        const errorMsg = `Lỗi kết nối: ${err.message || "Không xác định"}. Con hãy kiểm tra lại Token hoặc đợi model khởi động nhé.`;
         setMessages([{ role: 'model', text: errorMsg }]);
       } finally {
+
 
 
 
