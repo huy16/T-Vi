@@ -251,15 +251,4 @@
 .pdf-export-mode .realestate-section .content-card {
   padding: 10px !important;
   margin-top: 5px !important;
-.pdf-export-mode .fengshui-section,
-.pdf-export-mode .stars-analysis-section,
-.pdf-export-mode .realestate-section {
-  padding-top: 10px !important;
-  margin-bottom: 5px !important;
-}
-
-.pdf-export-mode .fengshui-section .summary-cards,
-.pdf-export-mode .realestate-section .summary-cards {
-  gap: 8px !important;
-  margin-bottom: 5px !important;
 }
