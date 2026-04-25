@@ -5,7 +5,22 @@ import { STAR_INFO, getMainStarFromCung } from '../utils/starImages';
 
 const CUNG_ORDER = ['Mệnh', 'Phụ Mẫu', 'Phúc Đức', 'Điền Trạch', 'Quan Lộc', 'Nô Bộc', 'Thiên Di', 'Tật Ách', 'Tài Bạch', 'Tử Tức', 'Phu Thê', 'Huynh Đệ'];
 
-const CungCard = ({ cungName, cungData, onSelect }) => {
+const PALACE_IMAGE_MAP = {
+  'Mệnh': '/assets/stars/Menh.png',
+  'Phụ Mẫu': '/assets/stars/PhuMau.png',
+  'Phúc Đức': '/assets/stars/PhucDuc.png',
+  'Điền Trạch': '/assets/stars/DienTrach.png',
+  'Quan Lộc': '/assets/stars/QuanLoc.png',
+  'Nô Bộc': '/assets/stars/NoBoc.png',
+  'Thiên Di': '/assets/stars/ThienDi.png',
+  'Tật Ách': '/assets/stars/TatAch.png',
+  'Tài Bạch': '/assets/stars/TaiBach.png',
+  'Tử Tức': '/assets/stars/TuTuc.png',
+  'Phu Thê': '/assets/stars/PhuThe.png',
+  'Huynh Đệ': '/assets/stars/HuynhDe.png'
+};
+
+const CungCard = ({ cungName, cungData, onSelect, className }) => {
   const icon = CUNG_ICONS[cungName] || '☰';
   const description = CUNG_DESCRIPTIONS[cungName] || '';
   const starTags = getStarBrightnessTags(cungData?.saoChinh || []);
@@ -14,14 +29,19 @@ const CungCard = ({ cungName, cungData, onSelect }) => {
   // Lấy tên chính tinh và thông tin bổ trợ
   const mainStar = getMainStarFromCung(cungData?.saoChinh);
   const starInfo = mainStar ? STAR_INFO[mainStar] : null;
+  const palaceImage = PALACE_IMAGE_MAP[cungName];
 
   return (
     <div 
-      className="lg-cung-card" 
-      onClick={() => onSelect && onSelect(cungName)}
+      className={`lg-cung-card ${className || ''}`} 
+      onClick={() => onSelect && onSelect()}
     >
       <div className="lg-cung-bg-overlay" />
-
+      {palaceImage && (
+        <div className="lg-cung-image-container">
+          <img src={palaceImage} alt={cungName} className="lg-cung-image" onError={(e) => e.target.style.display = 'none'} />
+        </div>
+      )}
 
       <div className="lg-cung-content">
         {/* Cung label tag */}
@@ -37,7 +57,7 @@ const CungCard = ({ cungName, cungData, onSelect }) => {
         {/* Star subtitle info */}
         {starInfo && (
           <p className="lg-cung-star-subtitle">
-            {starInfo.title} • {starInfo.subtitle}
+            {starInfo.title}
           </p>
         )}
 
@@ -77,6 +97,17 @@ const LuanGiai12Cung = ({ chartData, onCungSelect }) => {
     return null;
   };
 
+  // Helper to get bento class
+  const getBentoClass = (name) => {
+    switch(name) {
+      case 'Mệnh': return 'lg-card-menh';
+      case 'Phúc Đức': return 'lg-card-phuc-duc';
+      case 'Phụ Mẫu': return 'lg-card-phu-mau';
+      case 'Điền Trạch': return 'lg-card-dien-trach';
+      default: return '';
+    }
+  };
+
   return (
     <section className="result-section result-section--wide luangiai-section">
       {/* Section Header */}
@@ -90,14 +121,18 @@ const LuanGiai12Cung = ({ chartData, onCungSelect }) => {
 
       {/* Grid of 12 cung cards */}
       <div className="lg-grid">
-        {CUNG_ORDER.map((name) => (
-          <CungCard
-            key={name}
-            cungName={name}
-            cungData={getCungDataByName(name)}
-            onSelect={onCungSelect}
-          />
-        ))}
+        {CUNG_ORDER.map((name) => {
+          const cungData = getCungDataByName(name);
+          return (
+            <CungCard
+              key={name}
+              cungName={name}
+              cungData={cungData}
+              className={getBentoClass(name)}
+              onSelect={() => onCungSelect && onCungSelect(cungData?.chi)}
+            />
+          );
+        })}
       </div>
     </section>
   );

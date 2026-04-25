@@ -1,33 +1,41 @@
 /* ===== Export PDF Button ===== */
 
 .export-pdf-wrapper {
-  position: fixed;
-  bottom: 2rem;
-  left: 2rem;
-  z-index: 1000;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: 0.5rem;
+  width: 100%;
+}
+
+.export-pdf-btn span {
+  background: linear-gradient(90deg, #f7e9c8 0%, #e1c072 25%, #fff 50%, #e1c072 75%, #f7e9c8 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: goldShimmer 4s linear infinite;
+  display: inline-block;
 }
 
 .export-pdf-btn {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 0.5rem;
-  padding: 0.75rem 1.5rem;
+  padding: 0.6rem 1.25rem;
   background: linear-gradient(135deg, #8b1a1a 0%, #c02020 50%, #8b1a1a 100%);
   color: #fff;
-  border: 2px solid rgba(212, 175, 55, 0.4);
-  border-radius: 50px;
+  border: 1.5px solid rgba(212, 175, 55, 0.4);
+  border-radius: 10px;
   font-family: var(--font-body);
-  font-size: 0.9rem;
-  font-weight: 600;
+  font-size: 0.85rem;
+  font-weight: 700;
   cursor: pointer;
-  box-shadow: 0 4px 20px rgba(139, 26, 26, 0.4),
-              0 0 0 1px rgba(212, 175, 55, 0.2);
+  box-shadow: 0 4px 15px rgba(139, 26, 26, 0.3);
   transition: all 0.3s ease;
   letter-spacing: 0.5px;
+  width: 100%;
 }
 
 .export-pdf-btn:hover:not(:disabled) {
@@ -51,8 +59,13 @@
   border-color: rgba(212, 175, 55, 0.6);
 }
 
-.export-icon {
+.export-pdf-char-icon {
+  font-family: var(--font-heading);
   font-size: 1.1rem;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1;
+  margin-right: 2px;
 }
 
 .export-spinner {
@@ -69,7 +82,7 @@
 }
 
 .export-progress-bar {
-  width: 160px;
+  width: 100%;
   height: 4px;
   background: rgba(139, 26, 26, 0.2);
   border-radius: 4px;
@@ -85,13 +98,168 @@
 
 /* PDF Export mode — styles applied to result-page during export */
 .pdf-export-mode {
-  background: #faf5eb !important;
+  background: #fffcf5 !important; /* Pure solid background for print */
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  box-shadow: none !important;
+  border: none !important;
+  width: 1200px !important;
+  max-width: 1200px !important;
+  margin: 0 auto !important;
+  padding: 40px !important;
+  border-radius: 0 !important; /* Flat for PDF */
 }
 
-.pdf-export-mode .export-pdf-wrapper {
+/* Hide non-printable elements */
+.pdf-export-mode .export-pdf-wrapper,
+.pdf-export-mode .chatbot-floating-btn,
+.pdf-export-mode .chatbot-window,
+.pdf-export-mode .results-sidebar-area,
+.pdf-export-mode .nhap-lai-btn,
+.pdf-export-mode .sidebar-login-card,
+.pdf-export-mode .home-header {
   display: none !important;
 }
 
-.pdf-export-mode .chatbot-container {
-  display: none !important;
+/* Adjust 12-month grid for PDF width (3 columns) */
+.pdf-export-mode .vt-month-grid {
+  grid-template-columns: repeat(3, 1fr) !important;
+  gap: 15px !important;
+}
+
+.pdf-export-mode .vt-month-card {
+  break-inside: avoid;
+  page-break-inside: avoid;
+  background: #ffffff !important;
+  box-shadow: none !important;
+  border: 1px solid #d4af37 !important;
+}
+
+/* Adjust 12 palaces bento grid */
+.pdf-export-mode .lg-bento-grid {
+  display: grid !important;
+  grid-template-columns: repeat(3, 1fr) !important; /* Standardize to 3 columns for print */
+  gap: 15px !important;
+}
+
+.pdf-export-mode .lg-cung-card {
+  break-inside: avoid;
+  page-break-inside: avoid;
+  background: #ffffff !important;
+  border: 1px solid #ddd !important;
+}
+
+/* Ensure all sections start on new logical areas if possible */
+.pdf-export-mode .detail-section,
+.pdf-export-mode .advanced-section,
+.pdf-export-mode .vanhan-section {
+  margin-bottom: 60px !important;
+  page-break-inside: avoid;
+}
+
+/* Fix text colors for better print quality */
+.pdf-export-mode .section-title,
+.pdf-export-mode .chart-section-text h2 {
+  -webkit-text-fill-color: #8b5e1a !important; /* Solid color instead of gradient/shimmer */
+  background: none !important;
+  color: #8b5e1a !important;
+  text-shadow: none !important;
+}
+
+.pdf-export-mode .section-header {
+  background: #fdfaf0 !important;
+  backdrop-filter: none !important;
+  border: 1px solid #d4af37 !important;
+}
+
+.pdf-export-mode .summary-card {
+  background: #fdfaf0 !important;
+  border: 1px solid #eee !important;
+}
+
+/* Force specific sections to start on new pages (Chapter-based structure) */
+.pdf-export-mode .luangiai-section,
+.pdf-export-mode .vanhan-section,
+.pdf-export-mode .career-section,
+.pdf-export-mode .wealth-section,
+.pdf-export-mode .children-section,
+.pdf-export-mode .stages-section,
+.pdf-export-mode .monthly-section {
+  page-break-before: always !important;
+  break-before: page !important;
+  margin-top: 40px !important;
+  padding-top: 20px !important;
+}
+
+/* Grouping sections to follow their respective page starters */
+.pdf-export-mode .love-section,
+.pdf-export-mode .health-section,
+.pdf-export-mode .realestate-section,
+.pdf-export-mode .fengshui-section,
+.pdf-export-mode .stars-analysis-section {
+  margin-top: 20px !important;
+  page-break-inside: avoid;
+}
+
+/* Page 7 Super Compression */
+.pdf-export-mode .children-section,
+.pdf-export-mode .stages-section {
+  padding-top: 5px !important;
+  margin-top: 10px !important;
+}
+
+.pdf-export-mode .children-section .section-header,
+.pdf-export-mode .stages-section .section-header {
+  transform: scale(0.9);
+  transform-origin: left top;
+  margin-bottom: 10px !important; /* Increased from -10px to give more space */
+}
+
+.pdf-export-mode .stages-section .vh-overview-tags,
+.pdf-export-mode .stages-section .vh-overview-meta {
+  display: none !important; /* Hide redundant metadata in PDF to save space */
+}
+
+.pdf-export-mode .stages-section .summary-cards {
+  display: grid !important;
+  grid-template-columns: repeat(6, 1fr) !important; /* Make pills smaller and horizontal */
+  gap: 4px !important;
+}
+
+.pdf-export-mode .stages-section .summary-card {
+  padding: 4px !important;
+  font-size: 0.7rem !important;
+}
+
+/* Page 9 compression */
+.pdf-export-mode .fengshui-section,
+.pdf-export-mode .stars-analysis-section,
+.pdf-export-mode .realestate-section {
+  padding-top: 10px !important;
+  margin-bottom: 5px !important;
+}
+
+.pdf-export-mode .fengshui-section .summary-cards,
+.pdf-export-mode .realestate-section .summary-cards {
+  gap: 8px !important;
+  margin-bottom: 5px !important;
+}
+
+.pdf-export-mode .children-section .content-card,
+.pdf-export-mode .stages-section .content-card,
+.pdf-export-mode .fengshui-section .content-card,
+.pdf-export-mode .realestate-section .content-card {
+  padding: 10px !important;
+  margin-top: 5px !important;
+.pdf-export-mode .fengshui-section,
+.pdf-export-mode .stars-analysis-section,
+.pdf-export-mode .realestate-section {
+  padding-top: 10px !important;
+  margin-bottom: 5px !important;
+}
+
+.pdf-export-mode .fengshui-section .summary-cards,
+.pdf-export-mode .realestate-section .summary-cards {
+  gap: 8px !important;
+  margin-bottom: 5px !important;
 }

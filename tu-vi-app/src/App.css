@@ -85,9 +85,9 @@
   padding: 20px;
 }
 
-.chart-view-section {
+.chart-section {
   padding: 2.5rem 0;
-  background: var(--bg-main);
+  background: transparent;
 }
 
 .result-page .nhap-lai-btn {

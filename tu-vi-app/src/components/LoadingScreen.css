@@ -80,25 +80,40 @@
   pointer-events: none;
 }
 
+.orbit-icon-rotate-fix {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Counter-rotate the parent ring's spin */
+  animation: orbitSpin 60s linear infinite reverse;
+}
+
 .orbit-icon-inner {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 28px;
-  height: 28px;
-  font-size: 0.85rem;
-  background: rgba(196, 131, 108, 0.06);
-  border: 1px solid rgba(196, 131, 108, 0.12);
-  border-radius: 6px;
+  width: auto;
+  height: auto;
+  font-size: 1.2rem;
+  background: none;
+  border: none;
+  /* Counter-rotate the individual angle to stay upright */
   transform: rotate(calc(-1 * var(--angle))) translateY(-4px);
   animation: iconPulse 3s ease-in-out infinite;
   animation-delay: var(--delay);
-  opacity: 0.7;
+  filter: drop-shadow(0 0 5px rgba(196, 131, 108, 0.2));
+  opacity: 0.8;
 }
 
 @keyframes iconPulse {
-  0%, 100% { opacity: 0.5; transform: rotate(calc(-1 * var(--angle))) translateY(-4px) scale(0.9); }
-  50%      { opacity: 0.9; transform: rotate(calc(-1 * var(--angle))) translateY(-4px) scale(1.05); }
+  0%, 100% { 
+    opacity: 0.6; 
+    transform: rotate(calc(-1 * var(--angle))) translateY(-4px) scale(0.9); 
+  }
+  50% { 
+    opacity: 1; 
+    transform: rotate(calc(-1 * var(--angle))) translateY(-4px) scale(1.15); 
+  }
 }
 
 /* ===== RING DOTS ===== */

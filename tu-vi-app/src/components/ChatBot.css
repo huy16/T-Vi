@@ -10,8 +10,8 @@
   border-radius: 30px;
   padding: 12px 24px;
   font-family: var(--font-main), sans-serif;
-  font-size: 1rem;
-  font-weight: 600;
+  font-size: 1.1rem;
+  font-weight: 700;
   display: flex;
   align-items: center;
   gap: 10px;
@@ -19,6 +19,15 @@
   box-shadow: 0 4px 15px rgba(109, 65, 46, 0.4);
   transition: transform 0.2s, box-shadow 0.2s;
   z-index: 9999;
+}
+
+.chatbot-floating-btn span {
+  background: linear-gradient(90deg, #f7e9c8 0%, #e1c072 25%, #fff 50%, #e1c072 75%, #f7e9c8 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: goldShimmer 4s linear infinite;
 }
 
 .chatbot-floating-btn:hover {

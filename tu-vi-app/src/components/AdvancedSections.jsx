@@ -42,7 +42,7 @@ export const ConCaiSection = ({ chartData }) => {
   }
 
   return (
-    <section className="result-section result-section--wide detail-section">
+    <section className="result-section result-section--wide detail-section children-section">
       <div className="section-header">
         <div className="section-icon">子</div>
         <div className="section-header-text">
@@ -149,7 +149,7 @@ export const GiaiDoanSection = ({ chartData }) => {
   const rating = hasGoodStars ? 'ĐANG TRẢI' : 'ĐANG TRẢI';
 
   return (
-    <section className="result-section result-section--wide detail-section">
+    <section className="result-section result-section--wide detail-section stages-section">
       <div className="section-header">
         <div className="section-icon">運</div>
         <div className="section-header-text">
@@ -300,59 +300,95 @@ export const VanTrinh12ThangSection = ({ chartData }) => {
   const worstMonth = worstMonthIdx + 1;
 
   return (
-    <section className="result-section result-section--wide detail-section">
+    <section className="result-section result-section--wide detail-section monthly-section">
       <div className="section-header">
         <div className="section-icon">月</div>
         <div className="section-header-text">
-          <h2 className="section-title">Vận Trình 12 Tháng</h2>
-          <p className="section-subtitle">Chi tiết từng tháng • Sự nghiệp • Tài chính • Sức khỏe • Tình cảm</p>
+          <h2 className="section-title">Vận Trình 12 Tháng (Âm Lịch)</h2>
+          <p className="section-subtitle">Dự báo theo từng tháng Âm Lịch dựa trên Địa Chi cung và các sao chiếu</p>
         </div>
       </div>
 
-      {/* Summary row */}
       <div className="summary-cards">
         <div className="summary-card">
-          <div className="summary-card-label">🌟 THÁNG TỐT NHẤT</div>
+          <div className="summary-card-label">🌟 THÁNG TỐT NHẤT (ÂL)</div>
           <div className="summary-card-value" style={{ color: 'var(--color-good)' }}>Tháng {bestMonth} — {MONTH_RATINGS[bestMonth - 1]}</div>
           <p className="summary-card-desc">Cung {LUNAR_MONTHS[bestMonth - 1]}</p>
         </div>
         <div className="summary-card">
-          <div className="summary-card-label">⚠️ CẦN CHÚ Ý NHẤT</div>
+          <div className="summary-card-label">⚠️ CẦN CHÚ Ý NHẤT (ÂL)</div>
           <div className="summary-card-value" style={{ color: 'var(--color-warning)' }}>Tháng {worstMonth} — {MONTH_RATINGS[worstMonth - 1]}</div>
           <p className="summary-card-desc">Cung {LUNAR_MONTHS[worstMonth - 1]}</p>
         </div>
         <div className="summary-card">
           <div className="summary-card-label">🔮 TRUNG BÌNH NĂM</div>
           <div className="summary-card-value">{overallRating}</div>
-          <p className="summary-card-desc">Chỉ số tính toàn diện 12 cung</p>
+          <p className="summary-card-desc">Chỉ số tính toàn diện 12 tháng ÂL</p>
         </div>
       </div>
 
-      {/* Timeline bar */}
       <div className="vt-timeline-bar">
         {MONTH_RATINGS.map((rating, idx) => (
           <div key={idx} className="vt-bar-item" style={{ '--bar-color': MONTH_COLORS[rating] || 'var(--text-muted)' }}>
             <div className="vt-bar-dot"></div>
-            <span className="vt-bar-label">T{idx + 1}</span>
+            <span className="vt-bar-label">Th{idx + 1}</span>
           </div>
         ))}
       </div>
 
-      {/* Monthly grid */}
       <div className="vt-month-grid">
-        {MONTH_RATINGS.map((rating, idx) => (
-          <div key={idx} className="vt-month-card">
-            <div className="vt-month-header">
-              <span className="vt-month-num">T{idx + 1}</span>
-              <span className="vt-month-label">{['Cần thận', 'Tiểu hung'].includes(rating) ? rating : ''}</span>
-              <span className="vt-month-rating" style={{ color: MONTH_COLORS[rating] }}>{rating}</span>
+        {MONTH_RATINGS.map((rating, idx) => {
+          const chi = LUNAR_MONTHS[idx];
+          const cung = board[chi];
+          const stars = [...(cung.saoChinh || []), ...(cung.saoTot || [])].slice(0, 2).join(', ');
+          
+          return (
+            <div key={idx} className="vt-month-card">
+              <div className="vt-month-header">
+                <span className="vt-month-num">Tháng {idx + 1}</span>
+                <span className="vt-month-rating" style={{ 
+                  color: MONTH_COLORS[rating], 
+                  backgroundColor: `${MONTH_COLORS[rating]}15` 
+                }}>
+                  {rating}
+                </span>
+              </div>
+              <div style={{ fontSize: '0.7rem', fontWeight: 600, color: 'var(--accent)', marginBottom: '0.5rem' }}>
+                Cung {chi}
+              </div>
+              <p className="vt-month-desc">
+                {rating === 'Đại cát' ? (
+                  idx % 3 === 0 ? 'Cơ hội hanh thông, mọi việc như ý, có quý nhân phù trợ nhiệt tình.' :
+                  idx % 3 === 1 ? 'Vận khí rực rỡ, tài lộc dồi dào, các kế hoạch lớn nên triển khai ngay.' :
+                  'Thời điểm vàng để bứt phá, sức sáng tạo cao, nhận được sự tín nhiệm lớn.'
+                ) : rating === 'Bình an' ? (
+                  idx % 2 === 0 ? 'Vận trình tương đối ổn định, vạn sự bình hòa, nên giữ vững nhịp độ hiện tại.' :
+                  'Nhịp sống nhẹ nhàng, thích hợp cho việc học tập, nghiên cứu và bồi đắp nội lực.'
+                ) : rating === 'Tiểu hung' ? (
+                  idx % 3 === 0 ? 'Dễ gặp chuyện thị phi hoặc hao tán tài lộc nhỏ. Cần cẩn trọng trong lời nói.' :
+                  idx % 3 === 1 ? 'Sức khỏe cần được lưu tâm, tránh làm việc quá sức hay lo âu thái quá.' :
+                  'Các mối quan hệ xã giao có dấu hiệu rạn nứt nhẹ, nên nhường nhịn để giữ hòa khí.'
+                ) : (
+                  idx % 2 === 0 ? 'Vận trình nhiều trắc trở, áp lực lớn, cần kiên trì phòng thủ và tránh đầu tư.' :
+                  'Cần đề phòng các biến cố bất ngờ, nên tĩnh tâm và chờ đợi thời cơ thuận lợi hơn.'
+                )}
+              </p>
+              <div className="vt-month-footer">
+                <span className="pill-tag" style={{ fontSize: '0.6rem', border: 'none', background: 'rgba(160, 120, 48, 0.05)' }}>
+                  {stars || 'Vô chính diệu'}
+                </span>
+                <span className="pill-tag" style={{ 
+                  fontSize: '0.6rem', 
+                  border: 'none',
+                  background: ['Cần thận', 'Tiểu hung'].includes(rating) ? 'rgba(180, 50, 50, 0.1)' : 'rgba(50, 180, 50, 0.1)',
+                  color: ['Cần thận', 'Tiểu hung'].includes(rating) ? '#b03020' : '#5a8a3a'
+                }}>
+                  {['Cần thận', 'Tiểu hung'].includes(rating) ? '● Tĩnh' : '● Động'}
+                </span>
+              </div>
             </div>
-            <p className="vt-month-desc">{rating}</p>
-            <div className="pill-tags" style={{ marginTop: '0.35rem' }}>
-              <span className="pill-tag" style={{ fontSize: '0.65rem', padding: '0.15rem 0.4rem' }}>{['Cần thận', 'Tiểu hung'].includes(rating) ? 'Tĩnh' : 'Động'}</span>
-            </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </section>
   );
@@ -400,7 +436,7 @@ export const PhongThuySection = ({ chartData }) => {
   const soMay = SO_MAY_MAN[banMenh] || [4, 9];
 
   return (
-    <section className="result-section result-section--wide detail-section">
+    <section className="result-section result-section--wide detail-section fengshui-section">
       <div className="section-header">
         <div className="section-icon" style={{ color: '#27ae60' }}>☯</div>
         <div className="section-header-text">
@@ -506,7 +542,7 @@ export const ThanSatSection = ({ chartData }) => {
   }
 
   return (
-    <section className="result-section result-section--wide detail-section">
+    <section className="result-section result-section--wide detail-section stars-analysis-section">
       <div className="section-header">
         <div className="section-icon">煞</div>
         <div className="section-header-text">
@@ -607,7 +643,7 @@ export const DienTrachSection = ({ chartData }) => {
   const numXau = dienTrach?.saoXau?.length || 0;
 
   return (
-    <section className="result-section result-section--wide detail-section">
+    <section className="result-section result-section--wide detail-section realestate-section">
       <div className="section-header">
         <div className="section-icon">宅</div>
         <div className="section-header-text">

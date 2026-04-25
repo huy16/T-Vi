@@ -18,6 +18,8 @@ const ChatBot = ({ chartData }) => {
     { id: 'su-nghiep', label: 'Con nên làm kinh doanh hay làm thuê?', icon: '💼' },
     { id: 'tai-loc', label: 'Tài lộc của con năm nay ra sao?', icon: '💰' },
     { id: 'tinh-duyen', label: 'Đường tình duyên có gì khởi sắc không?', icon: '❤️' },
+    { id: 'hoc-van', label: 'Đường học hành, bằng cấp của con thế nào?', icon: '🎓' },
+    { id: 'gia-dao', label: 'Gia đạo và nhà cửa của con có ổn định không?', icon: '🏠' },
     { id: 'cung-menh', label: 'Điểm mạnh nhất trong cung Mệnh của con?', icon: '🌟' },
     { id: 'suc-khoe', label: 'Con cần lưu ý gì về sức khỏe?', icon: '🏥' }
   ];
@@ -25,8 +27,10 @@ const ChatBot = ({ chartData }) => {
   useEffect(() => {
     // Initialize chat session when component mounts and chartData is available
     const initChat = async () => {
-      if (!chartData || chatSession) return;
+      if (!chartData) return;
+      
       try {
+        console.log("ChatBot: Initializing with chartData...");
         setIsLoading(true);
         const { chatSession: newSession, initialGreeting } = await startTuViChat(chartData);
         setChatSession(newSession);
@@ -34,7 +38,7 @@ const ChatBot = ({ chartData }) => {
         setShowTopics(true);
       } catch (err) {
         console.error("Failed to init chat:", err);
-        setMessages([{ role: 'model', text: "Đã có lỗi xảy ra khi kết nối. Con thử tải lại trang nhé." }]);
+        setMessages([{ role: 'model', text: "Thầy đang gặp chút vấn đề về pháp lực (kết nối). Con vui lòng thử tải lại trang (Ctrl+F5) nhé." }]);
       } finally {
         setIsLoading(false);
       }
@@ -178,7 +182,7 @@ const ChatBot = ({ chartData }) => {
           <div className="quick-topics-section">
             <div className="topics-header">CON CÓ THỂ HỎI THẦY VỀ</div>
             <div className="topics-grid">
-              {SUGGESTED_QUESTIONS.slice(0, 4).map(q => (
+              {SUGGESTED_QUESTIONS.slice(0, 6).map(q => (
                 <button 
                   key={q.id} 
                   className="topic-btn" 

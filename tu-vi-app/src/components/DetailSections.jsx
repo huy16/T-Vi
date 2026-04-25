@@ -22,7 +22,7 @@ export const SuNghiepSection = ({ chartData }) => {
   const starTags = getStarBrightnessTags(analysis.stars);
 
   return (
-    <section className="result-section result-section--wide detail-section">
+    <section className="result-section result-section--wide detail-section career-section">
       {/* Header */}
       <div className="section-header">
         <div className="section-icon">官</div>
@@ -86,7 +86,7 @@ export const TinhDuyenSection = ({ chartData }) => {
   const starTags = getStarBrightnessTags(analysis.stars);
 
   return (
-    <section className="result-section result-section--wide detail-section">
+    <section className="result-section result-section--wide detail-section love-section">
       <div className="section-header">
         <div className="section-icon" style={{ color: '#c0392b' }}>緣</div>
         <div className="section-header-text">
@@ -139,7 +139,7 @@ export const TaiLocSection = ({ chartData }) => {
   const starTags = getStarBrightnessTags(analysis.stars);
 
   return (
-    <section className="result-section result-section--wide detail-section">
+    <section className="result-section result-section--wide detail-section wealth-section">
       <div className="section-header">
         <div className="section-icon">財</div>
         <div className="section-header-text">
@@ -202,7 +202,7 @@ export const SucKhoeSection = ({ chartData }) => {
   const starTags = getStarBrightnessTags(analysis.stars);
 
   return (
-    <section className="result-section result-section--wide detail-section">
+    <section className="result-section result-section--wide detail-section health-section">
       <div className="section-header">
         <div className="section-icon" style={{ color: '#27ae60' }}>疾</div>
         <div className="section-header-text">

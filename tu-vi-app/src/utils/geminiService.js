@@ -33,7 +33,7 @@ export const startTuViChat = async (chartData) => {
   `;
 
   const model = genAI.getGenerativeModel({ 
-    model: "gemini-flash-latest",
+    model: "gemini-1.5-flash",
     systemInstruction: systemInstruction
   });
 

@@ -20,110 +20,118 @@ const ExportPDF = ({ chartData }) => {
         return;
       }
 
-      // Temporarily add print-mode class for better PDF styling
+      // Add print-mode class
       resultPage.classList.add('pdf-export-mode');
-      setProgress(20);
+      setProgress(15);
+      await new Promise(r => setTimeout(r, 500));
 
-      // Wait for styles to apply
-      await new Promise(r => setTimeout(r, 300));
-
-      // Capture the entire result page
-      setProgress(30);
-      const canvas = await html2canvas(resultPage, {
-        scale: 2,
-        useCORS: true,
-        allowTaint: true,
-        backgroundColor: '#faf5eb',
-        logging: false,
-        windowWidth: 1200,
-        onclone: (clonedDoc) => {
-          // Ensure cloned document has proper width
-          const clonedResult = clonedDoc.querySelector('.result-page');
-          if (clonedResult) {
-            clonedResult.style.width = '1200px';
-            clonedResult.style.maxWidth = '1200px';
-            clonedResult.style.margin = '0 auto';
-          }
-        }
-      });
-
-      setProgress(70);
-
-      // Generate PDF
-      const imgData = canvas.toDataURL('image/jpeg', 0.92);
-      const imgWidth = canvas.width;
-      const imgHeight = canvas.height;
-
-      // A4 dimensions in mm
+      // PDF Setup (A4)
+      const pdf = new jsPDF('p', 'mm', 'a4');
       const pdfWidth = 210;
       const pdfHeight = 297;
-      const margin = 8;
+      const margin = 12;
       const contentWidth = pdfWidth - margin * 2;
+      const maxPageHeight = pdfHeight - margin * 2.5; // Reserve space for footer
 
-      // Scale image to fit PDF width
-      const ratio = contentWidth / imgWidth;
-      const scaledHeight = imgHeight * ratio;
+      let currentY = margin;
+      let currentPage = 1;
 
-      // Calculate total pages needed
-      const pageContentHeight = pdfHeight - margin * 2;
-      const totalPages = Math.ceil(scaledHeight / pageContentHeight);
+      // Identify all major sections to capture
+      const sections = Array.from(resultPage.querySelectorAll('.chart-view-section, .result-section, .detail-section'));
+      const totalSteps = sections.length;
 
-      const pdf = new jsPDF('p', 'mm', 'a4');
+      for (let i = 0; i < sections.length; i++) {
+        const section = sections[i];
+        
+        // Skip hidden sections or very small ones
+        if (section.offsetHeight < 10) continue;
 
-      setProgress(80);
+        // Capture section
+        const canvas = await html2canvas(section, {
+          scale: 3,
+          useCORS: true,
+          backgroundColor: '#fffcf5',
+          logging: false,
+          windowWidth: 1200
+        });
 
-      for (let page = 0; page < totalPages; page++) {
-        if (page > 0) pdf.addPage();
+        const imgData = canvas.toDataURL('image/jpeg', 0.95);
+        const imgWidth = canvas.width;
+        const imgHeight = canvas.height;
+        const ratio = contentWidth / imgWidth;
+        const scaledHeight = imgHeight * ratio;
 
-        // Calculate source coordinates for this page
-        const sourceY = page * (pageContentHeight / ratio);
-        const sourceHeight = Math.min(pageContentHeight / ratio, imgHeight - sourceY);
+        // Check if section fits on current page
+        // Or if it has a forced page break class (Chapter starters)
+        const hasForcedBreak = section.classList.contains('luangiai-section') || 
+                               section.classList.contains('vanhan-section') ||
+                               section.classList.contains('career-section') ||
+                               section.classList.contains('wealth-section') ||
+                               section.classList.contains('children-section') ||
+                               section.classList.contains('stages-section') ||
+                               section.classList.contains('monthly-section');
 
-        // Create a temporary canvas for this page slice
-        const pageCanvas = document.createElement('canvas');
-        pageCanvas.width = imgWidth;
-        pageCanvas.height = sourceHeight;
-        const ctx = pageCanvas.getContext('2d');
-        ctx.drawImage(canvas, 0, sourceY, imgWidth, sourceHeight, 0, 0, imgWidth, sourceHeight);
+        if (currentY + scaledHeight > maxPageHeight || (hasForcedBreak && i > 0)) {
+          // Add footer before moving to new page
+          addFooter(pdf, currentPage, pdfWidth, pdfHeight, margin);
+          
+          pdf.addPage();
+          currentPage++;
+          currentY = margin;
+        }
 
-        const pageImgData = pageCanvas.toDataURL('image/jpeg', 0.92);
-        const sliceScaledHeight = sourceHeight * ratio;
+        // Add image to PDF
+        pdf.addImage(imgData, 'JPEG', margin, currentY, contentWidth, scaledHeight);
+        currentY += scaledHeight + 8; // Padding between sections
 
-        pdf.addImage(pageImgData, 'JPEG', margin, margin, contentWidth, sliceScaledHeight);
-
-        // Footer with page number
-        pdf.setFontSize(8);
-        pdf.setTextColor(150, 130, 100);
-        pdf.text(`Trang ${page + 1} / ${totalPages}`, pdfWidth / 2, pdfHeight - 4, { align: 'center' });
-        pdf.text('☯ Mệnh Thư Đại Sư — Lá Số Tử Vi', margin, pdfHeight - 4);
+        setProgress(15 + Math.round(((i + 1) / totalSteps) * 75));
       }
 
-      setProgress(95);
+      // Add final footer
+      addFooter(pdf, currentPage, pdfWidth, pdfHeight, margin);
 
-      // Generate filename
+      // Save with Name and Date (all lowercase)
       const name = chartData?.userInfo?.name || 'TuVi';
-      const date = new Date();
-      const dateStr = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`;
-      const fileName = `LasoTuVi_${name.replace(/\s+/g, '_')}_${dateStr}.pdf`;
-
+      const now = new Date();
+      const dateStr = `${now.getDate()}-${now.getMonth() + 1}-${now.getFullYear()}`;
+      const fileName = `lasotuvi_${name.toLowerCase().replace(/\s+/g, '_')}_${dateStr}.pdf`;
       pdf.save(fileName);
 
-      // Remove print-mode class
       resultPage.classList.remove('pdf-export-mode');
       setProgress(100);
-
       setTimeout(() => {
         setIsExporting(false);
         setProgress(0);
-      }, 1500);
+      }, 1000);
 
     } catch (error) {
       console.error('PDF Export Error:', error);
       alert('Lỗi khi xuất PDF. Vui lòng thử lại!');
-      const resultPage = document.querySelector('.result-page');
-      if (resultPage) resultPage.classList.remove('pdf-export-mode');
+      document.querySelector('.result-page')?.classList.remove('pdf-export-mode');
       setIsExporting(false);
       setProgress(0);
+    }
+  };
+
+  // Helper to add consistent footer with logo
+  const addFooter = (pdf, pageNum, width, height, margin) => {
+    // Add small logo (favicon)
+    try {
+      const logoSize = 4;
+      // Using /favicon.png - assuming it's available in public
+      pdf.addImage('/favicon.png', 'PNG', margin, height - 10.5, logoSize, logoSize);
+      
+      pdf.setFontSize(8.5);
+      pdf.setTextColor(179, 145, 88); // Match the UI Gold (#b39158)
+      // Offset text by logo size + small gap
+      pdf.text(`MENH THU DAI SU - LA SO TU VI`, margin + logoSize + 2, height - 8);
+      pdf.text(`Trang ${pageNum}`, width - margin, height - 8, { align: 'right' });
+    } catch (e) {
+      // Fallback if logo fails
+      pdf.setFontSize(8.5);
+      pdf.setTextColor(179, 145, 88);
+      pdf.text(`MENH THU DAI SU - LA SO TU VI`, margin, height - 8);
+      pdf.text(`Trang ${pageNum}`, width - margin, height - 8, { align: 'right' });
     }
   };
 
@@ -142,7 +150,7 @@ const ExportPDF = ({ chartData }) => {
           </>
         ) : (
           <>
-            <span className="export-icon">📄</span>
+            <span className="export-pdf-char-icon">印</span>
             <span>Xuất PDF</span>
           </>
         )}

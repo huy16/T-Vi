@@ -2,7 +2,7 @@ import React, { useState, useCallback, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import InputForm from '../components/InputForm';
 import TuViChart from '../components/TuViChart';
-import HeroSection from '../components/HeroSection';
+
 import TongQuanSection from '../components/TongQuanSection';
 import LuanGiai12Cung from '../components/LuanGiai12Cung';
 import VanHanSection from '../components/VanHanSection';
@@ -33,6 +33,9 @@ const Home = () => {
 
   const handleCungSelect = (chi) => {
     setSelectedChi(chi === selectedChi ? null : chi);
+    if (chi) {
+      document.getElementById('chart-section')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
   };
 
   return (
@@ -65,14 +68,14 @@ const Home = () => {
       {chartData && (
         <div className="results-wrapper">
           <aside className="results-sidebar-area">
-            <SidebarLogin />
             <div className="sidebar-actions">
                <ExportPDF chartData={chartData} />
             </div>
+            <SidebarLogin />
           </aside>
 
           <div className="result-page">
-            <HeroSection chartData={chartData} />
+
 
             <section id="chart-section" className="chart-view-section animate-slide-up">
               <TuViChart 
@@ -83,22 +86,22 @@ const Home = () => {
             </section>
 
             <TongQuanSection chartData={chartData} />
-            <ChatBot chartData={chartData} />
-            <LuanGiai12Cung chartData={chartData} />
+            <LuanGiai12Cung chartData={chartData} onCungSelect={handleCungSelect} />
             <VanHanSection chartData={chartData} />
             <SuNghiepSection chartData={chartData} />
             <TinhDuyenSection chartData={chartData} />
             <TaiLocSection chartData={chartData} />
             <SucKhoeSection chartData={chartData} />
             <ConCaiSection chartData={chartData} />
-            <GiaiDoanSection chartData={chartData} />
-            <VanTrinh12ThangSection chartData={chartData} />
-            <PhongThuySection chartData={chartData} />
-            <ThanSatSection chartData={chartData} />
             <DienTrachSection chartData={chartData} />
+            <GiaiDoanSection chartData={chartData} />
+            <PhongThuySection chartData={chartData} />
+            <VanTrinh12ThangSection chartData={chartData} />
+            <ThanSatSection chartData={chartData} />
           </div>
         </div>
       )}
+      {chartData && <ChatBot chartData={chartData} />}
     </main>
   );
 };

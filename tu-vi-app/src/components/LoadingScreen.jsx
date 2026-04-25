@@ -60,7 +60,9 @@ const LoadingScreen = ({ onComplete }) => {
                 '--delay': `${i * 0.15}s`
               }}
             >
-              <span className="orbit-icon-inner">{icon}</span>
+              <div className="orbit-icon-rotate-fix">
+                <span className="orbit-icon-inner">{icon}</span>
+              </div>
             </div>
           ))}
         </div>

@@ -243,8 +243,6 @@ const TuViChart = ({ chartData, selectedChi, onCungSelect }) => {
   const getMarkerPos = (chiArray) => {
     if (!chiArray || chiArray.length < 2) return null;
     
-    // Grid coordinates (row, col) for each Chi
-    // Grid coordinates (row, col) for each Chi in Classic Ring (Tỵ at 0,0)
     const posMap = {
       'Tỵ': [0,0], 'Ngọ': [0,1], 'Mùi': [0,2], 'Thân': [0,3],
       'Dậu': [1,3], 'Tuất': [2,3], 'Hợi': [3,3], 'Tý': [3,2],
@@ -254,35 +252,21 @@ const TuViChart = ({ chartData, selectedChi, onCungSelect }) => {
     const p1 = posMap[chiArray[0]];
     const p2 = posMap[chiArray[1]];
 
-    console.log(`[Chart Debug] Marker for:`, chiArray, `p1:`, p1, `p2:`, p2);
-
     if (!p1 || !p2) return null;
 
     const midR = (p1[0] + p2[0]) / 2;
     const midC = (p1[1] + p2[1]) / 2;
 
-    console.log(`[Chart Debug] Calculated midR: ${midR}, midC: ${midC}`);
+    // determine orientation for CSS styling
+    const isVerticalLine = p1[1] !== p2[1]; 
 
-    // Determine if it's a vertical boundary (between columns) or horizontal (between rows)
-    const isVertical = p1[0] === p2[0]; // Same row -> between columns -> vertical line
-    
     let topVal = (midR + 0.5) * 25;
     let leftVal = (midC + 0.5) * 25;
 
-    // Push all markers to the INNER border to avoid overlapping text
-    // The inner borders are at 25% and 75%
-    if (midC === 0) {
-      // Left column (Tỵ-Thìn, Thìn-Mão, Mão-Dần) -> push to right edge of the cell (25%)
-      leftVal = 25;
-    } else if (midC === 3) {
-      // Right column (Mùi-Thân, Thân-Dậu, Dậu-Tuất, Tuất-Hợi) -> push to left edge of the cell (75%)
-      leftVal = 75;
-    } else if (midR === 0) {
-      // Top row (Tỵ-Ngọ, Ngọ-Mùi) -> push to bottom edge of the cell (25%)
-      topVal = 25;
-    } else if (midR === 3) {
-      // Bottom row (Dần-Sửu, Sửu-Tý, Tý-Hợi) -> push to top edge of the cell (75%)
-      topVal = 75;
+    // If it's a vertical boundary (between columns), push it down to the very bottom 
+    // of the palace (below the footer text, on the horizontal grid line).
+    if (isVerticalLine) {
+      topVal = (midR + 1) * 25;
     }
 
     return {
@@ -290,7 +274,7 @@ const TuViChart = ({ chartData, selectedChi, onCungSelect }) => {
         top: `${topVal}%`,
         left: `${leftVal}%`
       },
-      orientation: isVertical ? 'vertical-line' : 'horizontal-line'
+      orientation: isVerticalLine ? 'vertical-line' : 'horizontal-line'
     };
   };
 

@@ -19,12 +19,7 @@ const HeroSection = ({ chartData }) => {
         {/* Decorative title */}
         <h1 className="hero-tuvi-title">Tử Vi</h1>
 
-        {/* Main card */}
-        <div className="hero-card">
-          <div className="hero-card-badge">★ TỬ VI NẤU SỐ {genderSuffix} ★</div>
-          <h2 className="hero-card-title">LUẬN GIẢI MỆNH SỐ</h2>
-          <p className="hero-card-subtitle">Phân Tích Toàn Diện • Bản Đồ Thiên Mệnh</p>
-        </div>
+
 
         {/* Info pills */}
         <div className="hero-pills">
