@@ -99,8 +99,9 @@ async function callHFAPI(messages) {
     throw new Error("API Key missing");
   }
 
+  // Sử dụng endpoint Chat Completions chuẩn của Hugging Face
   const response = await fetch(
-    `https://api-inference.huggingface.co/models/${MODEL_ID}`,
+    `https://api-inference.huggingface.co/models/${MODEL_ID}/v1/chat/completions`,
     {
       headers: {
         Authorization: `Bearer ${hfToken}`,
@@ -110,20 +111,22 @@ async function callHFAPI(messages) {
       body: JSON.stringify({
         messages: messages,
         model: MODEL_ID,
-        parameters: {
-          max_new_tokens: 1024,
-          temperature: 0.5,
-          return_full_text: false
-        }
+        max_tokens: 1024,
+        temperature: 0.5,
+        stream: false
       }),
     }
   );
 
   const result = await response.json();
   if (!response.ok) {
+    // Xử lý lỗi model đang tải (loading)
+    if (result.error && result.error.includes("loading")) {
+      throw new Error("Model đang khởi động trên Hugging Face. Con đợi khoảng 20 giây rồi thử lại nhé.");
+    }
     throw new Error(result.error || "HF API Error");
   }
 
-  // HF returns different structures based on model, but for Llama-3-Chat it's usually:
-  return result[0]?.generated_text || result.choices?.[0]?.message?.content || "Thầy chưa luận giải được, con hỏi lại nhé.";
+  return result.choices?.[0]?.message?.content || "Thầy chưa luận giải được, con hỏi lại nhé.";
 }
+
