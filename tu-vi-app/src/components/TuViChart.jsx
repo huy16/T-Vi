@@ -57,9 +57,10 @@ const StarItem = ({ name, type }) => {
           className="star-tooltip star-tooltip--visible" 
           style={{ left: tooltipPos.x + 12, top: tooltipPos.y - 10 }}
         >
-          {meaning}
+          <strong>{displayName}:</strong> {meaning.overview}
         </span>
       )}
+
     </div>
   );
 };
