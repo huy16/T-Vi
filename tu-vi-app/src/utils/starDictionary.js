@@ -3,7 +3,7 @@
  * Dùng để hiển thị nội dung nhanh khi chưa gọi AI.
  */
 
-export const STAR_MEANINGS = {
+export const STAR_DICTIONARY = {
   // CHÍNH TINH
   "Tử Vi": {
     overview: "Chủ về uy quyền, tài lộc và sự hóa giải tai ương. Vận gặp Tử Vi là lúc có thể khẳng định vị thế.",
@@ -46,5 +46,6 @@ export const STAR_MEANINGS = {
 export const getStarMeaning = (starName) => {
   // Xử lý trường hợp tên sao có độ sáng (ví dụ: "Thiên Lương (M)")
   const cleanName = starName.split(' (')[0].trim();
-  return STAR_MEANINGS[cleanName] || null;
+  return STAR_DICTIONARY[cleanName] || null;
 };
+
