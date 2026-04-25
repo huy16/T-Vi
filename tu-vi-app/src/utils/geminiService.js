@@ -8,13 +8,6 @@ import { searchRelevantContext, formatRAGContext } from './ragService';
 let hfToken = import.meta.env.VITE_HF_TOKEN;
 const MODEL_ID = "meta-llama/Meta-Llama-3-8B-Instruct"; // Model cực mạnh và nhanh
 
-/**
- * Update the HF Token dynamically
- */
-export const setDynamicApiKey = (newKey) => {
-  hfToken = newKey;
-};
-
 export const startTuViChat = async (chartData) => {
   // Với HF Inference API, chúng ta không cần "startChat" như Gemini, 
   // chỉ cần chuẩn bị lời chào đầu tiên.

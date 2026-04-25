@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import ReactMarkdown from 'react-markdown';
 import './ChatBot.css';
-import { startTuViChat, sendMessageStreamWithRAG, setDynamicApiKey } from '../utils/geminiService';
+import { startTuViChat, sendMessageStreamWithRAG } from '../utils/geminiService';
 
 const ChatBot = ({ chartData }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -10,8 +10,6 @@ const ChatBot = ({ chartData }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [chatSession, setChatSession] = useState(null);
   const [showTopics, setShowTopics] = useState(true);
-  const [showKeyInput, setShowKeyInput] = useState(false);
-  const [tempKey, setTempKey] = useState('');
   
   const messagesEndRef = useRef(null);
 
@@ -40,20 +38,12 @@ const ChatBot = ({ chartData }) => {
         setShowTopics(true);
       } catch (err) {
         console.error("Failed to init chat:", err);
-        let errorMsg = `Lỗi hệ thống: ${err.message || "Không xác định"}`;
+        let errorMsg = "Thầy đang gặp chút vấn đề về pháp lực (kết nối). Con vui lòng thử tải lại trang (Ctrl+F5) nhé.";
         
         if (err.message && (err.message.includes("API Key missing") || err.message.includes("key is missing"))) {
-          errorMsg = "Lỗi: Chưa tìm thấy Hugging Face Token. Con hãy dán HF Token vào đây (hoặc cấu hình VITE_HF_TOKEN):";
-          setShowKeyInput(true);
+          errorMsg = "Lỗi: Chưa tìm thấy cấu hình Hugging Face Token. Con hãy kiểm tra lại biến VITE_HF_TOKEN trong Settings nhé.";
         } else if (err.message && (err.message.includes("403") || err.message.includes("401") || err.message.includes("not authorized"))) {
-          errorMsg = "Lỗi: HF Token không hợp lệ. Con hãy kiểm tra lại nhé:";
-          setShowKeyInput(true);
-        }
- else if (err.message && err.message.includes("500")) {
-          errorMsg = "Lỗi: Máy chủ Google đang quá tải (500). Con đợi một chút rồi thử lại nhé.";
-        } else {
-          // Đối với các lỗi khác, vẫn hiện ô nhập Key để đề phòng
-          setShowKeyInput(true);
+          errorMsg = "Lỗi: Hugging Face Token không hợp lệ hoặc đã hết hạn. Con hãy kiểm tra lại nhé.";
         }
         
         setMessages([{ role: 'model', text: errorMsg }]);
@@ -157,14 +147,6 @@ const ChatBot = ({ chartData }) => {
     handleSendMessage(`Thưa Thầy, con muốn hỏi về ${topicLabel} ạ.`);
   };
 
-  const handleKeySubmit = () => {
-    if (tempKey.trim().length > 10) {
-      setDynamicApiKey(tempKey.trim());
-      initChat();
-    }
-  };
-
-
   const handleResetChat = async () => {
     if (isLoading) return;
     if (window.confirm("Con có muốn xóa hội thoại cũ để bắt đầu cuộc trò chuyện mới với Thầy không?")) {
@@ -242,27 +224,6 @@ const ChatBot = ({ chartData }) => {
             )}
           </div>
         ))}
-
-        {showKeyInput && (
-          <div className="chat-bubble-container model">
-            <div className="chat-bubble model key-input-bubble">
-              <div className="key-input-wrapper">
-                <input 
-                  type="password" 
-                  placeholder="Dán Gemini API Key vào đây..." 
-                  value={tempKey}
-                  onChange={(e) => setTempKey(e.target.value)}
-                  onKeyDown={(e) => e.key === 'Enter' && handleKeySubmit()}
-                />
-                <button onClick={handleKeySubmit} disabled={tempKey.length < 10}>
-                  Xác nhận
-                </button>
-              </div>
-              <p className="key-help-text">Key này chỉ lưu tạm thời trong phiên làm việc này.</p>
-            </div>
-          </div>
-        )}
-
 
         {showTopics && messages.length === 1 && (
           <div className="quick-topics-section">
