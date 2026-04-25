@@ -38,8 +38,17 @@ const ChatBot = ({ chartData }) => {
         setShowTopics(true);
       } catch (err) {
         console.error("Failed to init chat:", err);
-        setMessages([{ role: 'model', text: "Thầy đang gặp chút vấn đề về pháp lực (kết nối). Con vui lòng thử tải lại trang (Ctrl+F5) nhé." }]);
+        let errorMsg = "Thầy đang gặp chút vấn đề về pháp lực (kết nối). Con vui lòng thử tải lại trang (Ctrl+F5) nhé.";
+        
+        if (err.message && err.message.includes("API Key missing")) {
+          errorMsg = "Lỗi: Chưa tìm thấy Gemini API Key. Con hãy kiểm tra lại biến VITE_GEMINI_API_KEY trong Settings nhé.";
+        } else if (err.message && err.message.includes("403") || err.message && err.message.includes("API key not valid")) {
+          errorMsg = "Lỗi: API Key của con không hợp lệ hoặc đã hết hạn. Hãy kiểm tra lại nhé.";
+        }
+        
+        setMessages([{ role: 'model', text: errorMsg }]);
       } finally {
+
         setIsLoading(false);
       }
     };
