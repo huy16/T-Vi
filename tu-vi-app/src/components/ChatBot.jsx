@@ -38,16 +38,10 @@ const ChatBot = ({ chartData }) => {
         setShowTopics(true);
       } catch (err) {
         console.error("Failed to init chat:", err);
-        let errorMsg = "Thầy đang gặp chút vấn đề về pháp lực (kết nối). Con vui lòng thử tải lại trang (Ctrl+F5) nhé.";
-        
-        if (err.message && (err.message.includes("API Key missing") || err.message.includes("key is missing"))) {
-          errorMsg = "Lỗi: Chưa tìm thấy cấu hình Hugging Face Token. Con hãy kiểm tra lại biến VITE_HF_TOKEN trong Settings nhé.";
-        } else if (err.message && (err.message.includes("403") || err.message.includes("401") || err.message.includes("not authorized"))) {
-          errorMsg = "Lỗi: Hugging Face Token không hợp lệ hoặc đã hết hạn. Con hãy kiểm tra lại nhé.";
-        }
-        
+        const errorMsg = "Thầy đang gặp chút vấn đề về pháp lực (kết nối). Con vui lòng thử tải lại trang (Ctrl+F5) nhé.";
         setMessages([{ role: 'model', text: errorMsg }]);
       } finally {
+
 
 
         setIsLoading(false);
