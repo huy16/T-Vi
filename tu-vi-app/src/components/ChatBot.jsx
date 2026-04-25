@@ -40,18 +40,24 @@ const ChatBot = ({ chartData }) => {
         setShowTopics(true);
       } catch (err) {
         console.error("Failed to init chat:", err);
-        let errorMsg = "Thầy đang gặp chút vấn đề về pháp lực (kết nối). Con vui lòng thử tải lại trang (Ctrl+F5) nhé.";
+        let errorMsg = `Lỗi hệ thống: ${err.message || "Không xác định"}`;
         
-        if (err.message && err.message.includes("API Key missing")) {
-          errorMsg = "Lỗi: Chưa tìm thấy Gemini API Key. Con có thể dán API Key vào ô dưới đây để tiếp tục nhé:";
+        if (err.message && (err.message.includes("API Key missing") || err.message.includes("key is missing"))) {
+          errorMsg = "Lỗi: Chưa tìm thấy Gemini API Key. Con hãy dán Key vào đây:";
           setShowKeyInput(true);
-        } else if (err.message && (err.message.includes("403") || err.message.includes("API key not valid"))) {
-          errorMsg = "Lỗi: API Key của con không hợp lệ hoặc đã hết hạn. Con hãy nhập Key mới:";
+        } else if (err.message && (err.message.includes("403") || err.message.includes("API key not valid") || err.message.includes("not authorized"))) {
+          errorMsg = "Lỗi: API Key của con không hợp lệ (403). Con hãy kiểm tra lại xem có copy dư khoảng trắng không nhé:";
+          setShowKeyInput(true);
+        } else if (err.message && err.message.includes("500")) {
+          errorMsg = "Lỗi: Máy chủ Google đang quá tải (500). Con đợi một chút rồi thử lại nhé.";
+        } else {
+          // Đối với các lỗi khác, vẫn hiện ô nhập Key để đề phòng
           setShowKeyInput(true);
         }
         
         setMessages([{ role: 'model', text: errorMsg }]);
       } finally {
+
 
         setIsLoading(false);
       }
