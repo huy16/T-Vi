@@ -1,6 +1,8 @@
 import React from 'react';
 import './VanHanSection.css';
 import { getStarBrightnessTags } from '../utils/analysisContent';
+import { getStarMeaning } from '../utils/starDictionary';
+
 
 const VanHanSection = ({ chartData }) => {
   if (!chartData) return null;
@@ -83,51 +85,62 @@ const VanHanSection = ({ chartData }) => {
           </div>
           
           <h3 className="vh-overview-title">
-            {hasTieuHanGoodStars ? 'Nắm bắt — Giai đoạn hiện tại' : 'Chọn lọc — Giai đoạn hiện tại'}
+            {hasTieuHanGoodStars ? 'Cơ hội & Nắm bắt' : 'Quan sát & Chọn lọc'}
           </h3>
           
           <div className="vh-overview-text">
-            <p>
-              Nên lấy sự nghiệp làm mũi nhọn, nhưng muốn vận đi bền thì phải giữ chắc sức khỏe trước đã. 
-              {hasTieuHanGoodStars ? ' Dòng tiền lưu thông tốt, hợp mở rộng sinh kế.' : ' Việc nên ưu tiên trước là giữ nghiêm kỷ luật quản lý tiền bạc.'}
-            </p>
-            <p>
-              Tháng 2 Âm lịch: tháng khá thuận. Đây là lúc nên ưu tiên xử lý những việc quan trọng còn treo — chốt hợp đồng, ký kết.
-            </p>
-            <p>
-              {daiHanStars.length > 0 
-                ? `Cổ nhân từng viết: "${daiHanStars[0].name} ${daiHanStars[0].brightness === 'M' || daiHanStars[0].brightness === 'V' ? 'cô cương, tướng quân xuất chinh' : 'tọa thủ, cần xem tam hợp'}". Nhìn toàn cục, giai đoạn này khá sáng, đủ lực để đẩy việc tiến lên nếu biết chọn trọng tâm.`
-                : 'Giai đoạn này cung vô chính diệu, cần xem tam hợp chiếu để đánh giá chính xác.'}
-            </p>
+            {daiHanStars.length > 0 && getStarMeaning(daiHanStars[0].name) ? (
+              <p>
+                {getStarMeaning(daiHanStars[0].name).overview} 
+                Giai đoạn này, con đang được soi chiếu qua lăng kính của {daiHanStars.map(s => s.name).join(', ')}.
+              </p>
+            ) : (
+              <p className="ai-placeholder">
+                Đại Sư đang phân tích sự tương tác giữa các bộ sao trong {daiHanRange}... 
+              </p>
+            )}
           </div>
 
           <div className="vh-overview-list">
-            <div className="vh-list-item">
-              <span className="vh-list-num">1</span>
-              <span>Nhìn tổng thể bản cờ vận hạn, Đại Vận đang hướng năng lượng vào sức bền tinh thần.</span>
-            </div>
-            <div className="vh-list-item">
-              <span className="vh-list-num">2</span>
-              <span>Chiến lược phù hợp lúc này là chọn lọc cơ hội, ưu tiên việc nắm chắc phần thắng.</span>
-            </div>
-            <div className="vh-list-item">
-              <span className="vh-list-num">3</span>
-              <span>Về cặp sao chủ đạo, {daiHanStars.length > 0 ? `${daiHanStars[0].name} của Đại Vận mang chất "sao tướng soái".` : 'cần giữ sự ổn định và kiên nhẫn.'}</span>
-            </div>
-            <div className="vh-list-item">
-              <span className="vh-list-num">4</span>
-              <span>Điều nên tránh trước là đầu cơ mạo hiểm, khinh suất tin người.</span>
-            </div>
-            <div className="vh-list-item">
-              <span className="vh-list-num">5</span>
-              <span>{hasTieuHanGoodStars ? 'Hóa Lộc chiếu vận mở thêm đường tài vận.' : 'Cần giữ gìn cẩn thận tài sản và các mối quan hệ.'}</span>
-            </div>
+            {daiHanStars.length > 0 && getStarMeaning(daiHanStars[0].name) ? (
+              <>
+                <div className="vh-list-item">
+                  <span className="vh-list-num">1</span>
+                  <span>{getStarMeaning(daiHanStars[0].name).advice}</span>
+                </div>
+                <div className="vh-list-item">
+                  <span className="vh-list-num">2</span>
+                  <span>{getStarMeaning(daiHanStars[0].name).warning}</span>
+                </div>
+                <div className="vh-list-item">
+                  <span className="vh-list-num">3</span>
+                  <span>Nhìn tổng thể bản cờ vận hạn, Đại Vận đang hướng năng lượng vào cung {daiHanCungName}.</span>
+                </div>
+                <div className="vh-list-item">
+                  <span className="vh-list-num">4</span>
+                  <span>Chiến lược phù hợp lúc này là chọn lọc cơ hội, ưu tiên việc nắm chắc phần thắng.</span>
+                </div>
+                <div className="vh-list-item">
+                  <span className="vh-list-num">5</span>
+                  <span>{hasTieuHanGoodStars ? 'Hóa Lộc chiếu vận mở thêm đường tài vận.' : 'Cần giữ gìn cẩn thận tài sản và các mối quan hệ.'}</span>
+                </div>
+              </>
+            ) : (
+              [1, 2, 3, 4, 5].map((num) => (
+                <div key={num} className="vh-list-item ai-shimmer">
+                  <span className="vh-list-num">{num}</span>
+                  <span className="shimmer-line"></span>
+                </div>
+              ))
+            )}
           </div>
 
+
           <div className="vh-overview-tags">
-            <span className="vh-ov-tag">CHỌN LỌC</span>
-            <span className="vh-ov-tag">GIAI ĐOẠN HIỆN TẠI</span>
+            <span className="vh-ov-tag">AI LUẬN GIẢI</span>
+            <span className="vh-ov-tag">{hasTieuHanGoodStars ? 'CÁT LỢI' : 'THẬN TRỌNG'}</span>
           </div>
+
         </div>
         
         <div className="vh-overview-image-wrapper">
@@ -168,12 +181,17 @@ const VanHanSection = ({ chartData }) => {
             <div className="action-grid">
               <div className="action-card action-card--good">
                 <div className="action-card-label">NÊN ƯU TIÊN</div>
-                <p className="action-card-text">Giữ nghiêm kỷ luật quản lý tiền bạc.</p>
+                <p className="action-card-text">
+                  {tieuHanStars.length > 0 ? `Bồi đắp năng lượng cho bộ sao ${tieuHanStars[0].name}.` : 'Giữ tâm thế bình tĩnh, quan sát thời cuộc.'}
+                </p>
               </div>
               <div className="action-card action-card--warning">
                 <div className="action-card-label">CẦN TRÁNH</div>
-                <p className="action-card-text">Đầu cơ mạo hiểm, khinh suất tin người.</p>
+                <p className="action-card-text">
+                  {tieuHanCung?.saoXau?.length > 0 ? `Lưu ý các tác động từ ${tieuHanCung.saoXau[0]}.` : 'Tránh quyết định vội vàng trong đầu tư.'}
+                </p>
               </div>
+
             </div>
 
             <div className="link-arrow" style={{ marginTop: '1rem' }}>
@@ -213,12 +231,17 @@ const VanHanSection = ({ chartData }) => {
             <div className="action-grid">
               <div className="action-card action-card--good">
                 <div className="action-card-label">NÊN ƯU TIÊN</div>
-                <p className="action-card-text">Bồi đắp phúc khí dòng tộc tổ tiên.</p>
+                <p className="action-card-text">
+                  {daiHanStars.length > 0 ? `Phát huy sức mạnh của ${daiHanStars[0].name} tại cung ${daiHanCungName}.` : 'Xây dựng nền tảng vững chắc cho tương lai.'}
+                </p>
               </div>
               <div className="action-card action-card--warning">
                 <div className="action-card-label">CẦN TRÁNH</div>
-                <p className="action-card-text">Mê tín dị đoan thái quá.</p>
+                <p className="action-card-text">
+                  {daiHanCung?.saoXau?.length > 0 ? `Cẩn trọng hạn từ ${daiHanCung.saoXau[0]}.` : 'Hạn chế thay đổi công việc đột ngột.'}
+                </p>
               </div>
+
             </div>
 
             <div className="link-arrow" style={{ marginTop: '1rem' }}>
