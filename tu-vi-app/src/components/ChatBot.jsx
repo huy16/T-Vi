@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import ReactMarkdown from 'react-markdown';
 import './ChatBot.css';
-import { startTuViChat, sendMessageWithRAG } from '../utils/geminiService';
+import { startTuViChat, sendMessageStreamWithRAG } from '../utils/geminiService';
 
 const ChatBot = ({ chartData }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -61,13 +61,32 @@ const ChatBot = ({ chartData }) => {
     const userText = text.trim();
     setMessages(prev => [...prev, { role: 'user', text: userText }]);
     setInputValue('');
-    setShowTopics(false); // Hide topics after first user message to save space
+    setShowTopics(false);
     setIsLoading(true);
 
+    // Placeholder for the AI response that we will update
+    setMessages(prev => [...prev, { role: 'model', text: '', isStreaming: true }]);
+
     try {
-      const ragResult = await sendMessageWithRAG(chatSession, userText);
-      const aiResponseRaw = ragResult.text;
-      const sources = ragResult.sources || [];
+      let currentFullText = '';
+      const streamResult = await sendMessageStreamWithRAG(
+        chatSession, 
+        userText, 
+        (chunk, fullText) => {
+          currentFullText = fullText;
+          setMessages(prev => {
+            const newMessages = [...prev];
+            newMessages[newMessages.length - 1] = { 
+              ...newMessages[newMessages.length - 1], 
+              text: fullText 
+            };
+            return newMessages;
+          });
+        }
+      );
+
+      const aiResponseRaw = streamResult.text;
+      const sources = streamResult.sources || [];
       
       let mainText = aiResponseRaw;
       let suggestions = [];
@@ -81,20 +100,38 @@ const ChatBot = ({ chartData }) => {
           .filter(line => line.length > 0);
       }
 
-      // Add source attribution if RAG found relevant content
+      // Add source attribution
       if (sources.length > 0) {
         const sourceBooks = [...new Set(sources.map(s => s.book))];
         mainText += `\n\n---\n📚 *Tham khảo: ${sourceBooks.join(', ')}*`;
       }
 
-      setMessages(prev => [...prev, { role: 'model', text: mainText, suggestions }]);
+      setMessages(prev => {
+        const newMessages = [...prev];
+        newMessages[newMessages.length - 1] = { 
+          role: 'model', 
+          text: mainText, 
+          suggestions,
+          isStreaming: false 
+        };
+        return newMessages;
+      });
     } catch (error) {
       console.error("Chat error:", error);
-      setMessages(prev => [...prev, { role: 'model', text: "Thầy đang gặp chút vấn đề kết nối. Con hỏi lại nhé." }]);
+      setMessages(prev => {
+        const newMessages = [...prev];
+        newMessages[newMessages.length - 1] = { 
+          role: 'model', 
+          text: "Thầy đang gặp chút vấn đề kết nối. Con hỏi lại nhé.",
+          isStreaming: false 
+        };
+        return newMessages;
+      });
     } finally {
       setIsLoading(false);
     }
   };
+
 
   const handleTopicClick = (topicLabel) => {
     handleSendMessage(`Thưa Thầy, con muốn hỏi về ${topicLabel} ạ.`);

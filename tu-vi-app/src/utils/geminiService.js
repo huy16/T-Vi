@@ -24,7 +24,9 @@ export const startTuViChat = async (chartData) => {
     - Văn phong: điềm đạm, uyên bác, ân cần nhưng dứt khoát của một người Thầy.
     - Có thể dùng Markdown để in đậm các sao quan trọng giúp con dễ đọc.
     - LUÔN LUÔN giữ vai diễn "Thầy", xưng "Thầy", gọi "con" hoặc tên của con.
-    - Khi có KIẾN THỨC THAM KHẢO TỪ SÁCH được cung cấp, hãy tích cực trích dẫn và dẫn nguồn (tên sách, trang). Điều này giúp con tin tưởng lời Thầy hơn.
+    - Khi có KIẾN THỨC THAM KHẢO TỪ SÁCH được cung cấp (trong phần RAG context), Thầy BẮT BUỘC phải ưu tiên sử dụng kiến thức này để trả lời. 
+    - Hãy trích dẫn trực tiếp các đoạn văn hay, các câu phú trong sách và ghi rõ nguồn (ví dụ: "Sách Tử Vi Đẩu Số Toàn Thư có chép: ..."). Điều này giúp lời luận giải của Thầy trở nên uy tín và sâu sắc hơn.
+    - Nếu câu hỏi của con không liên quan đến kiến thức trong sách, Thầy vẫn dựa trên kinh nghiệm 30 năm (kiến thức của model) để trả lời, nhưng hãy luôn tìm cách liên hệ với các nguyên lý kinh điển.
     - QUAN TRỌNG: Ở CUỐI MỖI CÂU TRẢ LỜI, Thầy BẮT BUỘC phải gợi ý 2-3 câu hỏi liên quan tiếp theo mà con nên hỏi để đào sâu vấn đề. Định dạng CHÍNH XÁC như sau ở cuối cùng:
 [GỢI Ý]
 - Câu gợi ý 1?
@@ -40,7 +42,7 @@ export const startTuViChat = async (chartData) => {
   try {
     const chat = model.startChat({
       generationConfig: {
-        temperature: 0.7,
+        temperature: 0.5, // Lower temperature for more stable/accurate analysis
         maxOutputTokens: 2048,
       }
     });
@@ -61,25 +63,33 @@ export const startTuViChat = async (chartData) => {
 };
 
 /**
- * Send a message with RAG-augmented context.
- * Searches relevant book excerpts before sending to Gemini.
+ * Send a message with RAG-augmented context and stream the response.
  */
-export const sendMessageWithRAG = async (chatSession, userMessage) => {
+export const sendMessageStreamWithRAG = async (chatSession, userMessage, onChunk) => {
   try {
-    // Search for relevant book context
+    // 1. Search for relevant book context (Parallel with starting the stream if possible, 
+    // but Gemini needs context in the first prompt of the turn)
     const ragResults = await searchRelevantContext(userMessage, 5);
     const ragContext = formatRAGContext(ragResults);
 
-    // Build the message with context
+    // 2. Build the message with context
     let augmentedMessage = userMessage;
     if (ragContext) {
       augmentedMessage = `${userMessage}\n\n${ragContext}`;
     }
 
-    // Send to Gemini
-    const result = await chatSession.sendMessage(augmentedMessage);
+    // 3. Send to Gemini with streaming
+    const result = await chatSession.sendMessageStream(augmentedMessage);
+    
+    let fullText = '';
+    for await (const chunk of result.stream) {
+      const chunkText = chunk.text();
+      fullText += chunkText;
+      if (onChunk) onChunk(chunkText, fullText);
+    }
+
     return {
-      text: result.response.text(),
+      text: fullText,
       sources: ragResults.map(r => ({
         book: r.metadata?.book || 'Sách Tử Vi',
         page: r.metadata?.page,
@@ -88,7 +98,7 @@ export const sendMessageWithRAG = async (chatSession, userMessage) => {
       })),
     };
   } catch (error) {
-    console.error("RAG Chat Error:", error);
+    console.error("RAG Stream Error:", error);
     throw error;
   }
 };
