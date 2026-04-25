@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import ReactMarkdown from 'react-markdown';
 import './ChatBot.css';
-import { startTuViChat, sendMessageStreamWithRAG } from '../utils/geminiService';
+import { startTuViChat, sendMessageStreamWithRAG, setDynamicApiKey } from '../utils/geminiService';
 
 const ChatBot = ({ chartData }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -10,6 +10,8 @@ const ChatBot = ({ chartData }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [chatSession, setChatSession] = useState(null);
   const [showTopics, setShowTopics] = useState(true);
+  const [showKeyInput, setShowKeyInput] = useState(false);
+  const [tempKey, setTempKey] = useState('');
   
   const messagesEndRef = useRef(null);
 
@@ -41,9 +43,11 @@ const ChatBot = ({ chartData }) => {
         let errorMsg = "Thầy đang gặp chút vấn đề về pháp lực (kết nối). Con vui lòng thử tải lại trang (Ctrl+F5) nhé.";
         
         if (err.message && err.message.includes("API Key missing")) {
-          errorMsg = "Lỗi: Chưa tìm thấy Gemini API Key. Con hãy kiểm tra lại biến VITE_GEMINI_API_KEY trong Settings nhé.";
-        } else if (err.message && err.message.includes("403") || err.message && err.message.includes("API key not valid")) {
-          errorMsg = "Lỗi: API Key của con không hợp lệ hoặc đã hết hạn. Hãy kiểm tra lại nhé.";
+          errorMsg = "Lỗi: Chưa tìm thấy Gemini API Key. Con có thể dán API Key vào ô dưới đây để tiếp tục nhé:";
+          setShowKeyInput(true);
+        } else if (err.message && (err.message.includes("403") || err.message.includes("API key not valid"))) {
+          errorMsg = "Lỗi: API Key của con không hợp lệ hoặc đã hết hạn. Con hãy nhập Key mới:";
+          setShowKeyInput(true);
         }
         
         setMessages([{ role: 'model', text: errorMsg }]);
@@ -146,6 +150,14 @@ const ChatBot = ({ chartData }) => {
     handleSendMessage(`Thưa Thầy, con muốn hỏi về ${topicLabel} ạ.`);
   };
 
+  const handleKeySubmit = () => {
+    if (tempKey.trim().length > 10) {
+      setDynamicApiKey(tempKey.trim());
+      initChat();
+    }
+  };
+
+
   const handleResetChat = async () => {
     if (isLoading) return;
     if (window.confirm("Con có muốn xóa hội thoại cũ để bắt đầu cuộc trò chuyện mới với Thầy không?")) {
@@ -223,6 +235,27 @@ const ChatBot = ({ chartData }) => {
             )}
           </div>
         ))}
+
+        {showKeyInput && (
+          <div className="chat-bubble-container model">
+            <div className="chat-bubble model key-input-bubble">
+              <div className="key-input-wrapper">
+                <input 
+                  type="password" 
+                  placeholder="Dán Gemini API Key vào đây..." 
+                  value={tempKey}
+                  onChange={(e) => setTempKey(e.target.value)}
+                  onKeyDown={(e) => e.key === 'Enter' && handleKeySubmit()}
+                />
+                <button onClick={handleKeySubmit} disabled={tempKey.length < 10}>
+                  Xác nhận
+                </button>
+              </div>
+              <p className="key-help-text">Key này chỉ lưu tạm thời trong phiên làm việc này.</p>
+            </div>
+          </div>
+        )}
+
 
         {showTopics && messages.length === 1 && (
           <div className="quick-topics-section">

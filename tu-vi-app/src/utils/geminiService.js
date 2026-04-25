@@ -1,12 +1,20 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { searchRelevantContext, formatRAGContext } from './ragService';
 
-const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
-const genAI = new GoogleGenerativeAI(apiKey || 'placeholder');
+let apiKey = import.meta.env.VITE_GEMINI_API_KEY;
+let genAI = new GoogleGenerativeAI(apiKey || 'placeholder');
+
+/**
+ * Update the API key dynamically (useful for fallbacks)
+ */
+export const setDynamicApiKey = (newKey) => {
+  apiKey = newKey;
+  genAI = new GoogleGenerativeAI(newKey);
+};
 
 export const startTuViChat = async (chartData) => {
-  if (!apiKey) {
-    throw new Error("Gemini API Key missing. Please check your .env file.");
+  if (!apiKey || apiKey === 'placeholder' || apiKey.length < 10) {
+    throw new Error("API Key missing");
   }
 
   const systemInstruction = `
