@@ -45,9 +45,20 @@ const VanHanSection = ({ chartData }) => {
 
   const tieuHanStars = getStarBrightnessTags(tieuHanCung?.saoChinh || []);
   const daiHanStars = getStarBrightnessTags(daiHanCung?.saoChinh || []);
+  
+  // Lấy thêm các sao phụ nếu không có sao chính để luận giải
+  const allDaiHanStars = [
+    ...(daiHanCung?.saoChinh || []),
+    ...(daiHanCung?.saoTot || []),
+    ...(daiHanCung?.saoXau || [])
+  ];
+
+  console.log("Debug - Dai Han Cung:", daiHanCungName);
+  console.log("Debug - Stars found:", allDaiHanStars);
 
   const tieuHanCungName = tieuHanCung?.tenCung?.split(' /')[0]?.split(' <')[0]?.trim() || 'Chưa xác định';
   const daiHanCungName = daiHanCung?.tenCung?.split(' /')[0]?.split(' <')[0]?.trim() || 'Chưa xác định';
+
 
   // Simple analysis based on stars
   const hasTieuHanGoodStars = tieuHanCung?.saoTot?.some(s => 
@@ -95,11 +106,15 @@ const VanHanSection = ({ chartData }) => {
                 Giai đoạn này, con đang được soi chiếu qua lăng kính của {daiHanStars.map(s => s.name).join(', ')}.
               </p>
             ) : (
-              <p className="ai-placeholder">
-                Đại Sư đang phân tích sự tương tác giữa các bộ sao trong {daiHanRange}... 
+              <p>
+                Nhìn chung, giai đoạn {daiHanRange} của con đang có sự dịch chuyển năng lượng mạnh mẽ. 
+                {hasDaiHanGoodStars 
+                  ? " Các bộ sao cát tinh đang hội tụ, hứa hẹn nhiều cơ hội về tài lộc và quý nhân." 
+                  : " Đây là giai đoạn cần sự tĩnh tâm, quan sát kỹ lưỡng trước khi đưa ra các quyết định lớn."}
               </p>
             )}
           </div>
+
 
           <div className="vh-overview-list">
             {daiHanStars.length > 0 && getStarMeaning(daiHanStars[0].name) ? (
@@ -125,6 +140,29 @@ const VanHanSection = ({ chartData }) => {
                   <span>{hasTieuHanGoodStars ? 'Hóa Lộc chiếu vận mở thêm đường tài vận.' : 'Cần giữ gìn cẩn thận tài sản và các mối quan hệ.'}</span>
                 </div>
               </>
+            ) : daiHanStars.length > 0 ? (
+               <>
+                <div className="vh-list-item">
+                  <span className="vh-list-num">1</span>
+                  <span>Phát huy sức mạnh của bộ sao {daiHanStars[0].name} đang tọa thủ.</span>
+                </div>
+                <div className="vh-list-item">
+                  <span className="vh-list-num">2</span>
+                  <span>Cẩn trọng các tác động từ cung tam hợp và xung chiếu.</span>
+                </div>
+                <div className="vh-list-item">
+                  <span className="vh-list-num">3</span>
+                  <span>Giai đoạn này cần sự kiên nhẫn và quan sát kỹ lưỡng trước khi hành động.</span>
+                </div>
+                <div className="vh-list-item">
+                  <span className="vh-list-num">4</span>
+                  <span>Tập trung vào việc bồi đắp kỹ năng cá nhân và các mối quan hệ cốt lõi.</span>
+                </div>
+                <div className="vh-list-item">
+                  <span className="vh-list-num">5</span>
+                  <span>{hasTieuHanGoodStars ? 'Vận trình có nhiều khởi sắc về tài lộc.' : 'Giữ vững tâm thế bình thản trước những biến động.'}</span>
+                </div>
+              </>
             ) : (
               [1, 2, 3, 4, 5].map((num) => (
                 <div key={num} className="vh-list-item ai-shimmer">
@@ -134,6 +172,7 @@ const VanHanSection = ({ chartData }) => {
               ))
             )}
           </div>
+
 
 
           <div className="vh-overview-tags">
