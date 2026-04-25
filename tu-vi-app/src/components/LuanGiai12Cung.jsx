@@ -6,18 +6,18 @@ import { STAR_INFO, getMainStarFromCung } from '../utils/starImages';
 const CUNG_ORDER = ['Mệnh', 'Phụ Mẫu', 'Phúc Đức', 'Điền Trạch', 'Quan Lộc', 'Nô Bộc', 'Thiên Di', 'Tật Ách', 'Tài Bạch', 'Tử Tức', 'Phu Thê', 'Huynh Đệ'];
 
 const PALACE_IMAGE_MAP = {
-  'Mệnh': '/assets/stars/Menh.png',
-  'Phụ Mẫu': '/assets/stars/PhuMau.png',
-  'Phúc Đức': '/assets/stars/PhucDuc.png',
-  'Điền Trạch': '/assets/stars/DienTrach.png',
-  'Quan Lộc': '/assets/stars/QuanLoc.png',
-  'Nô Bộc': '/assets/stars/NoBoc.png',
-  'Thiên Di': '/assets/stars/ThienDi.png',
-  'Tật Ách': '/assets/stars/TatAch.png',
-  'Tài Bạch': '/assets/stars/TaiBach.png',
-  'Tử Tức': '/assets/stars/TuTuc.png',
-  'Phu Thê': '/assets/stars/PhuThe.png',
-  'Huynh Đệ': '/assets/stars/HuynhDe.png'
+  'Mệnh': '/assets/stars/Menh.jpg',
+  'Phụ Mẫu': '/assets/stars/PhuMau.jpg',
+  'Phúc Đức': '/assets/stars/PhucDuc.jpg',
+  'Điền Trạch': '/assets/stars/DienTrach.jpg',
+  'Quan Lộc': '/assets/stars/QuanLoc.jpg',
+  'Nô Bộc': '/assets/stars/NoBoc.jpg',
+  'Thiên Di': '/assets/stars/ThienDi.jpg',
+  'Tật Ách': '/assets/stars/TatAch.jpg',
+  'Tài Bạch': '/assets/stars/TaiBach.jpg',
+  'Tử Tức': '/assets/stars/TuTuc.jpg',
+  'Phu Thê': '/assets/stars/PhuThe.jpg',
+  'Huynh Đệ': '/assets/stars/HuynhDe.jpg'
 };
 
 const CungCard = ({ cungName, cungData, onSelect, className }) => {

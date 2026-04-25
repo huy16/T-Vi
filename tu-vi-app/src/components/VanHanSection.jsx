@@ -131,7 +131,7 @@ const VanHanSection = ({ chartData }) => {
         </div>
         
         <div className="vh-overview-image-wrapper">
-           <img src="/assets/images/van-han-hien-tai.png" alt="Compass" className="vh-overview-image" />
+           <img src="/assets/images/van-han-hien-tai.jpg" alt="Compass" className="vh-overview-image" />
            <div className="vh-overview-fade"></div>
         </div>
       </div>
@@ -141,7 +141,7 @@ const VanHanSection = ({ chartData }) => {
         {/* Tiểu Hạn */}
         <div className="vh-han-card">
           <div className="vh-han-img-wrapper">
-             <img src="/assets/images/van-han-hien-tai.png" alt="Tiểu Hạn" className="vh-han-img" />
+             <img src="/assets/images/van-han-hien-tai.jpg" alt="Tiểu Hạn" className="vh-han-img" />
              <div className="vh-han-img-overlay"></div>
           </div>
           <div className="vh-han-content-inner">
@@ -186,7 +186,7 @@ const VanHanSection = ({ chartData }) => {
         {/* Đại Vận */}
         <div className="vh-han-card vh-han-card--dai">
           <div className="vh-han-img-wrapper">
-             <img src="/assets/images/dai-van.png" alt="Đại Vận" className="vh-han-img" />
+             <img src="/assets/images/dai-van.jpg" alt="Đại Vận" className="vh-han-img" />
              <div className="vh-han-img-overlay"></div>
           </div>
           <div className="vh-han-content-inner">
