@@ -43,12 +43,13 @@ const ChatBot = ({ chartData }) => {
         let errorMsg = `Lỗi hệ thống: ${err.message || "Không xác định"}`;
         
         if (err.message && (err.message.includes("API Key missing") || err.message.includes("key is missing"))) {
-          errorMsg = "Lỗi: Chưa tìm thấy Gemini API Key. Con hãy dán Key vào đây:";
+          errorMsg = "Lỗi: Chưa tìm thấy Hugging Face Token. Con hãy dán HF Token vào đây (hoặc cấu hình VITE_HF_TOKEN):";
           setShowKeyInput(true);
-        } else if (err.message && (err.message.includes("403") || err.message.includes("API key not valid") || err.message.includes("not authorized"))) {
-          errorMsg = "Lỗi: API Key của con không hợp lệ (403). Con hãy kiểm tra lại xem có copy dư khoảng trắng không nhé:";
+        } else if (err.message && (err.message.includes("403") || err.message.includes("401") || err.message.includes("not authorized"))) {
+          errorMsg = "Lỗi: HF Token không hợp lệ. Con hãy kiểm tra lại nhé:";
           setShowKeyInput(true);
-        } else if (err.message && err.message.includes("500")) {
+        }
+ else if (err.message && err.message.includes("500")) {
           errorMsg = "Lỗi: Máy chủ Google đang quá tải (500). Con đợi một chút rồi thử lại nhé.";
         } else {
           // Đối với các lỗi khác, vẫn hiện ô nhập Key để đề phòng
