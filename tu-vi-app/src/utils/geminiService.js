@@ -3,10 +3,17 @@
  */
 
 import { searchRelevantContext, formatRAGContext } from './ragService';
+import { ENV_FALLBACK } from './envFallback';
 
-let hfToken = import.meta.env.VITE_HF_TOKEN;
-// Sử dụng Mistral-7B: Nhanh, mạnh và không yêu cầu duyệt License phức tạp
+// Thử lấy token từ nhiều nguồn khác nhau
+let hfToken = import.meta.env.VITE_HF_TOKEN || ENV_FALLBACK.VITE_HF_TOKEN;
+
+// Ghi nhật ký để debug (chỉ ghi 4 ký tự đầu)
+console.log("HF Token status:", hfToken ? `Found (${hfToken.substring(0, 4)}...)` : "Not found");
+
+
 const MODEL_ID = "mistralai/Mistral-7B-Instruct-v0.2";
+
 
 export const startTuViChat = async (chartData) => {
   const greetingPrompt = `<s>[INST] Bạn là "Mệnh Thư Đại Sư". Hãy gửi lời chào ngắn gọn (tối đa 2 câu) tới người dùng tên là ${chartData.name || "con"}. Hãy xưng "Thầy" gọi "con". Chỉ ra một điểm tích cực trong lá số và hỏi con muốn hỏi về mảng nào. [/INST]`;
