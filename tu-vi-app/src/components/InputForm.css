@@ -87,7 +87,8 @@
   border: 1px solid #c4b498;
   border-radius: 2px;
   font-family: 'Be Vietnam Pro', sans-serif;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
+  font-weight: 700;
   color: #333;
   outline: none;
 }
@@ -154,7 +155,7 @@
   background: #fff;
   border: none;
   font-family: var(--font-main);
-  font-size: 0.75rem;
+  font-size: 0.8rem;
   font-weight: 700;
   color: #6d521d;
   cursor: pointer;
@@ -242,26 +243,27 @@
 .custom-dropdown { position: relative; width: 100%; }
 .dropdown-trigger {
   width: 100%;
-  padding: 0.35rem;
+  padding: 0.35rem 0.5rem;
   background: #fff;
   border: 1px solid #c4b498;
   border-radius: 2px;
   font-family: var(--font-main);
-  font-size: 0.72rem;
+  font-size: 0.8rem;
+  font-weight: 700;
   color: #333;
   text-align: left;
   cursor: pointer;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 28px;
+  height: 32px;
   overflow: hidden;
   white-space: nowrap;
 }
 
 .form-input--center {
   text-align: center;
-  height: 28px;
+  height: 32px;
   padding: 0;
   font-weight: 700;
   font-size: 0.8rem;
@@ -301,11 +303,12 @@
 }
 
 .dropdown-trigger--date {
-  padding: 0.4rem 0.2rem;
-  font-size: 0.85rem;
+  padding: 0;
+  font-size: 0.8rem;
   font-weight: 700;
   justify-content: center;
   text-align: center;
+  height: 32px;
 }
 
 .dropdown-trigger--date::after {
@@ -314,6 +317,8 @@
 
 .dropdown-menu--date .dropdown-item {
   justify-content: center;
+  padding: 0.45rem;
+  font-size: 0.8rem;
 }
 
 .zodiac-emoji {
