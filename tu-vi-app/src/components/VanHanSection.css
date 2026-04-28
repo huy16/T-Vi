@@ -223,10 +223,6 @@
   flex: 1;
 }
 
-.vh-han-card--dai {
-  border-left: 3px solid var(--accent-rose);
-}
-
 .vh-han-header {
   display: flex;
   align-items: center;
