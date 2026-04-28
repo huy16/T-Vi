@@ -98,7 +98,7 @@
 
 /* PDF Export mode — styles applied to result-page during export */
 .pdf-export-mode {
-  background: #fffcf5 !important; /* Pure solid background for print */
+  background: #ffffff !important; /* Pure solid white background for print */
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
   box-shadow: none !important;
@@ -181,10 +181,15 @@
 .pdf-export-mode .luangiai-section,
 .pdf-export-mode .vanhan-section,
 .pdf-export-mode .career-section,
+.pdf-export-mode .love-section,
 .pdf-export-mode .wealth-section,
+.pdf-export-mode .health-section,
 .pdf-export-mode .children-section,
+.pdf-export-mode .realestate-section,
 .pdf-export-mode .stages-section,
-.pdf-export-mode .monthly-section {
+.pdf-export-mode .fengshui-section,
+.pdf-export-mode .monthly-section,
+.pdf-export-mode .stars-analysis-section {
   page-break-before: always !important;
   break-before: page !important;
   margin-top: 40px !important;

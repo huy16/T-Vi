@@ -36,8 +36,8 @@ const ExportPDF = ({ chartData }) => {
       let currentY = margin;
       let currentPage = 1;
 
-      // Identify all major sections to capture
-      const sections = Array.from(resultPage.querySelectorAll('.chart-view-section, .result-section, .detail-section'));
+      // Identify all major sections to capture - Using a Set-like approach to avoid duplicates
+      const sections = Array.from(resultPage.querySelectorAll('.chart-view-section, .result-section'));
       const totalSteps = sections.length;
 
       for (let i = 0; i < sections.length; i++) {
@@ -48,29 +48,34 @@ const ExportPDF = ({ chartData }) => {
 
         // Capture section
         const canvas = await html2canvas(section, {
-          scale: 3, // Giữ nguyên scale 3 nhưng xuất PNG sẽ nét hơn nhiều
+          scale: 2, // Scale 2 is optimized for A4 print quality while keeping size low
           useCORS: true,
-          backgroundColor: '#fffcf5',
+          backgroundColor: '#ffffff',
           logging: false,
           windowWidth: 1200
         });
 
-        // Đổi từ JPEG sang PNG để tránh bị mờ (ringing artifacts) ở những nét chữ nhỏ
-        const imgData = canvas.toDataURL('image/png');
+        // Use JPEG instead of PNG to drastically reduce PDF size (90% quality)
+        const imgData = canvas.toDataURL('image/jpeg', 0.9);
         const imgWidth = canvas.width;
         const imgHeight = canvas.height;
         const ratio = contentWidth / imgWidth;
         const scaledHeight = imgHeight * ratio;
 
         // Check if section fits on current page
-        // Or if it has a forced page break class (Chapter starters)
         const hasForcedBreak = section.classList.contains('luangiai-section') || 
+                               section.classList.contains('tongquan-section') ||
                                section.classList.contains('vanhan-section') ||
                                section.classList.contains('career-section') ||
+                               section.classList.contains('love-section') ||
                                section.classList.contains('wealth-section') ||
+                               section.classList.contains('health-section') ||
                                section.classList.contains('children-section') ||
+                               section.classList.contains('realestate-section') ||
                                section.classList.contains('stages-section') ||
-                               section.classList.contains('monthly-section');
+                               section.classList.contains('fengshui-section') ||
+                               section.classList.contains('monthly-section') ||
+                               section.classList.contains('stars-analysis-section');
 
         if (currentY + scaledHeight > maxPageHeight || (hasForcedBreak && i > 0)) {
           // Add footer before moving to new page
@@ -81,9 +86,9 @@ const ExportPDF = ({ chartData }) => {
           currentY = margin;
         }
 
-        // Add image to PDF as PNG
-        pdf.addImage(imgData, 'PNG', margin, currentY, contentWidth, scaledHeight);
-        currentY += scaledHeight + 8; // Padding between sections
+        // Add image to PDF as JPEG
+        pdf.addImage(imgData, 'JPEG', margin, currentY, contentWidth, scaledHeight);
+        currentY += scaledHeight + 10;
 
         setProgress(15 + Math.round(((i + 1) / totalSteps) * 75));
       }
