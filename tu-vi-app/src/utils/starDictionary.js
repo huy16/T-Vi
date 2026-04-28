@@ -461,6 +461,21 @@ export const STAR_DICTIONARY = {
     advice: "Nên làm việc minh bạch, giữ tâm sáng.",
     warning: "Đề phòng kẻ xấu nói xấu sau lưng hoặc rắc rối khuất tất."
   },
+  "Thiên Khốc": {
+    overview: "Chủ về sự buồn phiền, tiếng vang hoặc tài năng nghệ thuật sân khấu (tiếng khóc của trời).",
+    advice: "Nên biến nỗi buồn thành động lực sáng tạo hoặc hoạt động nghệ thuật.",
+    warning: "Tránh sự u sầu quá mức ảnh hưởng đến sức khỏe."
+  },
+  "Thiên Trù": {
+    overview: "Chủ về lộc ăn uống, tài nấu nướng hoặc bổng lộc thực tế.",
+    advice: "Tốt cho việc kinh doanh ẩm thực hoặc tận hưởng các cuộc vui tiệc tùng.",
+    warning: "Tránh sự hưởng thụ quá đà mà lơ là công việc."
+  },
+  "Thiên Đức": {
+    overview: "Chủ về đức độ, sự nhân hậu và hóa giải tai ương một cách nhẹ nhàng.",
+    advice: "Hãy sống bao dung, phúc đức của con sẽ giúp vượt qua mọi trở ngại.",
+    warning: "Đừng vì có sao tốt mà chủ quan trước các rủi ro thực tế."
+  },
 
   // VÒNG TRÀNG SINH (12 giai đoạn năng lượng)
   "Tràng Sinh": {
