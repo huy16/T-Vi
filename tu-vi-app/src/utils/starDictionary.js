@@ -260,6 +260,91 @@ export const STAR_DICTIONARY = {
     overview: "Chủ về sự mơ mộng, phong lưu hoặc các vấn đề liên quan đến phù phép, thuốc men.",
     advice: "Thích hợp cho các công việc mang tính nghệ thuật, sáng tạo.",
     warning: "Cẩn thận sa đà vào tửu sắc hoặc các thú vui không lành mạnh."
+  },
+  "Tấu Thư": {
+    overview: "Chủ về sự khéo léo trong văn chương, bằng sắc và khả năng trình bày.",
+    advice: "Nên tận dụng khả năng viết lách hoặc thuyết trình.",
+    warning: "Tránh rắc rối giấy tờ."
+  },
+  "Đường Phù": {
+    overview: "Chủ về uy nghi, sự ổn định và có lộc về điền sản, nhà cửa.",
+    advice: "Tốt cho việc xây dựng cơ ngơi, làm đẹp không gian sống.",
+    warning: "Cần giữ sự chính trực."
+  },
+  "Thiên Giải": {
+    overview: "Sao hóa giải tai ương, giúp gặp dữ hóa lành một cách tự nhiên.",
+    advice: "Hãy yên tâm tiến tới, khó khăn sẽ có lối thoát.",
+    warning: "Đừng vì thế mà chủ quan."
+  },
+  "Địa Giải": {
+    overview: "Tương tự Thiên Giải, chủ về sự hóa giải rắc rối tại địa phương hoặc nơi cư trú.",
+    advice: "Nên làm việc thiện để tăng sức mạnh hóa giải.",
+    warning: "Tránh các cuộc tranh chấp không cần thiết."
+  },
+  "Long Đức": {
+    overview: "Chủ về đức độ, sự khoan hòa và may mắn nhờ phúc đức tổ tiên.",
+    advice: "Hãy sống nhân hậu, con sẽ được che chở.",
+    warning: "Tránh sự nhu nhược làm hỏng việc lớn."
+  },
+  "Nguyệt Đức": {
+    overview: "Chủ về sự thông minh, hòa nhã và được lòng người xung quanh.",
+    advice: "Phát huy khả năng ngoại giao và thái độ cầu thị.",
+    warning: "Tránh sự tự mãn."
+  },
+  "Tiểu Hao": {
+    overview: "Chủ về sự hao hụt nhỏ về tiền bạc hoặc sự thay đổi nhanh chóng.",
+    advice: "Nên chi tiêu có kế hoạch, tránh lãng phí tiền lẻ.",
+    warning: "Cẩn thận đánh rơi hoặc mất cắp vặt."
+  },
+  "Đại Hao": {
+    overview: "Chủ về sự hao tán lớn, thay đổi môi trường sống hoặc công việc.",
+    advice: "Có thể đầu tư lớn hoặc chuyển chỗ ở nếu có sao tốt đi kèm.",
+    warning: "Cẩn thận phá sản hoặc mất tiền số lượng lớn."
+  },
+  "Thiên Sứ": {
+    overview: "Chủ về sự truyền tin, rắc rối bất ngờ hoặc các vấn đề sức khỏe đột ngột.",
+    advice: "Cần chú ý chăm sóc bản thân, tránh làm việc quá sức.",
+    warning: "Đề phòng tai họa ập đến bất ngờ."
+  },
+  "Thiên Thương": {
+    overview: "Chủ về sự lo âu, buồn phiền hoặc tổn thất về tình cảm.",
+    advice: "Nên chia sẻ khó khăn với người thân thiết.",
+    warning: "Tránh dồn nén cảm xúc."
+  },
+  "Quả Tú": {
+    overview: "Chủ về sự cô đơn, kín đáo và tính cách giữ của.",
+    advice: "Nên mở lòng giao lưu nhiều hơn.",
+    warning: "Tránh sự ích kỷ hoặc sống khép kín quá mức."
+  },
+  "Cô Thần": {
+    overview: "Chủ về sự cô độc, ít người thấu hiểu nhưng giỏi làm việc độc lập.",
+    advice: "Hãy phát huy khả năng tập trung cao độ.",
+    warning: "Cần kết nối với cộng đồng để tránh trầm cảm."
+  },
+  "Văn Tinh": {
+    overview: "Chủ về tài năng văn học, sự nhạy bén và học vấn uyên bác.",
+    advice: "Nên theo đuổi các ngành nghề liên quan đến nghiên cứu, giảng dạy.",
+    warning: "Tránh sự mơ mộng thiếu thực tế."
+  },
+  "Hỷ Thần": {
+    overview: "Chủ về tin vui, sự hưng phấn và các cuộc hội họp vui vẻ.",
+    advice: "Hãy tận hưởng những giây phút hạnh phúc bên gia đình.",
+    warning: "Tránh sự vui quá đà dẫn đến thiếu kiểm soát."
+  },
+  "Phi Liêm": {
+    overview: "Chủ về sự nhanh nhẹn nhưng cũng có thể là sự rắc rối, thị phi nhỏ.",
+    advice: "Nên hành động nhanh chóng nhưng phải chính xác.",
+    warning: "Cẩn thận bị đâm sau lưng."
+  },
+  "Thanh Long": {
+    overview: "Chủ về sự may mắn, rồng xanh vẫy vùng, lợi cho công danh.",
+    advice: "Vận này rất tốt để bắt đầu những dự án lớn.",
+    warning: "Cần sự kiên trì để duy trì vinh quang."
+  },
+  "Phúc Đức": {
+    overview: "Chủ về phúc báu, sự giúp đỡ ngầm từ thần linh hoặc tổ tiên.",
+    advice: "Nên thờ cúng tổ tiên và làm việc thiện.",
+    warning: "Phúc báu cũng có lúc cạn, cần bồi đắp thường xuyên."
   }
 };
 
