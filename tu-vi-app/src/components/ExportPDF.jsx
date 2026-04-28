@@ -48,14 +48,15 @@ const ExportPDF = ({ chartData }) => {
 
         // Capture section
         const canvas = await html2canvas(section, {
-          scale: 3,
+          scale: 3, // Giữ nguyên scale 3 nhưng xuất PNG sẽ nét hơn nhiều
           useCORS: true,
           backgroundColor: '#fffcf5',
           logging: false,
           windowWidth: 1200
         });
 
-        const imgData = canvas.toDataURL('image/jpeg', 0.95);
+        // Đổi từ JPEG sang PNG để tránh bị mờ (ringing artifacts) ở những nét chữ nhỏ
+        const imgData = canvas.toDataURL('image/png');
         const imgWidth = canvas.width;
         const imgHeight = canvas.height;
         const ratio = contentWidth / imgWidth;
@@ -80,8 +81,8 @@ const ExportPDF = ({ chartData }) => {
           currentY = margin;
         }
 
-        // Add image to PDF
-        pdf.addImage(imgData, 'JPEG', margin, currentY, contentWidth, scaledHeight);
+        // Add image to PDF as PNG
+        pdf.addImage(imgData, 'PNG', margin, currentY, contentWidth, scaledHeight);
         currentY += scaledHeight + 8; // Padding between sections
 
         setProgress(15 + Math.round(((i + 1) / totalSteps) * 75));

@@ -1,4 +1,4 @@
-/* ===== DESIGN TOKENS – WARM GOLD ORIENTAL ===== */
+﻿/* ===== DESIGN TOKENS â€“ WARM GOLD ORIENTAL ===== */
 :root {
   /* Background */
   --bg-main: #f5ead6;
@@ -9,7 +9,7 @@
   --bg-accent-soft: rgba(180, 140, 60, 0.08);
   --bg-accent-medium: rgba(180, 140, 60, 0.12);
 
-  /* Accent Colors – Gold */
+  /* Accent Colors â€“ Gold */
   --accent: #a07830;
   --accent-light: #c4a050;
   --accent-dark: #7a5a20;
@@ -210,7 +210,7 @@ h6 {
   margin-bottom: 1.2rem;
   border-left: none;
   padding-left: 0;
-  text-shadow: 0 0 8px rgba(180, 140, 60, 0.15); /* Hiệu ứng tỏa sáng nhẹ */
+  text-shadow: 0 0 8px rgba(180, 140, 60, 0.15); /* Hiá»‡u á»©ng tá»a sÃ¡ng nháº¹ */
 }
 
 .hero-desc {
@@ -280,7 +280,7 @@ h6 {
 
 .btn-lap-la-so-giant::before,
 .btn-lap-la-so-giant::after {
-  content: "❖";
+  content: "â–";
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
@@ -350,7 +350,7 @@ h6 {
   flex-direction: column;
 }
 
-/* ===== HERO BADGE – GOLD THEME ===== */
+/* ===== HERO BADGE â€“ GOLD THEME ===== */
 .hero-badge {
   display: inline-flex;
   align-items: center;
@@ -567,9 +567,9 @@ h6 {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 100vh; /* Cố định chiều cao 100vh để cân giữa tuyệt đối */
+  height: 100vh; /* Cá»‘ Ä‘á»‹nh chiá»u cao 100vh Ä‘á»ƒ cÃ¢n giá»¯a tuyá»‡t Ä‘á»‘i */
   width: 100vw;
-  overflow: hidden; /* Ngăn chặn scrollbar toàn trang */
+  overflow: hidden; /* NgÄƒn cháº·n scrollbar toÃ n trang */
   position: relative;
 }
 
@@ -788,7 +788,7 @@ h6 {
   line-height: 1.5;
 }
 
-/* ===== ACTION CARDS (NÊN/CẦN TRÁNH) ===== */
+/* ===== ACTION CARDS (NÃŠN/Cáº¦N TRÃNH) ===== */
 .action-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -900,7 +900,7 @@ h6 {
   line-height: 1.5;
 }
 
-/* ===== NHẬP LẠI BUTTON ===== */
+/* ===== NHáº¬P Láº I BUTTON ===== */
 .nhap-lai-btn {
   display: inline-flex;
   align-items: center;
@@ -954,11 +954,11 @@ h6 {
 @keyframes fadeInAuth {
   from {
     opacity: 0;
-    transform: translateY(20px) scale(0.85); /* Khởi đầu hơi nhỏ hơn và thấp hơn */
+    transform: translateY(20px) scale(0.85); /* Khá»Ÿi Ä‘áº§u hÆ¡i nhá» hÆ¡n vÃ  tháº¥p hÆ¡n */
   }
   to {
     opacity: 1;
-    transform: translateY(0) scale(0.88); /* Kết thúc đúng tỷ lệ scale mong muốn */
+    transform: translateY(0) scale(0.88); /* Káº¿t thÃºc Ä‘Ãºng tá»· lá»‡ scale mong muá»‘n */
   }
 }
 
@@ -1011,39 +1011,45 @@ h6 {
 }
 
 /* ===== RESPONSIVE ===== */
-@media (max-width: 900px) {
-  .input-section {
-    grid-template-columns: 1fr; /* Switch to 1 column */
-    text-align: center;
-    gap: 2rem;
-    padding: 1.5rem;
+@media (max-width: 1024px) {
+  .results-wrapper {
+    padding: 1rem;
   }
-
-  .hero-content {
-    justify-self: center;
-    max-width: 100%;
-  }
-
-  .hero-quote {
-    border-left: none;
-    padding-left: 0;
-  }
-
-  .hero-title {
-    font-size: 2.8rem;
-  }
-
-  .form-container {
+  
+  .results-sidebar-area {
+    position: static;
     width: 100%;
-    display: flex;
+    margin-bottom: 2rem;
+    flex-direction: row;
     justify-content: center;
+    flex-wrap: wrap;
+    pointer-events: auto;
+  }
+
+  .sidebar-actions {
+    flex-direction: row;
+    width: 100%;
+    justify-content: center;
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 900px) {
+  .hero-title-merged {
+    font-size: 1.8rem;
+  }
+
+  .result-page {
+    padding: 1.5rem 1rem 2rem;
+    border-radius: 20px;
+    margin: 1rem auto;
   }
 }
 
 @media (max-width: 768px) {
-
   .summary-cards,
-  .grid-3 {
+  .grid-3,
+  .grid-4 {
     grid-template-columns: 1fr;
   }
 
@@ -1057,6 +1063,41 @@ h6 {
   }
 
   .result-section {
-    padding: 0 1rem;
+    padding: 0 0.5rem;
+  }
+
+  .home-header-title {
+    font-size: 1.2rem;
+  }
+
+  .btn-lap-la-so-giant {
+    padding: 0.5rem 2rem;
+    font-size: 1.1rem;
+  }
+
+  .auth-merged-card {
+    grid-template-columns: 1fr;
+    height: auto;
+    max-height: 90vh;
+    overflow-y: auto;
+    transform: scale(1);
+    margin: 1rem;
+  }
+
+  .auth-merged-card .hero-content {
+    padding: 1.5rem;
+    border-right: none;
+    border-bottom: 1px solid rgba(160, 120, 48, 0.1);
+  }
+
+  .feature-highlights {
+    display: none;
+  }
+
+  .auth-page-container {
+    height: auto;
+    min-height: 100vh;
+    overflow-y: auto;
+    padding: 2rem 0;
   }
 }

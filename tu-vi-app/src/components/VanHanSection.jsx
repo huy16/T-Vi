@@ -53,11 +53,11 @@ const VanHanSection = ({ chartData }) => {
     ...(daiHanCung?.saoXau || [])
   ];
 
-  console.log("Debug - Dai Han Cung:", daiHanCungName);
-  console.log("Debug - Stars found:", allDaiHanStars);
-
   const tieuHanCungName = tieuHanCung?.tenCung?.split(' /')[0]?.split(' <')[0]?.trim() || 'Chưa xác định';
   const daiHanCungName = daiHanCung?.tenCung?.split(' /')[0]?.split(' <')[0]?.trim() || 'Chưa xác định';
+
+  console.log("Debug - Dai Han Cung:", daiHanCungName);
+  console.log("Debug - Stars found:", allDaiHanStars);
 
 
   // Simple analysis based on stars

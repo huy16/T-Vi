@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import './TuViChart.css';
 import { SAO_NGU_HANH, HANH_TO_COLOR_CLASS, CHI_NGU_HANH, LEGEND_DATA } from '../utils/tuviEngine';
 import { STAR_DICTIONARY } from '../utils/starDictionary';
@@ -196,11 +196,21 @@ const TuViChart = ({ chartData, selectedChi, onCungSelect }) => {
   if (!chartData) return null;
   const { board, userInfo } = chartData;
 
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth <= 768);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   const handleCungClick = (cungData) => {
     if (onCungSelect && cungData) {
       onCungSelect(cungData.chi);
     }
   };
+
+  const selectedCungData = selectedChi ? board[selectedChi] : null;
 
   const getCenterCoord = (chi) => {
     // Clockwise ring starting from Tỵ at Top-Left (0,0) - CLASSIC LAYOUT
@@ -300,38 +310,76 @@ const TuViChart = ({ chartData, selectedChi, onCungSelect }) => {
          </div>
        </div>
 
-       <div className="tu-vi-grid">
-          {renderSVGOverlay()}
-          
-          {markers.map((m, i) => (
-            <div key={i} className={`boundary-marker ${m.orientation}`} style={m.style}>
-              {m.type}
+        <div className="tu-vi-grid-wrapper">
+           <div className="tu-vi-grid">
+              {renderSVGOverlay()}
+              
+              {markers.map((m, i) => (
+                <div key={i} className={`boundary-marker ${m.orientation}`} style={m.style}>
+                  {m.type}
+                </div>
+              ))}
+    
+              {/* Hàng trên cùng: Tỵ, Ngọ, Mùi, Thân */}
+              <Cung data={board['Tỵ']} onClick={handleCungClick} isActive={selectedChi === 'Tỵ'} />
+              <Cung data={board['Ngọ']} onClick={handleCungClick} isActive={selectedChi === 'Ngọ'} />
+              <Cung data={board['Mùi']} onClick={handleCungClick} isActive={selectedChi === 'Mùi'} />
+              <Cung data={board['Thân']} onClick={handleCungClick} isActive={selectedChi === 'Thân'} />
+    
+              {/* Cột trái và phải - Hàng 2 */}
+              <Cung data={board['Thìn']} onClick={handleCungClick} isActive={selectedChi === 'Thìn'} />
+              <div className="thien-ban-wrapper">
+                <Cung isCenter={true} data={userInfo} />
+              </div>
+              <Cung data={board['Dậu']} onClick={handleCungClick} isActive={selectedChi === 'Dậu'} />
+    
+              {/* Cột trái và phải - Hàng 3 */}
+              <Cung data={board['Mão']} onClick={handleCungClick} isActive={selectedChi === 'Mão'} />
+              <Cung data={board['Tuất']} onClick={handleCungClick} isActive={selectedChi === 'Tuất'} />
+    
+              {/* Hàng dưới cùng */}
+              <Cung data={board['Dần']} onClick={handleCungClick} isActive={selectedChi === 'Dần'} />
+              <Cung data={board['Sửu']} onClick={handleCungClick} isActive={selectedChi === 'Sửu'} />
+              <Cung data={board['Tý']} onClick={handleCungClick} isActive={selectedChi === 'Tý'} />
+              <Cung data={board['Hợi']} onClick={handleCungClick} isActive={selectedChi === 'Hợi'} />
+           </div>
+           {isMobile && <div className="mobile-scroll-hint">Vuốt ngang để xem hết lá số ➜</div>}
+        </div>
+
+        {/* Palace Detail for Mobile */}
+        {isMobile && selectedCungData && (
+          <div className="mobile-cung-detail animate-slide-up">
+            <div className="detail-header">
+              <h3>CHI TIẾT CUNG {selectedCungData.tenCung.split(' /')[0].toUpperCase()}</h3>
+              <button className="btn-close-detail" onClick={() => onCungSelect(null)}>✕</button>
             </div>
-          ))}
-
-          {/* Hàng trên cùng: Tỵ, Ngọ, Mùi, Thân */}
-          <Cung data={board['Tỵ']} onClick={handleCungClick} isActive={selectedChi === 'Tỵ'} />
-          <Cung data={board['Ngọ']} onClick={handleCungClick} isActive={selectedChi === 'Ngọ'} />
-          <Cung data={board['Mùi']} onClick={handleCungClick} isActive={selectedChi === 'Mùi'} />
-          <Cung data={board['Thân']} onClick={handleCungClick} isActive={selectedChi === 'Thân'} />
-
-          {/* Cột trái và phải - Hàng 2 */}
-          <Cung data={board['Thìn']} onClick={handleCungClick} isActive={selectedChi === 'Thìn'} />
-          <div className="thien-ban-wrapper">
-            <Cung isCenter={true} data={userInfo} />
+            <div className="detail-content">
+              <div className="detail-stars-section">
+                <h4>Chính Tinh</h4>
+                <div className="detail-stars-grid">
+                  {selectedCungData.saoChinh.length > 0 ? 
+                    selectedCungData.saoChinh.map((s, i) => <StarItem key={i} name={s} type="main-star" />) : 
+                    <span className="vo-chinh-dieu">Vô chính diệu</span>
+                  }
+                </div>
+              </div>
+              <div className="detail-stars-row">
+                <div className="detail-stars-section">
+                  <h4>Cát Tinh</h4>
+                  <div className="detail-stars-list">
+                    {selectedCungData.saoTot.map((s, i) => <StarItem key={i} name={s} type="good-star" />)}
+                  </div>
+                </div>
+                <div className="detail-stars-section">
+                  <h4>Hung Tinh</h4>
+                  <div className="detail-stars-list">
+                    {selectedCungData.saoXau.map((s, i) => <StarItem key={i} name={s} type="bad-star" />)}
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-          <Cung data={board['Dậu']} onClick={handleCungClick} isActive={selectedChi === 'Dậu'} />
-
-          {/* Cột trái và phải - Hàng 3 */}
-          <Cung data={board['Mão']} onClick={handleCungClick} isActive={selectedChi === 'Mão'} />
-          <Cung data={board['Tuất']} onClick={handleCungClick} isActive={selectedChi === 'Tuất'} />
-
-          {/* Hàng dưới cùng */}
-          <Cung data={board['Dần']} onClick={handleCungClick} isActive={selectedChi === 'Dần'} />
-          <Cung data={board['Sửu']} onClick={handleCungClick} isActive={selectedChi === 'Sửu'} />
-          <Cung data={board['Tý']} onClick={handleCungClick} isActive={selectedChi === 'Tý'} />
-          <Cung data={board['Hợi']} onClick={handleCungClick} isActive={selectedChi === 'Hợi'} />
-       </div>
+        )}
 
        {/* Legend Section */}
        <div className="chart-legend">
