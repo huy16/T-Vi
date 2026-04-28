@@ -460,6 +460,85 @@ export const STAR_DICTIONARY = {
     overview: "Chủ về sự ám hại ngầm, tiểu nhân đố kỵ hoặc các vấn đề liên quan đến tâm linh.",
     advice: "Nên làm việc minh bạch, giữ tâm sáng.",
     warning: "Đề phòng kẻ xấu nói xấu sau lưng hoặc rắc rối khuất tất."
+  },
+
+  // VÒNG TRÀNG SINH (12 giai đoạn năng lượng)
+  "Tràng Sinh": {
+    overview: "Giai đoạn khởi đầu, như đứa trẻ mới sinh, tràn đầy sức sống và tiềm năng.",
+    advice: "Nên bắt đầu các kế hoạch mới, phát huy năng lực nội tại.",
+    warning: "Tránh sự non nớt, thiếu kinh nghiệm."
+  },
+  "Mộc Dục": {
+    overview: "Giai đoạn tắm rửa, thay đổi, chủ về sự phù phiếm hoặc rắc rối tình cảm.",
+    advice: "Cần giữ mình trong sạch, tránh xa các cám dỗ bề ngoài.",
+    warning: "Đề phòng thị phi liên quan đến thói hư tật xấu."
+  },
+  "Quan Đới": {
+    overview: "Giai đoạn trưởng thành, bắt đầu gánh vác trách nhiệm và có vị thế.",
+    advice: "Hãy tự tin đảm đương các trọng trách lớn.",
+    warning: "Tránh sự hống hách, cậy quyền."
+  },
+  "Lâm Quan": {
+    overview: "Giai đoạn thịnh vượng, công việc đã vào guồng và có thu nhập ổn định.",
+    advice: "Nên duy trì phong độ và mở rộng quy mô bền vững.",
+    warning: "Đừng quá tự tin vào thành công hiện tại."
+  },
+  "Đế Vượng": {
+    overview: "Giai đoạn đỉnh cao của sức mạnh và quyền lực.",
+    advice: "Đây là lúc con có tầm ảnh hưởng lớn nhất, hãy dùng quyền lực vào việc tốt.",
+    warning: "Vật cực tất phản, đỉnh cao thường đi kèm với sự suy thoái sau đó."
+  },
+  "Suy": {
+    overview: "Giai đoạn năng lượng bắt đầu giảm sút, cần sự nghỉ ngơi và cẩn trọng.",
+    advice: "Nên lùi về phía sau, làm công tác tư vấn hoặc hậu cần.",
+    warning: "Tránh các hoạt động tốn nhiều sức lực."
+  },
+  "Bệnh": {
+    overview: "Giai đoạn suy yếu, chủ về sự mệt mỏi, thiếu hụt sinh khí.",
+    advice: "Cần chú trọng chăm sóc sức khỏe và tinh thần.",
+    warning: "Hạn chế làm việc quá sức."
+  },
+  "Tử": {
+    overview: "Giai đoạn bế tắc, năng lượng cạn kiệt nhưng cũng là lúc chuẩn bị cho sự chuyển hóa.",
+    advice: "Nên giữ sự tĩnh lặng, nghiên cứu chuyên sâu.",
+    warning: "Tránh các hành động vùng vẫy vô ích."
+  },
+  "Mộ": {
+    overview: "Giai đoạn tích lũy, cất giữ (như kho tàng) nhưng cũng có nghĩa là u tối.",
+    advice: "Tốt cho việc giữ của, tích lũy tài sản.",
+    warning: "Tránh sự bảo thủ, chậm chạp."
+  },
+  "Tuyệt": {
+    overview: "Giai đoạn năng lượng ở mức thấp nhất, đoạn tuyệt với cái cũ để chờ đợi cái mới.",
+    advice: "Nên chấp nhận buông bỏ những thứ không còn phù hợp.",
+    warning: "Đề phòng sự cô độc, tuyệt vọng."
+  },
+  "Thai": {
+    overview: "Giai đoạn mầm mống, bắt đầu hình thành ý tưởng và hy vọng mới.",
+    advice: "Hãy nuôi dưỡng những kế hoạch nhỏ từ bây giờ.",
+    warning: "Cần sự bảo vệ, che chở cẩn thận."
+  },
+  "Dưỡng": {
+    overview: "Giai đoạn bồi dưỡng, tích lũy nội lực để chờ ngày bứt phá.",
+    advice: "Hãy kiên nhẫn học tập và rèn luyện.",
+    warning: "Tránh sự nóng vội muốn có kết quả ngay."
+  },
+
+  // THUẬT NGỮ KỸ THUẬT
+  "Đại Vận": {
+    overview: "Giai đoạn 10 năm của cuộc đời, cho biết xu hướng lớn của vận mệnh trong thời gian đó.",
+    advice: "Nên lập kế hoạch dài hạn dựa trên đặc điểm của cung Đại Vận.",
+    warning: "Cần chú ý sự thay đổi đột ngột khi chuyển giao giữa các đại vận."
+  },
+  "Lưu Niên": {
+    overview: "Vị trí cung chịu tác động chính của năm đang xem hiện tại.",
+    advice: "Tập trung giải quyết các vấn đề liên quan đến tên cung của Lưu Niên.",
+    warning: "Tác động của Lưu Niên thường diễn ra nhanh trong vòng một năm."
+  },
+  "Tiểu Hạn": {
+    overview: "Vận hạn chi tiết theo từng năm dựa trên tuổi của đương số.",
+    advice: "Kết hợp với Lưu Niên để có cái nhìn chính xác về năm nay.",
+    warning: "Cẩn thận các rắc rối nhỏ phát sinh thường xuyên."
   }
 };
 
