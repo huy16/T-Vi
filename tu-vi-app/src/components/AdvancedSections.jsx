@@ -356,21 +356,18 @@ export const VanTrinh12ThangSection = ({ chartData }) => {
               <div style={{ fontSize: '0.7rem', fontWeight: 600, color: 'var(--accent)', marginBottom: '0.5rem' }}>
                 Cung {chi}
               </div>
-              <p className="vt-month-desc">
+              <p className="vt-month-desc" style={{ fontSize: '0.82rem', lineHeight: '1.6' }}>
+                <strong style={{ color: 'var(--text-main)', display: 'block', marginBottom: '4px' }}>
+                  Hạn tại cung {cung.tenCung.split(' /')[0].split(' <')[0]} ({chi})
+                </strong>
                 {rating === 'Đại cát' ? (
-                  idx % 3 === 0 ? 'Cơ hội hanh thông, mọi việc như ý, có quý nhân phù trợ nhiệt tình.' :
-                  idx % 3 === 1 ? 'Vận khí rực rỡ, tài lộc dồi dào, các kế hoạch lớn nên triển khai ngay.' :
-                  'Thời điểm vàng để bứt phá, sức sáng tạo cao, nhận được sự tín nhiệm lớn.'
+                  <>Tháng này hội tụ nhiều cát tinh như {stars || 'các bộ sao tốt'}, mang lại cơ hội hanh thông, mọi việc như ý và có quý nhân phù trợ nhiệt tình.</>
                 ) : rating === 'Bình an' ? (
-                  idx % 2 === 0 ? 'Vận trình tương đối ổn định, vạn sự bình hòa, nên giữ vững nhịp độ hiện tại.' :
-                  'Nhịp sống nhẹ nhàng, thích hợp cho việc học tập, nghiên cứu và bồi đắp nội lực.'
+                  <>Vận trình tại cung {cung.tenCung.split(' /')[0].split(' <')[0]} tương đối ổn định, vạn sự bình hòa. Đây là lúc thích hợp để duy trì nhịp độ và bồi đắp nội lực.</>
                 ) : rating === 'Tiểu hung' ? (
-                  idx % 3 === 0 ? 'Dễ gặp chuyện thị phi hoặc hao tán tài lộc nhỏ. Cần cẩn trọng trong lời nói.' :
-                  idx % 3 === 1 ? 'Sức khỏe cần được lưu tâm, tránh làm việc quá sức hay lo âu thái quá.' :
-                  'Các mối quan hệ xã giao có dấu hiệu rạn nứt nhẹ, nên nhường nhịn để giữ hòa khí.'
+                  <>Cung hạn xuất hiện một số sát tinh, dễ gặp chuyện thị phi hoặc hao tán tài lộc nhỏ. Cần cẩn trọng trong lời nói và sức khỏe.</>
                 ) : (
-                  idx % 2 === 0 ? 'Vận trình nhiều trắc trở, áp lực lớn, cần kiên trì phòng thủ và tránh đầu tư.' :
-                  'Cần đề phòng các biến cố bất ngờ, nên tĩnh tâm và chờ đợi thời cơ thuận lợi hơn.'
+                  <>Vận trình nhiều trắc trở do các bộ sao xấu xung chiếu. Cần kiên trì phòng thủ, tránh các quyết định đầu tư mạo hiểm trong tháng này.</>
                 )}
               </p>
               <div className="vt-month-footer">
