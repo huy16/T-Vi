@@ -348,7 +348,6 @@ export const lapLaSo = (userInfo) => {
 
   // 3.1 Tính Tiểu Hạn và Nguyệt Hạn
   const { chiIndex: birthChiIndex } = getCanChiYearIndex(year);
-  const namXem = userInfo.namXem || 2026;
   const tuoiTa = namXem - year + 1;
   const isNam = gender === "Nam";
 
