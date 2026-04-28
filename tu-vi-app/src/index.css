@@ -1,4 +1,4 @@
-﻿/* ===== DESIGN TOKENS â€“ WARM GOLD ORIENTAL ===== */
+/* ===== DESIGN TOKENS – WARM GOLD ORIENTAL ===== */
 :root {
   /* Background */
   --bg-main: #f5ead6;
@@ -9,7 +9,7 @@
   --bg-accent-soft: rgba(180, 140, 60, 0.08);
   --bg-accent-medium: rgba(180, 140, 60, 0.12);
 
-  /* Accent Colors â€“ Gold */
+  /* Accent Colors – Gold */
   --accent: #a07830;
   --accent-light: #c4a050;
   --accent-dark: #7a5a20;
@@ -210,7 +210,7 @@ h6 {
   margin-bottom: 1.2rem;
   border-left: none;
   padding-left: 0;
-  text-shadow: 0 0 8px rgba(180, 140, 60, 0.15); /* Hiá»‡u á»©ng tá»a sÃ¡ng nháº¹ */
+  text-shadow: 0 0 8px rgba(180, 140, 60, 0.15); /* Hiệu ứng tỏa sáng nhẹ */
 }
 
 .hero-desc {
@@ -280,7 +280,7 @@ h6 {
 
 .btn-lap-la-so-giant::before,
 .btn-lap-la-so-giant::after {
-  content: "â–";
+  content: "\2756";
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
@@ -350,7 +350,7 @@ h6 {
   flex-direction: column;
 }
 
-/* ===== HERO BADGE â€“ GOLD THEME ===== */
+/* ===== HERO BADGE – GOLD THEME ===== */
 .hero-badge {
   display: inline-flex;
   align-items: center;
