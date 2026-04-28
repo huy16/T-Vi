@@ -256,13 +256,6 @@
 .dai-han { font-weight: 800; font-size: 0.82rem; color: var(--text-heading); }
 .tieu-han { font-size: 0.72rem; color: var(--text-muted); }
 
-.palace-brightness-label {
-  font-size: 0.65rem;
-  font-weight: 900;
-  letter-spacing: 0.5px;
-  margin-bottom: 2px;
-}
-
 /* ===== CUNG BODY ===== */
 .cung-body {
   flex: 1;

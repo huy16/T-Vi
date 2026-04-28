@@ -189,19 +189,6 @@ const Cung = ({ isCenter, data, onClick, isActive }) => {
           {isThan && <span className="than-note">&lt;THÂN&gt;</span>}
         </div>
         <div className="cung-header-right">
-          {data.palaceBrightness && (
-            <div className={`palace-brightness-label ${
-              data.palaceBrightness === 'M' ? 'mieu' : 
-              data.palaceBrightness === 'V' ? 'vuong' : 
-              data.palaceBrightness === 'Đ' ? 'dac' : 
-              data.palaceBrightness === 'H' ? 'ham' : 'binh'
-            }`}>
-              {data.palaceBrightness === 'M' ? 'MIẾU' : 
-               data.palaceBrightness === 'V' ? 'VƯỢNG' : 
-               data.palaceBrightness === 'Đ' ? 'ĐẮC' : 
-               data.palaceBrightness === 'H' ? 'HÃM' : 'BÌNH'}
-            </div>
-          )}
           <span className="dai-han">{data.daiHan}</span>
           <span className="tieu-han">{data.tieuHan}</span>
         </div>

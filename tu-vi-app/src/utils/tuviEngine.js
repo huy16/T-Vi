@@ -848,18 +848,6 @@ export const lapLaSo = (userInfo) => {
     }
   }
 
-  // 17. PALACE BRIGHTNESS - Trích xuất độ sáng chính tinh để hiện nhãn góc cung
-  for (const chi of CHI_ARRAY) {
-    const cung = board[chi];
-    if (cung.saoChinh.length > 0) {
-      const firstStar = cung.saoChinh[0];
-      const match = firstStar.match(/\s\(([MVĐHB])\)$/);
-      if (match) {
-        cung.palaceBrightness = match[1];
-      }
-    }
-  }
-
   return {
     board,
     userInfo,
