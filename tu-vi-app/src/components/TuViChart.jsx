@@ -66,6 +66,46 @@ const StarItem = ({ name, type }) => {
   );
 };
 
+const TooltipLabel = ({ text, className }) => {
+  const [tooltipPos, setTooltipPos] = useState({ x: 0, y: 0 });
+  const [showTooltip, setShowTooltip] = useState(false);
+
+  const cleanName = text.replace(/^(ĐV\.|LN\.)/, '').trim();
+  const meaning = STAR_DICTIONARY[cleanName] || (text.startsWith('ĐV.') ? STAR_DICTIONARY['Đại Vận'] : (text.startsWith('LN.') ? STAR_DICTIONARY['Lưu Niên'] : null));
+
+  const handleMouseEnter = useCallback((e) => {
+    setTooltipPos({ x: e.clientX, y: e.clientY });
+    setShowTooltip(true);
+  }, []);
+
+  const handleMouseMove = useCallback((e) => {
+    setTooltipPos({ x: e.clientX, y: e.clientY });
+  }, []);
+
+  const handleMouseLeave = useCallback(() => {
+    setShowTooltip(false);
+  }, []);
+
+  return (
+    <div 
+      className={`tooltip-label-wrapper ${className || ''}`}
+      onMouseEnter={meaning ? handleMouseEnter : undefined}
+      onMouseMove={meaning ? handleMouseMove : undefined}
+      onMouseLeave={meaning ? handleMouseLeave : undefined}
+    >
+      <span className="tooltip-label-text">{text}</span>
+      {meaning && showTooltip && (
+        <span 
+          className="star-tooltip star-tooltip--visible" 
+          style={{ left: tooltipPos.x + 12, top: tooltipPos.y - 10 }}
+        >
+          <strong>{cleanName}:</strong> {meaning.overview}
+        </span>
+      )}
+    </div>
+  );
+};
+
 const Cung = ({ isCenter, data, onClick, isActive }) => {
   if (isCenter) {
     const solarDate = data ? `${String(data.solarDay || data.day).padStart(2, '0')}/${String(data.solarMonth || data.month).padStart(2, '0')}/${data.solarYear || data.year}` : '';
@@ -98,9 +138,9 @@ const Cung = ({ isCenter, data, onClick, isActive }) => {
             <div className="thien-ban-info">
               <table className="info-table">
                 <tbody>
-                  <tr><td className="label">Mệnh:</td><td className="value"><strong>{data.banMenhFull?.split(' - ')[0]}</strong></td></tr>
-                  <tr><td className="label">Cục:</td><td className="value">{data.cucName}</td></tr>
-                  <tr><td className="label">Âm Dương:</td><td className="value">{data.amDuong} — {data.amDuong?.includes('Dương') ? 'năng lượng thuận chiều, phát triển tự nhiên theo đà.' : 'năng lượng nghịch chiều, cần chủ động tạo cơ hội.'}</td></tr>
+                  <tr><td className="label">Bản Mệnh:</td><td className="value"><strong>{data.banMenhFull?.split(' - ')[0]}</strong></td></tr>
+                  <tr><td className="label">Cục:</td><td className="value"><strong>{data.cucName}</strong></td></tr>
+                  <tr><td className="label">Âm Dương:</td><td className="value">{data.amDuong}</td></tr>
                   <tr><td className="label">Chủ Mệnh:</td><td className="value">{data.chuMenh}</td></tr>
                   <tr><td className="label">Chủ Thân:</td><td className="value">{data.chuThan}</td></tr>
                 </tbody>
@@ -168,14 +208,14 @@ const Cung = ({ isCenter, data, onClick, isActive }) => {
       <div className="cung-footer">
         <div className="footer-left">
            <span className="dv-label">ĐV.</span>
-           <span className="dv-val">{data.daiVanName.replace('ĐV.', '')}</span>
+           <TooltipLabel text={data.daiVanName} className="dv-val" />
         </div>
         <div className="footer-center">
-          <span className="trang-sinh">{data.trangSinh}</span>
+          <TooltipLabel text={data.trangSinh} className="trang-sinh" />
         </div>
         <div className="footer-right">
           <span className="ln-label">LN.</span>
-          <span className="ln-val">{data.luuNien.replace('LN.', '')}</span>
+          <TooltipLabel text={data.luuNien} className="ln-val" />
         </div>
       </div>
     </div>

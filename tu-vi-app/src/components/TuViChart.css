@@ -607,6 +607,15 @@
     border-radius: var(--radius-md);
   }
 
+  .tooltip-label-wrapper {
+    display: inline-block;
+    cursor: help;
+  }
+
+  .tooltip-label-text {
+    border-bottom: 1px dotted var(--accent-light);
+  }
+
   .detail-explanations-section {
     margin-top: 2rem;
     padding-top: 1.5rem;
