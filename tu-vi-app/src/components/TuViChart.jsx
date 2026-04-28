@@ -12,7 +12,8 @@ const StarItem = ({ name, type }) => {
   const [showTooltip, setShowTooltip] = useState(false);
 
   const brightnessMatch = name.match(/\s\(([MVĐHB])\)$/);
-  const cleanName = name.replace(/\s\(([MVĐHB])\)$/, '').replace(/^L\./, '');
+  // Loại bỏ tất cả tiền tố "L." (Lưu niên) để tra cứu tên gốc trong từ điển
+  const cleanName = name.replace(/\s\(([MVĐHB])\)$/, '').replace(/^(L\.)+/, '');
   const isLuu = name.startsWith('L.');
 
   if (brightnessMatch) {
@@ -107,10 +108,10 @@ const Cung = ({ isCenter, data, onClick, isActive }) => {
             </div>
 
             <div className="center-tuHoa-tags">
-              <span className="center-tuHoa-tag">H. Lộc: {data.chuMenh || 'Tử Vi'}</span>
-              <span className="center-tuHoa-tag">H.Quyền: Tài Bạch</span>
-              <span className="center-tuHoa-tag">H.Khoa: {data.chuThan || 'Văn Xương'}</span>
-              <span className="center-tuHoa-tag">H.Kỵ: Tật Ách</span>
+              <span className="center-tuHoa-tag">H. Lộc: {data.tuHoaCungs?.Loc || '...'}</span>
+              <span className="center-tuHoa-tag">H.Quyền: {data.tuHoaCungs?.Quyen || '...'}</span>
+              <span className="center-tuHoa-tag">H.Khoa: {data.tuHoaCungs?.Khoa || '...'}</span>
+              <span className="center-tuHoa-tag">H.Kỵ: {data.tuHoaCungs?.Ky || '...'}</span>
             </div>
           </>
         )}

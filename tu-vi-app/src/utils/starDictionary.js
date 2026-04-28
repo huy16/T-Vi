@@ -181,6 +181,85 @@ export const STAR_DICTIONARY = {
     overview: "Chủ về tin vui, hỷ sự và sự may mắn trong tình duyên.",
     advice: "Đây là thời điểm tốt cho các vấn đề hôn nhân, gia đạo.",
     warning: "Hạn chế sự mơ mộng quá mức dẫn đến thất vọng."
+  },
+
+  // VÒNG THÁI TUẾ
+  "Thái Tuế": {
+    overview: "Chủ về sự quan tâm, trách nhiệm và đôi khi là thị phi, kiện tụng.",
+    advice: "Nên làm việc minh bạch, giữ gìn uy tín cá nhân.",
+    warning: "Tránh các cuộc tranh cãi vô bổ."
+  },
+  "Tang Môn": {
+    overview: "Chủ về sự lo âu, tang chế hoặc những nỗi buồn thầm kín.",
+    advice: "Cần giữ tinh thần lạc quan, chăm sóc sức khỏe người thân.",
+    warning: "Đề phòng các chuyện buồn phiền ập đến bất ngờ."
+  },
+  "Bạch Hổ": {
+    overview: "Chủ về sự mạnh mẽ, hình thương hoặc các vấn đề liên quan đến máu huyết, pháp luật.",
+    advice: "Nên hành động quyết đoán nhưng phải thượng tôn pháp luật.",
+    warning: "Cẩn thận va chạm hoặc các bệnh về máu."
+  },
+  "Điếu Khách": {
+    overview: "Chủ về sự ham chơi, giao du hoặc rắc rối do lời nói, cờ bạc.",
+    advice: "Nên hạn chế các cuộc vui không cần thiết.",
+    warning: "Cẩn thận mất tiền hoặc tai tiếng do ăn nói."
+  },
+
+  // VÒNG LỘC TỒN & PHỤ TINH KHÁC
+  "Phục Binh": {
+    overview: "Chủ về sự phục kích, ám hại ngầm hoặc tiểu nhân quấy phá.",
+    advice: "Nên đề cao cảnh giác, không nên quá tin cẩn người mới quen.",
+    warning: "Cẩn thận bị mất trộm hoặc bị nói xấu sau lưng."
+  },
+  "Tướng Quân": {
+    overview: "Chủ về uy phong, sự lẫm liệt và đôi khi là sự kiêu ngạo.",
+    advice: "Hãy giữ tác phong chuyên nghiệp, quyết đoán.",
+    warning: "Tránh sự nóng nảy, áp đặt người khác."
+  },
+  "Giải Thần": {
+    overview: "Sao hóa giải, chủ về sự may mắn, gặp dữ hóa lành.",
+    advice: "Cứ yên tâm hành động, mọi việc khó khăn sẽ có cách giải quyết.",
+    warning: "Đừng vì có sao giải mà chủ quan làm liều."
+  },
+  "Phượng Các": {
+    overview: "Chủ về sự sang trọng, nhà cửa đẹp đẽ và cốt cách cao sang.",
+    advice: "Tốt cho việc mua sắm nhà cửa, trang trí không gian sống.",
+    warning: "Tránh sự xa hoa lãng phí không cần thiết."
+  },
+  "Long Trì": {
+    overview: "Tương tự Phượng Các, chủ về sự quý phái và may mắn trong khoa bảng, thi cử.",
+    advice: "Nên đầu tư vào tri thức và ngoại hình.",
+    warning: "Cẩn thận sự kiêu kỳ làm mất lòng bạn bè."
+  },
+  "Tam Thai": {
+    overview: "Chủ về sự thăng tiến, giúp cho vị thế trở nên vững chắc hơn.",
+    advice: "Nên tận dụng sự ủng hộ của cấp trên.",
+    warning: "Cần nỗ lực tự thân, đừng chỉ trông chờ vào bệ phóng."
+  },
+  "Bát Tọa": {
+    overview: "Đồng bộ với Tam Thai, chủ về sự ổn định và vị trí cao trong xã hội.",
+    advice: "Hãy duy trì phong độ và trách nhiệm với công việc.",
+    warning: "Tránh sự lười biếng khi đã đạt được mục tiêu."
+  },
+  "Thiên Phúc": {
+    overview: "Chủ về phúc lành, sự may mắn do âm đức hoặc lòng tốt mang lại.",
+    advice: "Hãy tiếp tục gieo nhân lành, quả ngọt sẽ tới.",
+    warning: "Phúc báu cần tích lũy, đừng tiêu xài hoang phí."
+  },
+  "Thiên Quan": {
+    overview: "Chủ về sự thanh cao, giúp đỡ từ quý nhân trong công việc.",
+    advice: "Nên làm việc có đạo đức, sẽ có người nâng đỡ.",
+    warning: "Tránh các hành vi gian dối, trục lợi."
+  },
+  "Thiên Hình": {
+    overview: "Chủ về pháp luật, sự cô khắc hoặc các vấn đề liên quan đến mổ xẻ, hình thương.",
+    advice: "Nên làm việc đúng pháp luật, giữ kỷ luật cao.",
+    warning: "Cẩn thận dao kéo hoặc rắc rối kiện tụng."
+  },
+  "Thiên Riêu": {
+    overview: "Chủ về sự mơ mộng, phong lưu hoặc các vấn đề liên quan đến phù phép, thuốc men.",
+    advice: "Thích hợp cho các công việc mang tính nghệ thuật, sáng tạo.",
+    warning: "Cẩn thận sa đà vào tửu sắc hoặc các thú vui không lành mạnh."
   }
 };
 
