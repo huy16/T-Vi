@@ -348,6 +348,7 @@ export const lapLaSo = (userInfo) => {
 
   // 3.1 Tính Tiểu Hạn và Nguyệt Hạn
   const { chiIndex: birthChiIndex } = getCanChiYearIndex(year);
+  const namXem = userInfo.namXem || 2026;
   const tuoiTa = namXem - year + 1;
   const isNam = gender === "Nam";
 
@@ -843,6 +844,18 @@ export const lapLaSo = (userInfo) => {
         if (h === 3) userInfo.tuHoaCungs.Ky = displayCungName;
         
         found = true;
+      }
+    }
+  }
+
+  // 17. PALACE BRIGHTNESS - Trích xuất độ sáng chính tinh để hiện nhãn góc cung
+  for (const chi of CHI_ARRAY) {
+    const cung = board[chi];
+    if (cung.saoChinh.length > 0) {
+      const firstStar = cung.saoChinh[0];
+      const match = firstStar.match(/\s\(([MVĐHB])\)$/);
+      if (match) {
+        cung.palaceBrightness = match[1];
       }
     }
   }

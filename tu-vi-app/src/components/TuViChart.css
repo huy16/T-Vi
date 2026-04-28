@@ -102,41 +102,6 @@
 .active-cung {
   background: rgba(196, 131, 108, 0.06) !important;
   box-shadow: inset 0 0 15px rgba(196, 131, 108, 0.12);
-  border: 1px solid var(--accent) !important;
-  z-index: 5;
-}
-
-/* ===== SPECIAL STATES FOR CUNG (MIEU/VUONG) ===== */
-.cung-mieu {
-  background: linear-gradient(135deg, #fffcf5 0%, rgba(192, 57, 43, 0.04) 100%) !important;
-}
-
-.cung-mieu::after {
-  content: 'MIẾU';
-  position: absolute;
-  top: 4px;
-  right: 15px;
-  font-size: 0.55rem;
-  font-weight: 800;
-  color: #c0392b;
-  opacity: 0.3;
-  letter-spacing: 1px;
-}
-
-.cung-vuong {
-  background: linear-gradient(135deg, #fffcf5 0%, rgba(212, 84, 30, 0.04) 100%) !important;
-}
-
-.cung-vuong::after {
-  content: 'VƯỢNG';
-  position: absolute;
-  top: 4px;
-  right: 15px;
-  font-size: 0.55rem;
-  font-weight: 800;
-  color: #d4541e;
-  opacity: 0.3;
-  letter-spacing: 1px;
 }
 
 /* ===== THIÊN BÀN (CENTER) ===== */
@@ -291,6 +256,13 @@
 .dai-han { font-weight: 800; font-size: 0.82rem; color: var(--text-heading); }
 .tieu-han { font-size: 0.72rem; color: var(--text-muted); }
 
+.palace-brightness-label {
+  font-size: 0.65rem;
+  font-weight: 900;
+  letter-spacing: 0.5px;
+  margin-bottom: 2px;
+}
+
 /* ===== CUNG BODY ===== */
 .cung-body {
   flex: 1;
@@ -344,7 +316,8 @@
 
 .brightness-label {
   font-size: 0.7rem;
-  opacity: 0.7;
+  font-weight: 700;
+  opacity: 0.9;
 }
 
 .star-tooltip {
@@ -373,17 +346,20 @@
 }
 
 /* ===== NGŨ HÀNH COLORS ===== */
-.hanh-kim  { color: #7F8C8D !important; }
-.hanh-moc  { color: #27AE60 !important; }
-.hanh-thuy { color: #2c3e50 !important; }
-.hanh-hoa  { color: #c0392b !important; }
-.hanh-tho  { color: #d4a017 !important; }
+/* ===== NGŨ HÀNH COLORS ===== */
+.hanh-kim  { color: #607D8B; }
+.hanh-moc  { color: #2E7D32; }
+.hanh-thuy { color: #1565C0; }
+.hanh-hoa  { color: #C62828; }
+.hanh-tho  { color: #827717; }
 
 /* Brightness */
 .mieu, .vuong, .dac { font-weight: 800; }
 .mieu { color: #c0392b; }
-.ham { color: #95a5a6 !important; font-weight: normal; }
-.binh { color: #666; }
+.vuong { color: #d35400; }
+.dac { color: #a67c00; }
+.ham { color: #7f8c8d; font-weight: 600; font-style: italic; }
+.binh { color: #2c3e50; font-weight: 600; }
 
 /* ===== CUNG FOOTER ===== */
 .cung-footer {

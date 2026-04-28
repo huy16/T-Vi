@@ -15,6 +15,13 @@ const StarItem = ({ name, type }) => {
   // Loại bỏ tất cả tiền tố "L." (Lưu niên) để tra cứu tên gốc trong từ điển
   const cleanName = name.replace(/\s\(([MVĐHB])\)$/, '').replace(/^(L\.)+/, '');
   const isLuu = name.startsWith('L.');
+  const BRIGHTNESS_FULL = {
+    'M': 'Miếu',
+    'V': 'Vượng',
+    'Đ': 'Đắc',
+    'B': 'Bình',
+    'H': 'Hãm'
+  };
 
   if (brightnessMatch) {
     brightnessLabel = brightnessMatch[1];
@@ -52,13 +59,17 @@ const StarItem = ({ name, type }) => {
       onMouseLeave={meaning ? handleMouseLeave : undefined}
     >
       <span className="star-name">{isLuu ? 'L.' : ''}{displayName}</span>
-      {brightnessLabel && <span className="brightness-label"> ({brightnessLabel})</span>}
+      {brightnessLabel && (
+        <span className="brightness-label" title={BRIGHTNESS_FULL[brightnessLabel]}>
+          &nbsp;({brightnessLabel})
+        </span>
+      )}
       {meaning && showTooltip && (
         <span 
           className="star-tooltip star-tooltip--visible" 
           style={{ left: tooltipPos.x + 12, top: tooltipPos.y - 10 }}
         >
-          <strong>{displayName}:</strong> {meaning.overview}
+          <strong>{displayName} {brightnessLabel ? `(${BRIGHTNESS_FULL[brightnessLabel]})` : ''}:</strong> {meaning.overview}
         </span>
       )}
 
@@ -165,14 +176,9 @@ const Cung = ({ isCenter, data, onClick, isActive }) => {
   const tenCungHienThi = data.tenCung.split(" /")[0].toUpperCase();
   const canChi = data.canChi || "";
   const nguHanhLabel = CHI_NGU_HANH[data.chi] || 'Thổ';
-  const hasMieu = data.saoChinh?.some(s => s.includes('(M)'));
-  const hasVuong = data.saoChinh?.some(s => s.includes('(V)'));
 
   return (
-    <div 
-      className={`cung ${isActive ? 'active-cung' : ''} ${hasMieu ? 'cung-mieu' : ''} ${hasVuong ? 'cung-vuong' : ''}`} 
-      onClick={() => onClick && onClick(data)}
-    >
+    <div className={`cung ${isActive ? 'active-cung' : ''}`} onClick={() => onClick && onClick(data)}>
       <div className="cung-header">
         <div className="cung-header-left">
           <span className="can-chi-idx">{canChi}</span>
@@ -183,6 +189,19 @@ const Cung = ({ isCenter, data, onClick, isActive }) => {
           {isThan && <span className="than-note">&lt;THÂN&gt;</span>}
         </div>
         <div className="cung-header-right">
+          {data.palaceBrightness && (
+            <div className={`palace-brightness-label ${
+              data.palaceBrightness === 'M' ? 'mieu' : 
+              data.palaceBrightness === 'V' ? 'vuong' : 
+              data.palaceBrightness === 'Đ' ? 'dac' : 
+              data.palaceBrightness === 'H' ? 'ham' : 'binh'
+            }`}>
+              {data.palaceBrightness === 'M' ? 'MIẾU' : 
+               data.palaceBrightness === 'V' ? 'VƯỢNG' : 
+               data.palaceBrightness === 'Đ' ? 'ĐẮC' : 
+               data.palaceBrightness === 'H' ? 'HÃM' : 'BÌNH'}
+            </div>
+          )}
           <span className="dai-han">{data.daiHan}</span>
           <span className="tieu-han">{data.tieuHan}</span>
         </div>
