@@ -476,6 +476,26 @@ export const STAR_DICTIONARY = {
     advice: "Hãy sống bao dung, phúc đức của con sẽ giúp vượt qua mọi trở ngại.",
     warning: "Đừng vì có sao tốt mà chủ quan trước các rủi ro thực tế."
   },
+  "Kiếp Sát": {
+    overview: "Chủ về sự hình thương, mổ xẻ, rủi ro bất ngờ hoặc tiểu nhân ám hại.",
+    advice: "Cần làm việc thiện để giải trừ nghiệp quả, giữ gìn sức khỏe.",
+    warning: "Cẩn thận dao kéo, vật sắc nhọn hoặc rắc rối pháp luật."
+  },
+  "Lực Sĩ": {
+    overview: "Chủ về sức mạnh, nghị lực và sự gia tăng uy lực cho các sao đi kèm.",
+    advice: "Hãy dùng sức mạnh và sự nhiệt huyết của mình vào công việc chính nghĩa.",
+    warning: "Nếu đi cùng sao xấu, Lực Sĩ sẽ làm tăng thêm sự phá hoại."
+  },
+  "Bác Sĩ": {
+    overview: "Chủ về sự thông minh, bác ái, học vấn cao và có khả năng hóa giải bệnh tật.",
+    advice: "Tốt cho việc học tập, nghiên cứu và chăm sóc sức khỏe người khác.",
+    warning: "Đừng quá tự tin vào kiến thức mà thiếu sự cầu thị."
+  },
+  "Quan Phủ": {
+    overview: "Chủ về pháp luật, sự suy tính, thận trọng hoặc đôi khi là rắc rối kiện tụng (vòng Lộc Tồn).",
+    advice: "Nên làm việc minh bạch, giấy tờ rõ ràng.",
+    warning: "Đề phòng các vụ kiện cáo hoặc tranh chấp kéo dài."
+  },
 
   // VÒNG TRÀNG SINH (12 giai đoạn năng lượng)
   "Tràng Sinh": {
