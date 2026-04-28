@@ -313,9 +313,7 @@
 }
 
 .dropdown-menu--date .dropdown-item {
-  text-align: center;
-  padding: 0.4rem;
-  font-size: 0.85rem;
+  justify-content: center;
 }
 
 .zodiac-emoji {
@@ -347,18 +345,7 @@
   margin-top: 2px;
 }
 
-.dropdown-item {
-  width: 100%;
-  padding: 0.4rem 0.5rem;
-  text-align: left;
-  border: none;
-  background: none;
-  font-family: var(--font-main);
-  font-size: 0.72rem;
-  color: #333;
-  cursor: pointer;
-  white-space: nowrap;
-}
+/* Removed redundant dropdown-item styles to maintain consistency */
 
 .dropdown-item:hover {
   background: #f5f0e1;
@@ -429,19 +416,22 @@
   align-items: center;
   gap: 0.4rem;
   width: 100%;
-  padding: 0.35rem 0.5rem;
+  padding: 0.45rem 0.6rem;
   background: none;
   border: none;
   border-radius: 3px;
   font-family: var(--font-main);
-  font-size: 0.78rem;
+  font-size: 0.8rem; /* Đồng nhất kích thước */
+  font-variant-numeric: tabular-nums; /* Giúp các chữ số có độ rộng bằng nhau */
   color: #3a2a1a;
   cursor: pointer;
   transition: all var(--transition-fast);
   text-align: left;
 }
 
-.dropdown-item:hover { background: rgba(160,120,48,0.08); }
+.dropdown-item:hover { 
+  background: rgba(160,120,48,0.08); 
+}
 
 .dropdown-item--active {
   background: rgba(160,120,48,0.1);
