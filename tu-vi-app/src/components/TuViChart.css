@@ -102,6 +102,41 @@
 .active-cung {
   background: rgba(196, 131, 108, 0.06) !important;
   box-shadow: inset 0 0 15px rgba(196, 131, 108, 0.12);
+  border: 1px solid var(--accent) !important;
+  z-index: 5;
+}
+
+/* ===== SPECIAL STATES FOR CUNG (MIEU/VUONG) ===== */
+.cung-mieu {
+  background: linear-gradient(135deg, #fffcf5 0%, rgba(192, 57, 43, 0.04) 100%) !important;
+}
+
+.cung-mieu::after {
+  content: 'MIẾU';
+  position: absolute;
+  top: 4px;
+  right: 15px;
+  font-size: 0.55rem;
+  font-weight: 800;
+  color: #c0392b;
+  opacity: 0.3;
+  letter-spacing: 1px;
+}
+
+.cung-vuong {
+  background: linear-gradient(135deg, #fffcf5 0%, rgba(212, 84, 30, 0.04) 100%) !important;
+}
+
+.cung-vuong::after {
+  content: 'VƯỢNG';
+  position: absolute;
+  top: 4px;
+  right: 15px;
+  font-size: 0.55rem;
+  font-weight: 800;
+  color: #d4541e;
+  opacity: 0.3;
+  letter-spacing: 1px;
 }
 
 /* ===== THIÊN BÀN (CENTER) ===== */

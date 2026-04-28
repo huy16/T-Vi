@@ -165,9 +165,14 @@ const Cung = ({ isCenter, data, onClick, isActive }) => {
   const tenCungHienThi = data.tenCung.split(" /")[0].toUpperCase();
   const canChi = data.canChi || "";
   const nguHanhLabel = CHI_NGU_HANH[data.chi] || 'Thổ';
+  const hasMieu = data.saoChinh?.some(s => s.includes('(M)'));
+  const hasVuong = data.saoChinh?.some(s => s.includes('(V)'));
 
   return (
-    <div className={`cung ${isActive ? 'active-cung' : ''}`} onClick={() => onClick && onClick(data)}>
+    <div 
+      className={`cung ${isActive ? 'active-cung' : ''} ${hasMieu ? 'cung-mieu' : ''} ${hasVuong ? 'cung-vuong' : ''}`} 
+      onClick={() => onClick && onClick(data)}
+    >
       <div className="cung-header">
         <div className="cung-header-left">
           <span className="can-chi-idx">{canChi}</span>
