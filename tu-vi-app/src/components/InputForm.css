@@ -247,7 +247,7 @@
   background: #fff;
   border: 1px solid #c4b498;
   border-radius: 2px;
-  font-family: var(--font-main);
+  font-family: var(--font-main) !important;
   font-size: 0.8rem;
   font-weight: 700;
   color: #333;
@@ -425,7 +425,7 @@
   background: none;
   border: none;
   border-radius: 3px;
-  font-family: var(--font-main);
+  font-family: var(--font-main) !important;
   font-size: 0.8rem; /* Đồng nhất kích thước */
   font-variant-numeric: tabular-nums; /* Giúp các chữ số có độ rộng bằng nhau */
   color: #3a2a1a;
