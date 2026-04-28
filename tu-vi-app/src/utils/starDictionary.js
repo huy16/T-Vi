@@ -345,6 +345,121 @@ export const STAR_DICTIONARY = {
     overview: "Chủ về phúc báu, sự giúp đỡ ngầm từ thần linh hoặc tổ tiên.",
     advice: "Nên thờ cúng tổ tiên và làm việc thiện.",
     warning: "Phúc báu cũng có lúc cạn, cần bồi đắp thường xuyên."
+  },
+  "Thiếu Dương": {
+    overview: "Chủ về sự thông minh, nhanh nhẹn và ánh sáng rực rỡ (như mặt trời nhỏ).",
+    advice: "Hãy tự tin tỏa sáng và thể hiện năng lực.",
+    warning: "Tránh sự tự mãn quá mức."
+  },
+  "Thiên Hỷ": {
+    overview: "Chủ về tin vui, hỷ sự và sự may mắn trong tình cảm, gia đạo.",
+    advice: "Đây là lúc thuận lợi cho các cuộc vui, cưới hỏi.",
+    warning: "Vui thôi đừng vui quá."
+  },
+  "Phá Toái": {
+    overview: "Chủ về sự cản trở, làm hỏng việc hoặc những rắc rối nhỏ gây bực mình.",
+    advice: "Cần kiên trì, không nên nản lòng khi gặp trục trặc.",
+    warning: "Đề phòng tiểu nhân chọc phá công việc."
+  },
+  "Thiên Không": {
+    overview: "Chủ về sự trống rỗng, trí tuệ siêu việt hoặc sự tổn thất bất ngờ về tiền bạc.",
+    advice: "Tốt cho việc nghiên cứu đạo giáo, triết học hoặc sáng tạo.",
+    warning: "Hạn chế đầu tư mạo hiểm, dễ gặp cảnh trắng tay."
+  },
+  "Ân Quang": {
+    overview: "Chủ về sự ban ơn, giúp đỡ từ bề trên hoặc quý nhân một cách đặc biệt.",
+    advice: "Hãy biết ơn những người đã giúp đỡ mình.",
+    warning: "Đừng quên ơn nghĩa sau khi thành công."
+  },
+  "Thiên Quý": {
+    overview: "Chủ về sự quý hiển, bằng cấp và sự trợ giúp từ những người có quyền thế.",
+    advice: "Nên nỗ lực thi cử hoặc thăng tiến vị thế.",
+    warning: "Giữ gìn phẩm giá của bản thân."
+  },
+  "Thai Phụ": {
+    overview: "Chủ về bằng cấp, khen thưởng và sự vẻ vang trong học vấn, công việc.",
+    advice: "Hãy cố gắng đạt được các chứng chỉ hoặc thành tích cao.",
+    warning: "Tránh sự hiếu danh bề ngoài."
+  },
+  "Phong Cáo": {
+    overview: "Chủ về sự sắc phong, khen ngợi và sự công nhận từ xã hội.",
+    advice: "Đây là lúc công lao của con được ghi nhận xứng đáng.",
+    warning: "Đừng vì lời khen mà đánh mất sự nỗ lực."
+  },
+  "Thiên Tài": {
+    overview: "Chủ về tài năng thiên bẩm, sự thông tuệ và khả năng học hỏi nhanh.",
+    advice: "Hãy phát huy tối đa năng khiếu của bản thân.",
+    warning: "Tài cao thường đi kèm với sự đố kỵ từ người khác."
+  },
+  "Thiên Thọ": {
+    overview: "Chủ về sức khỏe, sự trường thọ và sự che chở của bề trên.",
+    advice: "Nên chú ý rèn luyện thân thể và giữ lối sống lành mạnh.",
+    warning: "Đừng ỷ vào sức khỏe mà lơ là phòng bệnh."
+  },
+  "Quan Phù": {
+    overview: "Chủ về pháp luật, sự suy tính kỹ lưỡng hoặc đôi khi là kiện tụng, rắc rối giấy tờ.",
+    advice: "Nên làm việc cẩn trọng, đúng quy trình.",
+    warning: "Tránh các hành vi lách luật."
+  },
+  "Hoa Cái": {
+    overview: "Chủ về sự sang trọng, lòng tự trọng cao và năng khiếu nghệ thuật, tâm linh.",
+    advice: "Nên theo đuổi các sở thích thanh cao hoặc nghiên cứu huyền học.",
+    warning: "Tránh sự cô độc do quá tự tôn."
+  },
+  "Thiên Y": {
+    overview: "Chủ về y tế, thuốc men và sự sạch sẽ, cẩn thận.",
+    advice: "Tốt cho việc khám chữa bệnh hoặc làm các nghề liên quan đến chăm sóc sức khỏe.",
+    warning: "Cần giữ gìn vệ sinh và lối sống ngăn nắp."
+  },
+  "Quốc Ấn": {
+    overview: "Chủ về ấn tín, quyền hành và vị trí chính thức trong cơ quan.",
+    advice: "Nên nỗ lực thăng tiến vị trí lãnh đạo.",
+    warning: "Cần giữ gìn sự chính trực khi nắm quyền."
+  },
+  "Lưu Hà": {
+    overview: "Chủ về sự trôi chảy, ăn nói sắc bén nhưng cũng đề phòng rủi ro liên quan đến sông nước.",
+    advice: "Hãy phát huy khả năng giao tiếp, thuyết phục.",
+    warning: "Cẩn thận khi đi bơi hoặc đi tàu thuyền."
+  },
+  "Thiên La": {
+    overview: "Lưới trời, chủ về sự vướng mắc, khó khăn và những giới hạn không thể vượt qua.",
+    advice: "Hãy kiên nhẫn chờ thời, không nên vùng vẫy vô ích.",
+    warning: "Cẩn thận bị rắc rối pháp lý hoặc bế tắc trong cuộc sống."
+  },
+  "Địa Võng": {
+    overview: "Lưới đất, chủ về những rào cản, áp lực từ thực tế cuộc sống.",
+    advice: "Cần xây dựng nền tảng vững chắc để vượt qua khó khăn.",
+    warning: "Đề phòng tiểu nhân hãm hại ngầm."
+  },
+  "Trực Phù": {
+    overview: "Chủ về sự chịu thiệt thòi, sự phục tùng hoặc các bệnh tật nhỏ.",
+    advice: "Hãy kiên trì làm việc, sự nỗ lực của con sẽ được ghi nhận về sau.",
+    warning: "Tránh làm việc quá sức dẫn đến mệt mỏi."
+  },
+  "Tử Phù": {
+    overview: "Chủ về sự buồn phiền, tang chế nhỏ hoặc những rắc rối liên quan đến người đã khuất.",
+    advice: "Nên giữ tâm thế lạc quan, tránh suy nghĩ tiêu cực.",
+    warning: "Đề phòng các chuyện buồn phiền trong họ hàng."
+  },
+  "Tuế Phá": {
+    overview: "Chủ về sự chống đối, phá phách hoặc rắc rối do trẻ nhỏ, người dưới quyền gây ra.",
+    advice: "Cần có phương pháp quản lý khéo léo.",
+    warning: "Tránh xung đột trực diện gây tổn thất."
+  },
+  "Bệnh Phù": {
+    overview: "Chủ về bệnh tật dai dẳng hoặc tinh thần uể oải, lười biếng.",
+    advice: "Nên đi kiểm tra sức khỏe định kỳ và rèn luyện thể thao.",
+    warning: "Tránh lối sống bê tha, trì trệ."
+  },
+  "Thiếu Âm": {
+    overview: "Chủ về sự mềm mỏng, nhẫn nhịn và sự che chở kín đáo (như ánh trăng nhỏ).",
+    advice: "Hãy dùng sự nhu thắng cương để giải quyết vấn đề.",
+    warning: "Tránh sự nhu nhược, thiếu quyết đoán."
+  },
+  "Âm Sát": {
+    overview: "Chủ về sự ám hại ngầm, tiểu nhân đố kỵ hoặc các vấn đề liên quan đến tâm linh.",
+    advice: "Nên làm việc minh bạch, giữ tâm sáng.",
+    warning: "Đề phòng kẻ xấu nói xấu sau lưng hoặc rắc rối khuất tất."
   }
 };
 
