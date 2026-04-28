@@ -272,17 +272,54 @@ export const lapLaSo = (userInfo) => {
   userInfo.hourDisplay = `${CHI_HOUR_NAMES[hourChiIdx]}`;
   userInfo.canChiHour = `${THIEN_CAN[hourCanIdx]} ${CHI_HOUR_NAMES[hourChiIdx]}`;
 
-  // Năm xem (2026)
-  const { canIndex: xemCanIdx, chiIndex: xemChiIdx } = getCanChiYearIndex(2026);
-  const tuoi = 2026 - solarYear + 1;
-  userInfo.namXemStr = `${THIEN_CAN[xemCanIdx]} ${CHI_ARRAY[xemChiIdx]} (2026), ${tuoi} tuổi`;
+  // Năm xem (Mặc định là năm hiện tại nếu không có)
+  const currentYear = new Date().getFullYear();
+  const namXem = userInfo.namXem || currentYear;
+  const { canIndex: xemCanIdx, chiIndex: xemChiIdx } = getCanChiYearIndex(namXem);
+  const tuoi = namXem - solarYear + 1;
+  userInfo.namXemStr = `${THIEN_CAN[xemCanIdx]} ${CHI_ARRAY[xemChiIdx]} (${namXem}), ${tuoi} tuổi`;
 
   const banMenh = getBanMenh(year);
   userInfo.banMenhFull = `${banMenh} - ${userInfo.cucName}`;
-  userInfo.canLuong = `4 lượng 4 chỉ`;
-  userInfo.chuMenh = `Liêm Trinh`;
-  userInfo.chuThan = `Văn Xương`;
-  userInfo.laiNhanCung = `Mệnh`;
+  
+  // Tính Chủ Mệnh dựa trên Địa Chi của cung Mệnh
+  const CHU_MENH_MAP = { 
+    0: 'Tham Lang', 1: 'Cự Môn', 2: 'Lộc Tồn', 3: 'Văn Khúc', 
+    4: 'Liêm Trinh', 5: 'Vũ Khúc', 6: 'Phá Quân', 7: 'Vũ Khúc', 
+    8: 'Liêm Trinh', 9: 'Văn Khúc', 10: 'Lộc Tồn', 11: 'Cự Môn' 
+  };
+  // Tính Chủ Thân dựa trên Địa Chi của cung Mệnh
+  const CHU_THAN_MAP = { 
+    0: 'Linh Tinh', 6: 'Linh Tinh',
+    1: 'Thiên Tướng', 7: 'Thiên Tướng',
+    2: 'Thiên Lương', 8: 'Thiên Lương',
+    3: 'Thiên Đồng', 9: 'Thiên Đồng',
+    4: 'Văn Xương', 10: 'Văn Xương',
+    5: 'Hỏa Tinh', 11: 'Hỏa Tinh'
+  };
+  
+  userInfo.chuMenh = CHU_MENH_MAP[menhPos] || 'Tham Lang';
+  userInfo.chuThan = CHU_THAN_MAP[menhPos] || 'Văn Xương';
+  
+  // Tính Lai Nhân Cung (Cung có Thiên Can trùng với Can năm sinh)
+  let laiNhanCung = "Mệnh";
+  for (const chi of CHI_ARRAY) {
+    const khoangCachTuDan = safeMod(CHI_ARRAY.indexOf(chi) - 2, 12); 
+    const canCungIndex = safeMod(canThangGieng + khoangCachTuDan, 10);
+    if (canCungIndex === canIndex) {
+      // Tìm tên cung thực tế tại vị trí chi này
+      for (let i = 0; i < 12; i++) {
+        if (safeMod(menhPos + i, 12) === CHI_ARRAY.indexOf(chi)) {
+          laiNhanCung = CUNG_NAMES[i];
+          break;
+        }
+      }
+    }
+  }
+  userInfo.laiNhanCung = laiNhanCung;
+  
+  // Cân lượng cần bảng tra cứu phức tạp, tạm thời để trống hoặc tính sơ bộ
+  userInfo.canLuong = `Đang cập nhật`;
 
   const DV_SHORT_NAMES = ['MỆNH','PHỤ','PHÚC','ĐIỀN','QUAN','NÔ','DI','TẬT','TÀI','TỬ','PHỐI','HUYNH'];
 
@@ -679,9 +716,8 @@ export const lapLaSo = (userInfo) => {
   // Thiên Quan đã an, Văn Tinh thường trùng vị trí
   board[CHI_ARRAY[QUAN_PHUC_MAP[canIndex].q]].saoTot.push('Văn Tinh');
 
-  // 16. LƯU SAO (L. prefix) - Sao lưu niên theo NĂM XEM (2026 = Bính Ngọ)
-  const xemYear = 2026;
-  const { canIndex: xCanIdx, chiIndex: xChiIdx } = getCanChiYearIndex(xemYear);
+  // 16. LƯU SAO (L. prefix) - Sao lưu niên theo NĂM XEM
+  const { canIndex: xCanIdx, chiIndex: xChiIdx } = getCanChiYearIndex(namXem);
   
   // L.Lộc Tồn
   const lLocTonPos = LOC_TON_MAP[xCanIdx];
@@ -780,28 +816,33 @@ export const lapLaSo = (userInfo) => {
   console.log(`[Engine Debug] trietPositions idx:`, trietPositions);
 
   // 15. TỨ HÓA - Gắn vào Chính Tinh theo Can Năm sinh
-  // Bảng Tứ Hoá chuẩn: [Hoá Lộc, Hoá Quyền, Hoá Khoa, Hoá Kỵ] theo Can
   const tuHoaStars = TU_HOA_TABLE[canIndex];
   const tuHoaLabels = ['Hóa Lộc', 'Hóa Quyền', 'Hóa Khoa', 'Hóa Kỵ'];
+  userInfo.tuHoaCungs = { Loc: '...', Quyen: '...', Khoa: '...', Ky: '...' };
   
-  // Tìm vị trí của sao gốc trên bàn cờ, rồi gắn Tứ Hoá vào cùng cung
-  // Lưu ý: saoChinh giờ có dạng 'Tử Vi (M)', cần dùng startsWith thay vì includes
   for (let h = 0; h < 4; h++) {
     const targetStar = tuHoaStars[h];
     let found = false;
     for (const chi of CHI_ARRAY) {
       if (found) break;
       const cung = board[chi];
-      // Tìm trong saoChinh (có thể chứa 'Tử Vi (M)')
-      if (cung.saoChinh.some(s => s.startsWith(targetStar))) {
+      
+      // Kiểm tra trong Chính tinh (có xử lý độ sáng)
+      const hasInMain = cung.saoChinh.some(s => s.startsWith(targetStar));
+      // Kiểm tra trong Cát tinh và Hung tinh
+      const hasInPhu = cung.saoTot.includes(targetStar) || cung.saoXau.includes(targetStar);
+      
+      if (hasInMain || hasInPhu) {
         if (h < 3) cung.saoTot.push(tuHoaLabels[h]);
         else cung.saoXau.push(tuHoaLabels[h]);
-        found = true;
-      }
-      // Tìm trong saoTot (Văn Xương, Tả Phù... không có brightness label)
-      if (!found && cung.saoTot.includes(targetStar)) {
-        if (h < 3) cung.saoTot.push(tuHoaLabels[h]);
-        else cung.saoXau.push(tuHoaLabels[h]);
+        
+        // Lấy tên cung gốc (bỏ phần Thân)
+        const displayCungName = cung.tenCung.replace(' <Thân>', '').split(' /')[0].trim();
+        if (h === 0) userInfo.tuHoaCungs.Loc = displayCungName;
+        if (h === 1) userInfo.tuHoaCungs.Quyen = displayCungName;
+        if (h === 2) userInfo.tuHoaCungs.Khoa = displayCungName;
+        if (h === 3) userInfo.tuHoaCungs.Ky = displayCungName;
+        
         found = true;
       }
     }
