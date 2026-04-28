@@ -551,3 +551,60 @@ export const getStarBrightnessTags = (saoChinh) => {
     return { name: s, brightness: null, label: null };
   });
 };
+// ===== QUÝ NHÂN PHÙ HỘ =====
+export const getQuyNhanAnalysis = (foundQuyNhan = []) => {
+  const contexts = {
+    'Thiên Khôi': {
+      place: 'Môi trường học thuật, cơ quan công quyền, hoặc các buổi lễ trang trọng.',
+      event: 'Khi bạn tham gia thi cử, ứng tuyển vị trí cao, hoặc đứng trước các quyết định pháp lý quan trọng.',
+      person: 'Người có quyền thế, bậc trưởng thượng, hoặc chuyên gia đầu ngành.'
+    },
+    'Thiên Việt': {
+      place: 'Văn phòng cấp cao, các cuộc thi tài năng, hoặc những nơi đòi hỏi sự tinh tế.',
+      event: 'Khi bạn cần sự đề bạt, tìm kiếm người dẫn dắt (mentor), hoặc tham gia các dự án mang tính đột phá.',
+      person: 'Người có tầm nhìn, quý bà/quý ông thanh lịch, hoặc người có khả năng nhìn thấu tiềm năng của bạn.'
+    },
+    'Văn Xương': {
+      place: 'Thư viện, nhà sách, các sự kiện văn hóa nghệ thuật, hoặc môi trường truyền thông.',
+      event: 'Khi bạn công bố tác phẩm, làm việc liên quan đến giấy tờ/hợp đồng, hoặc tham gia các khóa học chuyên sâu.',
+      person: 'Nhà báo, nghệ sĩ, những người làm công tác nghiên cứu hoặc sáng tạo.'
+    },
+    'Văn Khúc': {
+      place: 'Phòng tranh, sân khấu, các hội nhóm sáng tạo online, hoặc những không gian nghệ thuật đương đại.',
+      event: 'Khi bạn cần ý tưởng mới, tham gia các hoạt động giải trí, hoặc thể hiện bản sắc cá nhân.',
+      person: 'Người có tâm hồn nghệ sĩ, người giỏi giao tiếp, hoặc những người truyền cảm hứng bằng cảm xúc.'
+    },
+    'Tả Phù': {
+      place: 'Môi trường làm việc nhóm, các tổ chức thiện nguyện, hoặc các câu lạc bộ sở thích.',
+      event: 'Khi bạn khởi động dự án chung, cần người san sẻ gánh nặng, hoặc tham gia các hoạt động cộng đồng.',
+      person: 'Đồng nghiệp tận tâm, bạn bè chí cốt, hoặc những người sẵn sàng hành động cùng bạn.'
+    },
+    'Hữu Bật': {
+      place: 'Các buổi networking, sự kiện xã hội, hoặc môi trường có tính tương tác cao.',
+      event: 'Khi bạn gặp rắc rối cần sự dàn xếp, tìm kiếm nguồn lực bổ sung, hoặc cần người ủng hộ ý kiến.',
+      person: 'Những người khéo léo trong quan hệ, trợ lý đắc lực, hoặc người có mạng lưới kết nối rộng.'
+    },
+    'Lộc Tồn': {
+      place: 'Ngân hàng, sàn giao dịch, các hội thảo đầu tư, hoặc môi trường kinh doanh truyền thống.',
+      event: 'Khi bạn thương thảo hợp đồng tài chính, tìm kiếm vốn, hoặc đầu tư vào tài sản bền vững.',
+      person: 'Nhà đầu tư kín tiếng, người quản lý tài chính, hoặc bậc tiền bối giàu kinh nghiệm về tiền bạc.'
+    },
+    'Thiên Mã': {
+      place: 'Sân bay, nhà ga, môi trường công nghệ số, hoặc các dự án hợp tác quốc tế.',
+      event: 'Khi bạn đi công tác xa, thay đổi nơi ở/nơi làm việc, hoặc mở rộng thị trường sang vùng đất mới.',
+      person: 'Người đi nhiều biết rộng, đối tác ở xa, hoặc những người giỏi về vận tải và công nghệ.'
+    }
+  };
+
+  const detailedAnalysis = foundQuyNhan.map(star => ({
+    star,
+    ...contexts[star]
+  })).filter(item => item.place);
+
+  return {
+    totalCount: foundQuyNhan.length,
+    details: detailedAnalysis,
+    headline: foundQuyNhan.length >= 4 ? "Lá số được 'Quần thần khánh hội', đi đâu cũng có người giúp." : "Quý nhân xuất hiện đúng lúc, đúng chỗ khi bạn nỗ lực.",
+    activation: "Để kích hoạt Quý nhân, bạn cần sự chủ động kết nối và lòng biết ơn chân thành. Quý nhân chỉ giúp người tự giúp mình."
+  };
+};

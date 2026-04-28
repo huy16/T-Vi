@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './AdvancedSections.css';
-import { getStarBrightnessTags, CUNG_ICONS } from '../utils/analysisContent';
+import { getStarBrightnessTags, CUNG_ICONS, getQuyNhanAnalysis } from '../utils/analysisContent';
 import { CHI_NGU_HANH } from '../utils/tuviEngine';
 
 // ===== HELPER =====
@@ -590,35 +590,84 @@ export const ThanSatSection = ({ chartData }) => {
           </div>
         </div>
 
-        <div className="content-card" style={{ background: 'var(--color-good-bg)' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.75rem' }}>
-            <span style={{ fontWeight: 700, color: 'var(--color-good)' }}>Tốt</span>
-            <span className="pill-tag pill-tag--accent">{quyNhanCount} quý nhân tinh</span>
-          </div>
-          <p style={{ fontSize: '0.9rem' }}>
-            <span style={{ fontSize: '1.1rem' }}>🔥</span> Quý nhân vẫn RẤT MẠNH! Có {quyNhanCount} quý nhân tinh. Cả đời gặp nhiều người giúp đỡ, "trong cơn hoạn nạn có người nâng đỡ". Đây là phúc phần hiếm có!
-          </p>
-        </div>
+        {(() => {
+          const qnAnalysis = getQuyNhanAnalysis(foundQuyNhan);
+          return (
+            <>
+              <div className="content-card" style={{ background: 'var(--color-good-bg)', marginBottom: '1rem' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.75rem' }}>
+                  <span style={{ fontWeight: 700, color: 'var(--color-good)' }}>{quyNhanCount > 0 ? 'Tốt' : 'Bình thường'}</span>
+                  <span className="pill-tag pill-tag--accent">{quyNhanCount} quý nhân tinh</span>
+                </div>
+                <p style={{ fontSize: '0.95rem', fontWeight: 600, color: 'var(--text-heading)', marginBottom: '0.5rem' }}>
+                  {qnAnalysis.headline}
+                </p>
+                <p style={{ fontSize: '0.88rem', color: 'var(--text-secondary)' }}>
+                  {qnAnalysis.activation}
+                </p>
+              </div>
 
-        <div className="summary-cards" style={{ marginTop: '1rem' }}>
-          <div className="summary-card" style={{ textAlign: 'center' }}>
-            <div style={{ fontSize: '1.8rem', fontWeight: 800, color: 'var(--accent)' }}>{quyNhanCount}</div>
-            <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Quý nhân</p>
-          </div>
-          <div className="summary-card" style={{ textAlign: 'center' }}>
-            <div style={{ fontSize: '1.8rem', fontWeight: 800, color: 'var(--accent)' }}>2</div>
-            <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Sao cống</p>
-          </div>
-          <div className="summary-card" style={{ textAlign: 'center' }}>
-            <div style={{ fontSize: '1.8rem', fontWeight: 800, color: 'var(--accent)' }}>5</div>
-            <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Cung có QN</p>
-          </div>
-        </div>
+              <div className="summary-cards">
+                <div className="summary-card" style={{ textAlign: 'center' }}>
+                  <div style={{ fontSize: '1.8rem', fontWeight: 800, color: 'var(--accent)' }}>{quyNhanCount}</div>
+                  <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Quý nhân</p>
+                </div>
+                <div className="summary-card" style={{ textAlign: 'center' }}>
+                  <div style={{ fontSize: '1.8rem', fontWeight: 800, color: 'var(--accent)' }}>2</div>
+                  <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Sao cống</p>
+                </div>
+                <div className="summary-card" style={{ textAlign: 'center' }}>
+                  <div style={{ fontSize: '1.8rem', fontWeight: 800, color: 'var(--accent)' }}>5</div>
+                  <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Cung có QN</p>
+                </div>
+              </div>
 
-        <div className="pill-tags" style={{ marginTop: '1rem' }}>
-          {foundQuyNhan.slice(0, 4).map((s, i) => <span key={i} className="pill-tag pill-tag--accent">★ {s}</span>)}
-          {foundQuyNhan.length > 4 && <span className="pill-tag">+{foundQuyNhan.length - 4} quý nhân khác</span>}
-        </div>
+              {/* Detailed Breakdown */}
+              <div style={{ marginTop: '1.5rem' }}>
+                <h4 style={{ fontSize: '1rem', color: 'var(--text-heading)', marginBottom: '1rem', borderLeft: '3px solid var(--accent)', paddingLeft: '0.75rem' }}>
+                  Chi tiết Quý Nhân & Bối cảnh gặp gỡ
+                </h4>
+                <div className="vt-month-grid" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))' }}>
+                  {qnAnalysis.details.map((detail, idx) => (
+                    <div key={idx} className="vt-month-card" style={{ padding: '1.25rem' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.75rem' }}>
+                        <span style={{ color: 'var(--accent)', fontSize: '1.2rem' }}>★</span>
+                        <strong style={{ fontSize: '1.05rem', color: 'var(--accent)' }}>{detail.star}</strong>
+                      </div>
+                      
+                      <div style={{ marginBottom: '0.75rem' }}>
+                        <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.25rem' }}>
+                          📍 Gặp ở đâu?
+                        </div>
+                        <p style={{ fontSize: '0.88rem', color: 'var(--text-main)', lineHeight: '1.5' }}>
+                          {detail.place}
+                        </p>
+                      </div>
+
+                      <div style={{ marginBottom: '0.75rem' }}>
+                        <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.25rem' }}>
+                          ⚡ Sự kiện kích hoạt
+                        </div>
+                        <p style={{ fontSize: '0.88rem', color: 'var(--text-main)', lineHeight: '1.5' }}>
+                          {detail.event}
+                        </p>
+                      </div>
+
+                      <div>
+                        <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.25rem' }}>
+                          👥 Đặc điểm Quý nhân
+                        </div>
+                        <p style={{ fontSize: '0.88rem', color: 'var(--text-main)', lineHeight: '1.5' }}>
+                          {detail.person}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </>
+          );
+        })()}
       </div>
     </section>
   );

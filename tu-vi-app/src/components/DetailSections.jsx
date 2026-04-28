@@ -249,8 +249,8 @@ export const SucKhoeSection = ({ chartData }) => {
           <p className="summary-card-desc">{analysis.noiCanCanhDesc}</p>
           <p className="summary-card-desc" style={{ marginTop: '0.5rem' }}>Luôn duy trì theo dõi định kỳ.</p>
         </div>
-        <div className="summary-card" style={{ background: 'var(--color-info-bg)' }}>
-          <div className="summary-card-label" style={{ color: 'var(--color-info)' }}>LUẬT NHÂN QUẢ SỨC KHỎE</div>
+        <div className="summary-card">
+          <div className="summary-card-label">LUẬT NHÂN QUẢ SỨC KHỎE</div>
           <div className="summary-card-value">{analysis.lichGiu}</div>
           <p className="summary-card-desc">{analysis.lichGiuDesc}</p>
         </div>
