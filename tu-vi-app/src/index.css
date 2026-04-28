@@ -1,44 +1,44 @@
 /* ===== DESIGN TOKENS – WARM GOLD ORIENTAL ===== */
 :root {
   /* Background */
-  --bg-main: #f5ead6;
-  --bg-section: #faf3e6;
-  --bg-card: #f0e4ce;
-  --bg-card-hover: #f5ead6;
-  --bg-hero: linear-gradient(180deg, #f5ead6 0%, #ece0c8 40%, #e5d6b8 100%);
-  --bg-accent-soft: rgba(180, 140, 60, 0.08);
-  --bg-accent-medium: rgba(180, 140, 60, 0.12);
+  --bg-main: #ffffff;
+  --bg-section: #fdfdfd;
+  --bg-card: rgba(255, 255, 255, 0.9);
+  --bg-card-hover: #ffffff;
+  --bg-hero: linear-gradient(180deg, #ffffff 0%, #f8f9fa 100%);
+  --bg-accent-soft: rgba(191, 149, 63, 0.06);
+  --bg-accent-medium: rgba(191, 149, 63, 0.1);
 
-  /* Accent Colors – Gold */
-  --accent: #a07830;
-  --accent-light: #c4a050;
-  --accent-dark: #7a5a20;
-  --accent-rose: #b08530;
-  --accent-rose-light: rgba(180, 133, 48, 0.15);
-  --accent-gradient: linear-gradient(135deg, #c4a050 0%, #a07830 50%, #7a5a20 100%);
-  --accent-btn-gradient: linear-gradient(135deg, #c41e1e 0%, #8b0000 100%);
+  /* Accent Colors – Bright Gold */
+  --accent: #b8860b;
+  --accent-light: #daa520;
+  --accent-dark: #8b6508;
+  --accent-rose: #cd853f;
+  --accent-rose-light: rgba(205, 133, 63, 0.12);
+  --accent-gradient: linear-gradient(135deg, #daa520 0%, #b8860b 50%, #8b6508 100%);
+  --accent-btn-gradient: linear-gradient(135deg, #d32f2f 0%, #b71c1c 100%);
 
-  /* Text */
-  --text-primary: #3a2a1a;
-  --text-secondary: #5a4a3a;
-  --text-muted: #8a7a6a;
-  --text-label: #7a5a20;
-  --text-heading: #2a1a0a;
+  /* Text - Modern Charcoal & Gold */
+  --text-primary: #2d3436;
+  --text-secondary: #636e72;
+  --text-muted: #b2bec3;
+  --text-label: #b8860b;
+  --text-heading: #2d3436;
 
   /* Borders & Dividers */
-  --border-light: rgba(160, 120, 48, 0.15);
-  --border-card: rgba(160, 120, 48, 0.2);
-  --border-accent: rgba(160, 120, 48, 0.35);
+  --border-light: rgba(184, 134, 11, 0.1);
+  --border-card: rgba(184, 134, 11, 0.15);
+  --border-accent: rgba(184, 134, 11, 0.25);
 
   /* Semantic Colors */
-  --color-good: #5a8a3a;
-  --color-good-bg: rgba(90, 138, 58, 0.1);
-  --color-warning: #c4a050;
-  --color-warning-bg: rgba(196, 160, 80, 0.1);
-  --color-danger: #b03020;
-  --color-danger-bg: rgba(176, 48, 32, 0.1);
-  --color-info: #4a7a9a;
-  --color-info-bg: rgba(74, 122, 154, 0.1);
+  --color-good: #27ae60;
+  --color-good-bg: rgba(39, 174, 96, 0.08);
+  --color-warning: #f39c12;
+  --color-warning-bg: rgba(243, 156, 18, 0.08);
+  --color-danger: #e74c3c;
+  --color-danger-bg: rgba(231, 76, 60, 0.08);
+  --color-info: #3498db;
+  --color-info-bg: rgba(52, 152, 219, 0.08);
 
   /* Input */
   --input-bg: rgba(255, 248, 235, 0.7);
