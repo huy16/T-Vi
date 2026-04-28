@@ -378,6 +378,24 @@ const TuViChart = ({ chartData, selectedChi, onCungSelect }) => {
                   </div>
                 </div>
               </div>
+
+              {/* Ý Nghĩa Các Sao Section */}
+              <div className="detail-explanations-section">
+                <h4>Ý Nghĩa Các Sao</h4>
+                <div className="explanations-list">
+                  {[...selectedCungData.saoChinh, ...selectedCungData.saoTot, ...selectedCungData.saoXau].map((s, i) => {
+                    const cleanName = s.replace(/\s\(([MVĐHB])\)$/, '').replace(/^(L\.)+/, '');
+                    const meaning = STAR_DICTIONARY[cleanName];
+                    if (!meaning) return null;
+                    return (
+                      <div key={i} className="star-explanation-item">
+                        <span className="star-exp-name">{cleanName}:</span>
+                        <span className="star-exp-text">{meaning.overview}</span>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
             </div>
           </div>
         )}
