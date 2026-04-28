@@ -73,6 +73,114 @@ export const STAR_DICTIONARY = {
     overview: "Chủ về ngôn ngữ, sự thị phi và nghi ngờ. Vận này mạnh về giao tiếp nhưng cũng dễ bị hiểu lầm.",
     advice: "Hãy dùng lời nói để thuyết phục, làm các công việc liên quan đến tư vấn.",
     warning: "Họa từ miệng mà ra, cần cẩn trọng trong lời ăn tiếng nói."
+  },
+
+  // LỤC CÁT TINH (Sáu sao tốt)
+  "Thiên Khôi": {
+    overview: "Đứng đầu các cát tinh, chủ về sự thông minh, vị thế và quý nhân giúp đỡ ở tầm cao.",
+    advice: "Nên tận dụng các cơ hội gặp gỡ người có tầm ảnh hưởng.",
+    warning: "Tránh sự kiêu ngạo vì được ưu ái."
+  },
+  "Thiên Việt": {
+    overview: "Chủ về sự trợ giúp, cơ hội may mắn và tài năng văn chương, nghệ thuật.",
+    advice: "Hãy tự tin thể hiện bản thân, sẽ có người đứng ra hỗ trợ con.",
+    warning: "Đừng quá dựa dẫm vào người khác mà đánh mất sự tự lập."
+  },
+  "Tả Phù": {
+    overview: "Chủ về sự hỗ trợ, giúp sức từ bạn bè, đồng nghiệp. Làm tăng sức mạnh cho các sao tốt khác.",
+    advice: "Nên làm việc nhóm, xây dựng các liên minh vững chắc.",
+    warning: "Cẩn thận nếu đi cùng sát tinh sẽ hỗ trợ cả cái xấu."
+  },
+  "Hữu Bật": {
+    overview: "Tương tự Tả Phù, chủ về sự phò tá, giúp đỡ và tính nhân hậu.",
+    advice: "Hãy sống cởi mở, lòng tốt của con sẽ được đền đáp.",
+    warning: "Tránh đa mang quá nhiều việc cùng lúc."
+  },
+  "Văn Xương": {
+    overview: "Chủ về khoa bảng, bằng cấp và sự nhạy bén về tư duy chữ nghĩa.",
+    advice: "Tốt cho việc học tập, thi cử hoặc ký kết hợp đồng.",
+    warning: "Tránh sự mơ mộng viển vông, xa rời thực tế."
+  },
+  "Văn Khúc": {
+    overview: "Chủ về nghệ thuật, tài lẻ và sự tinh tế trong tâm hồn.",
+    advice: "Nên phát huy năng khiếu nghệ thuật hoặc kỹ năng giao tiếp khéo léo.",
+    warning: "Cẩn thận rắc rối về tình cảm do quá đào hoa."
+  },
+
+  // LỤC SÁT TINH (Sáu sao xấu)
+  "Kình Dương": {
+    overview: "Chủ về sự hình thương, va chạm và tính cách cương quyết đến mức bướng bỉnh.",
+    advice: "Cần sự nhẫn nại, dùng nghị lực để vượt qua khó khăn.",
+    warning: "Tránh các cuộc tranh chấp gay gắt hoặc va chạm xe cộ."
+  },
+  "Đà La": {
+    overview: "Chủ về sự trì trệ, rắc rối âm thầm và những cản trở dai dẳng.",
+    advice: "Cần kiên trì bền bỉ, không nên nôn nóng bỏ cuộc giữa chừng.",
+    warning: "Đề phòng tiểu nhân chọc gậy bánh xe hoặc các bệnh mãn tính."
+  },
+  "Địa Không": {
+    overview: "Chủ về sự trống rỗng, tổn thất bất ngờ và những ý tưởng phá cách.",
+    advice: "Thích hợp cho các công việc mang tính sáng tạo đột phá, nghiên cứu độc lập.",
+    warning: "Hạn chế đầu tư mạo hiểm, dễ gặp cảnh trắng tay bất ngờ."
+  },
+  "Địa Kiếp": {
+    overview: "Chủ về sự cướp bóc, tai họa từ bên ngoài và những biến cố khó lường.",
+    advice: "Nên giữ lối sống khiêm tốn, bảo vệ tài sản cẩn thận.",
+    warning: "Tránh những nơi thị phi hoặc tham gia các hoạt động phi pháp."
+  },
+  "Hỏa Tinh": {
+    overview: "Chủ về sự nóng nảy, bộc phát nhanh và các vấn đề liên quan đến lửa hoặc thần kinh.",
+    advice: "Cần rèn luyện tính kiềm chế, suy nghĩ kỹ trước khi phát ngôn.",
+    warning: "Đề phòng hỏa hoạn hoặc các chứng bệnh do nóng trong người."
+  },
+  "Linh Tinh": {
+    overview: "Chủ về sự lo âu, rắc rối ngầm và những áp lực tâm lý dai dẳng.",
+    advice: "Nên dành thời gian thư giãn, thiền định để giữ tâm bình khí hòa.",
+    warning: "Tránh dồn nén cảm xúc quá mức dẫn đến stress nặng."
+  },
+
+  // TỨ HÓA (Bốn sự biến hóa)
+  "Hóa Lộc": {
+    overview: "Chủ về tài lộc, sự sung túc và duyên may trong kinh doanh.",
+    advice: "Mở rộng đầu tư, tận dụng vận may tiền bạc đang đến.",
+    warning: "Đừng quá tham lam mà bỏ qua các giá trị đạo đức."
+  },
+  "Hóa Quyền": {
+    overview: "Chủ về quyền lực, địa vị và sự kiểm soát.",
+    advice: "Hãy quyết đoán lãnh đạo, khẳng định vị thế của bản thân.",
+    warning: "Tránh sự áp đặt, chuyên quyền làm mất lòng người dưới quyền."
+  },
+  "Hóa Khoa": {
+    overview: "Chủ về danh tiếng, học vấn và sự hóa giải tai ương một cách nhẹ nhàng.",
+    advice: "Tập trung xây dựng thương hiệu cá nhân và nâng cao kiến thức.",
+    warning: "Đừng quá chú trọng vào hư danh bề ngoài."
+  },
+  "Hóa Kỵ": {
+    overview: "Chủ về sự đố kỵ, rắc rối, thị phi và những ám muội.",
+    advice: "Hãy khiêm tốn, tránh xa các cuộc tranh luận không cần thiết.",
+    warning: "Cẩn thận bị bôi nhọ danh dự hoặc hiểu lầm trong quan hệ."
+  },
+
+  // CÁC PHỤ TINH QUAN TRỌNG KHÁC
+  "Lộc Tồn": {
+    overview: "Chủ về của cải dư dật, sự may mắn do tiền nhân để lại.",
+    advice: "Nên tiết kiệm và quản lý tài chính chặt chẽ.",
+    warning: "Tránh sự keo kiệt thái quá dẫn đến cô độc."
+  },
+  "Thiên Mã": {
+    overview: "Chủ về sự di chuyển, thay đổi và nghị lực vươn lên.",
+    advice: "Nên đi xa để lập nghiệp hoặc thay đổi môi trường làm việc.",
+    warning: "Đề phòng tai nạn trong quá trình di chuyển."
+  },
+  "Đào Hoa": {
+    overview: "Chủ về sắc đẹp, sự thu hút người khác phái và duyên nghệ thuật.",
+    advice: "Tận dụng sự lôi cuốn để tạo lợi thế trong giao tiếp.",
+    warning: "Tránh các mối quan hệ phức tạp, 'đào hoa sát' gây họa cho bản thân."
+  },
+  "Hồng Loan": {
+    overview: "Chủ về tin vui, hỷ sự và sự may mắn trong tình duyên.",
+    advice: "Đây là thời điểm tốt cho các vấn đề hôn nhân, gia đạo.",
+    warning: "Hạn chế sự mơ mộng quá mức dẫn đến thất vọng."
   }
 };
 
