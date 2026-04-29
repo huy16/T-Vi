@@ -376,6 +376,8 @@
   font-weight: 700;
   color: var(--text-secondary);
   font-size: 0.72rem;
+  position: relative;
+  top: -6px;
 }
 
 .footer-left { text-align: left; }
