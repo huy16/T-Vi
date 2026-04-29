@@ -339,10 +339,6 @@ const TuViChart = ({ chartData, selectedChi, onCungSelect }) => {
     // of the palace (below the footer text, on the horizontal grid line).
     if (isVerticalLine) {
       topVal = (midR + 1) * 25;
-    } else {
-      // Horizontal boundary marker (centered horizontally in a column)
-      // Shift it down slightly (e.g. +1%) to sit better in the gap and avoid upper palace footer
-      topVal += 1.2;
     }
 
     return {
