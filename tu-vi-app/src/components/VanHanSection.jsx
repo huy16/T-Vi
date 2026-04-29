@@ -182,12 +182,28 @@ const VanHanSection = ({ chartData }) => {
                 </div>
               </>
             ) : (
-              [1, 2, 3, 4, 5].map((num) => (
-                <div key={num} className="vh-list-item ai-shimmer">
-                  <span className="vh-list-num">{num}</span>
-                  <span className="shimmer-line"></span>
+               <>
+                <div className="vh-list-item">
+                  <span className="vh-list-num">1</span>
+                  <span>Giai đoạn Vô Chính Diệu: Năng lượng linh hoạt, không bị gò bó bởi các chính tinh cố định.</span>
                 </div>
-              ))
+                <div className="vh-list-item">
+                  <span className="vh-list-num">2</span>
+                  <span>Cần mượn sức từ các cung tam hợp và đối cung để làm điểm tựa cho các quyết định lớn.</span>
+                </div>
+                <div className="vh-list-item">
+                  <span className="vh-list-num">3</span>
+                  <span>Ưu tiên việc quan sát, lắng nghe và thích nghi thay vì nôn nóng dẫn dắt hay thay đổi đột ngột.</span>
+                </div>
+                <div className="vh-list-item">
+                  <span className="vh-list-num">4</span>
+                  <span>Tập trung vào các phụ tinh tốt trong cung để tìm kiếm cơ hội nhỏ nhưng bền vững.</span>
+                </div>
+                <div className="vh-list-item">
+                  <span className="vh-list-num">5</span>
+                  <span>{hasTieuHanGoodStars ? 'Năm nay có tín hiệu tốt từ Tiểu Hạn, hãy tận dụng để bứt phá.' : 'Giữ tinh thần lạc quan, lấy sự tĩnh lặng và kiên trì làm thế mạnh.'}</span>
+                </div>
+              </>
             )}
           </div>
 
