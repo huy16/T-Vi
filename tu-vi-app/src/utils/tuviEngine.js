@@ -158,7 +158,6 @@ export const lapLaSo = (userInfo) => {
     day = lunar.lunarDay;
     month = lunar.lunarMonth;
     year = lunar.lunarYear;
-    console.log(`[Engine] Đã chuyển DL ${userInfo.solarDay}/${userInfo.solarMonth}/${userInfo.solarYear} → ÂL ${day}/${month}/${year}`);
   }
   
   // 1. Chuyển đổi giờ sinh sang index (Tý=1, Sửu=2, ..., Hợi=12)
@@ -169,7 +168,6 @@ export const lapLaSo = (userInfo) => {
   const hourIndex = hourMapping[hour] || 1; 
 
   const { canIndex, chiIndex: yearChiIndex } = getCanChiYearIndex(year);
-  console.log(`[Engine Debug] Birth Year: ${year}, Can Index: ${canIndex}, Year Chi Index: ${yearChiIndex}`);
 
   // 2. Tìm vị trí Cung Mệnh và Cung Thân
   let monthPos = 2 + (month - 1); 
@@ -228,7 +226,6 @@ export const lapLaSo = (userInfo) => {
 
   // Xác định Âm/Dương của người xem
   const isDuongNam = (canIndex % 2 === 0); // Giáp(0), Bính(2)... là Dương
-  console.log(`Nam/Nữ: ${gender}, canIndex: ${canIndex}, isDuongNam: ${isDuongNam}`);
 
   let isThuan = true;
   let amDuongName = "";
@@ -808,11 +805,9 @@ export const lapLaSo = (userInfo) => {
   let tuan2 = (tuanK_Giap - 2 + 12) % 12;
   // Thay vì push vào saoXau, ta sẽ lưu vị trí để vẽ box trên biên
   const tuanPositions = [tuan1, tuan2];
-  console.log(`[Engine Debug] tuanK_Giap: ${tuanK_Giap}, tuanPositions:`, tuanPositions);
 
   let trietArr = TRIET_MAP[safeMod(canIndex, 5)];
   const trietPositions = trietArr;
-  console.log(`[Engine Debug] trietPositions idx:`, trietPositions);
 
   // 15. TỨ HÓA - Gắn vào Chính Tinh theo Can Năm sinh
   const tuHoaStars = TU_HOA_TABLE[canIndex];

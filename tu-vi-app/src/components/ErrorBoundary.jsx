@@ -6,7 +6,7 @@ class ErrorBoundary extends React.Component {
     this.state = { hasError: false, error: null, errorInfo: null };
   }
 
-  static getDerivedStateFromError(error) {
+  static getDerivedStateFromError() {
     return { hasError: true };
   }
 
@@ -30,7 +30,7 @@ class ErrorBoundary extends React.Component {
         <div style={{ padding: '20px', backgroundColor: '#fee', color: '#900', zIndex: 99999, position: 'relative' }}>
           <h2>CRITICAL REACT RENDER ERROR</h2>
           <pre>{this.state.error && this.state.error.toString()}</pre>
-          <pre>{this.state.componentStack}</pre>
+          <pre>{this.state.errorInfo?.componentStack}</pre>
         </div>
       );
     }

@@ -17,7 +17,7 @@ const findCungByName = (board, name) => {
 export const ConCaiSection = ({ chartData }) => {
   if (!chartData) return null;
   const { board } = chartData;
-  const { cung: tuTuc, chi } = findCungByName(board, 'Tử Tức');
+  const { cung: tuTuc } = findCungByName(board, 'Tử Tức');
   const starTags = getStarBrightnessTags(tuTuc?.saoChinh || []);
   const isVoChinhDieu = starTags.length === 0;
 
@@ -109,10 +109,24 @@ export const ConCaiSection = ({ chartData }) => {
 
 // ===== CÁC GIAI ĐOẠN CUỘC ĐỜI =====
 export const GiaiDoanSection = ({ chartData }) => {
+  const [selectedIdx, setSelectedIdx] = useState(() => {
+    if (!chartData) return 0;
+    const { board, userInfo } = chartData;
+    const solarYear = userInfo.solarYear || userInfo.year;
+    const namXem = userInfo.namXem || new Date().getFullYear();
+    const tuoi = namXem - solarYear + 1;
+    const periods = Object.values(board)
+      .filter(cung => cung.daiHan && typeof cung.daiHan === 'number')
+      .sort((a, b) => a.daiHan - b.daiHan);
+    const currentIdx = periods.findIndex(cung => tuoi >= cung.daiHan && tuoi < cung.daiHan + 10);
+    return currentIdx >= 0 ? currentIdx : 0;
+  });
+
   if (!chartData) return null;
   const { board, userInfo } = chartData;
   const solarYear = userInfo.solarYear || userInfo.year;
-  const tuoi = 2026 - solarYear + 1;
+  const namXem = userInfo.namXem || new Date().getFullYear();
+  const tuoi = namXem - solarYear + 1;
 
   // Collect all đại hạn periods
   const daiHanPeriods = [];
@@ -134,11 +148,6 @@ export const GiaiDoanSection = ({ chartData }) => {
     }
   }
   daiHanPeriods.sort((a, b) => a.startAge - b.startAge);
-
-  const [selectedIdx, setSelectedIdx] = useState(() => {
-    const idx = daiHanPeriods.findIndex(p => p.isCurrent);
-    return idx >= 0 ? idx : 0;
-  });
 
   const selected = daiHanPeriods[selectedIdx];
   if (!selected) return null;
@@ -399,18 +408,18 @@ export const PhongThuySection = ({ chartData }) => {
   // Derive feng shui from Bản Mệnh
   const banMenh = userInfo.banMenhFull?.split(' - ')[0] || 'Kim';
   const HUONG_TOT = {
-    'Kim': ['Tây', 'Tây Bắc', 'Đông', 'Nam'],
-    'Mộc': ['Đông', 'Đông Nam', 'Bắc', 'Nam'],
-    'Thủy': ['Bắc', 'Tây', 'Tây Bắc', 'Đông'],
-    'Hỏa': ['Nam', 'Đông', 'Đông Nam', 'Tây Nam'],
-    'Thổ': ['Tây Nam', 'Đông Bắc', 'Tây', 'Tây Bắc'],
+    'Kim': ['Tây', 'Tây Bắc', 'Tây Nam', 'Đông Bắc'],
+    'Mộc': ['Đông', 'Đông Nam', 'Bắc'],
+    'Thủy': ['Bắc', 'Tây', 'Tây Bắc'],
+    'Hỏa': ['Nam', 'Đông', 'Đông Nam'],
+    'Thổ': ['Tây Nam', 'Đông Bắc', 'Nam'],
   };
   const HUONG_KY = {
-    'Kim': ['Tây Bắc', 'Tây', 'Đông Bắc', 'Tây Nam'],
-    'Mộc': ['Tây', 'Tây Bắc', 'Đông Bắc', 'Tây Nam'],
-    'Thủy': ['Nam', 'Tây Nam', 'Đông Bắc', 'Đông Nam'],
-    'Hỏa': ['Bắc', 'Tây', 'Tây Bắc', 'Đông Bắc'],
-    'Thổ': ['Đông', 'Đông Nam', 'Nam', 'Bắc'],
+    'Kim': ['Nam', 'Đông', 'Đông Nam'],
+    'Mộc': ['Tây', 'Tây Bắc', 'Tây Nam', 'Đông Bắc'],
+    'Thủy': ['Tây Nam', 'Đông Bắc', 'Nam'],
+    'Hỏa': ['Bắc', 'Tây', 'Tây Bắc'],
+    'Thổ': ['Đông', 'Đông Nam', 'Bắc'],
   };
   const MAU_MAY_MAN = {
     'Kim': ['Trắng', 'Vàng', 'Bạc'],
@@ -425,6 +434,21 @@ export const PhongThuySection = ({ chartData }) => {
     'Thủy': [1, 6, 11],
     'Hỏa': [2, 7, 12],
     'Thổ': [5, 10, 15],
+  };
+  const MAU_KY_DESC = {
+    'Kim': 'đỏ, hồng, tím (Hỏa khắc Kim)',
+    'Mộc': 'trắng, bạc, ánh kim (Kim khắc Mộc)',
+    'Thủy': 'vàng, nâu (Thổ khắc Thủy)',
+    'Hỏa': 'đen, xanh dương (Thủy khắc Hỏa)',
+    'Thổ': 'xanh lá (Mộc khắc Thổ)',
+  };
+
+  const MAU_KY = {
+    'Kim': ['Đỏ', 'Hồng', 'Tím'],
+    'Mộc': ['Trắng', 'Bạc', 'Kem'],
+    'Thủy': ['Vàng', 'Nâu'],
+    'Hỏa': ['Đen', 'Xanh dương'],
+    'Thổ': ['Xanh lá'],
   };
 
   const huongTot = HUONG_TOT[banMenh] || ['Đông', 'Nam'];
@@ -469,7 +493,7 @@ export const PhongThuySection = ({ chartData }) => {
           <div className="pill-tags" style={{ marginBottom: '0.5rem' }}>
             {huongTot.map((h, i) => <span key={i} className="pill-tag" style={{ fontSize: '0.72rem' }}>{h}</span>)}
           </div>
-          <p className="summary-card-desc">Hướng {huongTot[0]} và {huongTot[1]} thuộc {banMenh} — hợp mệnh, tăng tài lộc và sức khỏe.</p>
+          <p className="summary-card-desc">Các hướng này mang lại sinh khí và sự hòa hợp cho người mệnh {banMenh}, giúp tăng vận may và tài lộc.</p>
         </div>
         <div className="summary-card" style={{ background: 'var(--color-danger-bg)' }}>
           <div className="summary-card-label" style={{ color: 'var(--color-danger)' }}>✗ HƯỚNG KỴ</div>
@@ -483,7 +507,7 @@ export const PhongThuySection = ({ chartData }) => {
           <div className="pill-tags" style={{ marginBottom: '0.5rem' }}>
             {mauMay.map((m, i) => <span key={i} className="pill-tag" style={{ fontSize: '0.72rem' }}>{m}</span>)}
           </div>
-          <p className="summary-card-desc">{mauMay.join(', ')} — tăng cường bản mệnh. Tránh đỏ, hồng (Hỏa khắc {banMenh}).</p>
+          <p className="summary-card-desc">{mauMay.join(', ')} là màu tương sinh, tương hợp. Nên tránh {MAU_KY_DESC[banMenh] || 'màu xung khắc'}.</p>
         </div>
       </div>
 
@@ -499,8 +523,9 @@ export const PhongThuySection = ({ chartData }) => {
         <div className="content-card">
           <div className="content-card-title">MÀU CẦN TRÁNH</div>
           <div className="pill-tags">
-            <span className="pill-tag" style={{ fontSize: '0.75rem' }}>🔴 Đỏ</span>
-            <span className="pill-tag" style={{ fontSize: '0.75rem' }}>🩷 Hồng</span>
+            {MAU_KY[banMenh]?.map((m, i) => (
+              <span key={i} className="pill-tag" style={{ fontSize: '0.75rem' }}>{m}</span>
+            ))}
           </div>
         </div>
       </div>
@@ -525,7 +550,7 @@ export const ThanSatSection = ({ chartData }) => {
 
   const catPercent = Math.round((totalTot / (totalTot + totalXau)) * 100);
 
-  // Count quý nhân stars
+  // Count qu� nh�n stars
   const quyNhanStars = ['Thiên Khôi', 'Thiên Việt', 'Lộc Tồn', 'Thiên Mã', 'Tả Phù', 'Hữu Bật', 'Văn Xương', 'Văn Khúc'];
   let quyNhanCount = 0;
   const foundQuyNhan = [];
@@ -580,7 +605,7 @@ export const ThanSatSection = ({ chartData }) => {
         Phần luận giải chi tiết từng cát tinh, hung tinh và hướng hóa giải đã được gom vào popup để section này gọn hơn trên trang.
       </p>
 
-      {/* Quý Nhân section */}
+      {/* Qu� Nh�n section */}
       <div style={{ marginTop: '2rem' }}>
         <div className="section-header">
           <div className="section-icon">貴</div>
@@ -597,7 +622,7 @@ export const ThanSatSection = ({ chartData }) => {
               <div className="content-card" style={{ background: 'var(--color-good-bg)', marginBottom: '1rem' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.75rem' }}>
                   <span style={{ fontWeight: 700, color: 'var(--color-good)' }}>{quyNhanCount > 0 ? 'Tốt' : 'Bình thường'}</span>
-                  <span className="pill-tag pill-tag--accent">{quyNhanCount} quý nhân tinh</span>
+                  <span className="pill-tag pill-tag--accent">{quyNhanCount} qu� nh�n tinh</span>
                 </div>
                 <p style={{ fontSize: '0.95rem', fontWeight: 600, color: 'var(--text-heading)', marginBottom: '0.5rem' }}>
                   {qnAnalysis.headline}
@@ -610,7 +635,7 @@ export const ThanSatSection = ({ chartData }) => {
               <div className="summary-cards">
                 <div className="summary-card" style={{ textAlign: 'center' }}>
                   <div style={{ fontSize: '1.8rem', fontWeight: 800, color: 'var(--accent)' }}>{quyNhanCount}</div>
-                  <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Quý nhân</p>
+                  <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Qu� nh�n</p>
                 </div>
                 <div className="summary-card" style={{ textAlign: 'center' }}>
                   <div style={{ fontSize: '1.8rem', fontWeight: 800, color: 'var(--accent)' }}>2</div>
@@ -677,7 +702,7 @@ export const ThanSatSection = ({ chartData }) => {
 export const DienTrachSection = ({ chartData }) => {
   if (!chartData) return null;
   const { board } = chartData;
-  const { cung: dienTrach, chi } = findCungByName(board, 'Điền Trạch');
+  const { cung: dienTrach } = findCungByName(board, 'Điền Trạch');
   const starTags = getStarBrightnessTags(dienTrach?.saoChinh || []);
   const isVoChinhDieu = starTags.length === 0;
 

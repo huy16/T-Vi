@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import ReactMarkdown from 'react-markdown';
 import './ChatBot.css';
-import { startTuViChat, sendMessageStreamWithRAG } from '../utils/geminiService';
+import { startTuViChat, sendMessageStreamWithRAG } from '../utils/hfChatService';
 
 const ChatBot = ({ chartData }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -30,7 +30,6 @@ const ChatBot = ({ chartData }) => {
       if (!chartData) return;
       
       try {
-        console.log("ChatBot: Initializing with chartData...");
         setIsLoading(true);
         const { chatSession: newSession, initialGreeting } = await startTuViChat(chartData);
         setChatSession(newSession);
@@ -41,16 +40,12 @@ const ChatBot = ({ chartData }) => {
         const errorMsg = `Lỗi kết nối: ${err.message || "Không xác định"}. Con hãy kiểm tra lại Token hoặc đợi model khởi động nhé.`;
         setMessages([{ role: 'model', text: errorMsg }]);
       } finally {
-
-
-
-
         setIsLoading(false);
       }
     };
 
     initChat();
-  }, [chartData]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [chartData]);
 
   useEffect(() => {
     scrollToBottom();
@@ -73,12 +68,10 @@ const ChatBot = ({ chartData }) => {
     setMessages(prev => [...prev, { role: 'model', text: '', isStreaming: true }]);
 
     try {
-      let currentFullText = '';
       const streamResult = await sendMessageStreamWithRAG(
         chatSession, 
         userText, 
-        (chunk, fullText) => {
-          currentFullText = fullText;
+        (_chunk, fullText) => {
           setMessages(prev => {
             const newMessages = [...prev];
             newMessages[newMessages.length - 1] = { 
@@ -137,10 +130,6 @@ const ChatBot = ({ chartData }) => {
     }
   };
 
-
-  const handleTopicClick = (topicLabel) => {
-    handleSendMessage(`Thưa Thầy, con muốn hỏi về ${topicLabel} ạ.`);
-  };
 
   const handleResetChat = async () => {
     if (isLoading) return;

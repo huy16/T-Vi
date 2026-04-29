@@ -1,6 +1,5 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import InputForm from '../components/InputForm';
 import TuViChart from '../components/TuViChart';
 
 import TongQuanSection from '../components/TongQuanSection';
@@ -11,22 +10,19 @@ import { ConCaiSection, GiaiDoanSection, VanTrinh12ThangSection, PhongThuySectio
 import ChatBot from '../components/ChatBot';
 import ExportPDF from '../components/ExportPDF';
 import { useAuth } from '../contexts/AuthContext';
-import { supabase } from '../utils/supabaseClient';
 import SidebarLogin from '../components/SidebarLogin';
 
 const Home = () => {
-  const [chartData, setChartData] = useState(null);
+  const location = useLocation();
+  const [chartData] = useState(() => location.state?.chartData || null);
   const [selectedChi, setSelectedChi] = useState(null);
   
   const { user } = useAuth();
   const navigate = useNavigate();
-  const location = useLocation();
 
-  // Load chart from Dashboard if passed via router state
+  // Clear route state after loading a chart from Dashboard/Auth.
   useEffect(() => {
     if (location.state && location.state.chartData) {
-      setChartData(location.state.chartData);
-      // Clear state so refresh doesn't keep it forever
       window.history.replaceState({}, document.title);
     }
   }, [location]);

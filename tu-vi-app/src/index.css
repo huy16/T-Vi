@@ -567,9 +567,9 @@ h6 {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 100vh; /* Cá»‘ Ä‘á»‹nh chiá»u cao 100vh Ä‘á»ƒ cÃ¢n giá»¯a tuyá»‡t Ä‘á»‘i */
+  height: 100vh; /* Cố định chiều cao 100vh để cân giữa tuyệt đối */
   width: 100vw;
-  overflow: hidden; /* NgÄƒn cháº·n scrollbar toÃ n trang */
+  overflow: hidden; /* Ngăn chặn scrollbar toàn trang */
   position: relative;
 }
 
@@ -788,7 +788,7 @@ h6 {
   line-height: 1.5;
 }
 
-/* ===== ACTION CARDS (NÃŠN/Cáº¦N TRÃNH) ===== */
+/* ===== ACTION CARDS (NÊN/CẦN TRÁNH) ===== */
 .action-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -900,7 +900,7 @@ h6 {
   line-height: 1.5;
 }
 
-/* ===== NHáº¬P Láº I BUTTON ===== */
+/* ===== NHẬP LẠI BUTTON ===== */
 .nhap-lai-btn {
   display: inline-flex;
   align-items: center;
@@ -954,11 +954,11 @@ h6 {
 @keyframes fadeInAuth {
   from {
     opacity: 0;
-    transform: translateY(20px) scale(0.85); /* Khá»Ÿi Ä‘áº§u hÆ¡i nhá» hÆ¡n vÃ  tháº¥p hÆ¡n */
+    transform: translateY(20px) scale(0.85); /* Khởi đầu hơi nhỏ hơn và thấp hơn */
   }
   to {
     opacity: 1;
-    transform: translateY(0) scale(0.88); /* Káº¿t thÃºc Ä‘Ãºng tá»· lá»‡ scale mong muá»‘n */
+    transform: translateY(0) scale(0.88); /* Kết thúc đúng tỷ lệ scale mong muốn */
   }
 }
 

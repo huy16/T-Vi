@@ -1,5 +1,5 @@
 /**
- * Hugging Face Inference API Service (Mistral Version)
+ * Hugging Face Inference API chat service (Mistral).
  */
 
 import { searchRelevantContext, formatRAGContext } from './ragService';
@@ -7,10 +7,6 @@ import { ENV_FALLBACK } from './envFallback';
 
 // Thử lấy token từ nhiều nguồn khác nhau
 let hfToken = import.meta.env.VITE_HF_TOKEN || ENV_FALLBACK.VITE_HF_TOKEN;
-
-// Ghi nhật ký để debug (chỉ ghi 4 ký tự đầu)
-console.log("HF Token status:", hfToken ? `Found (${hfToken.substring(0, 4)}...)` : "Not found");
-
 
 const MODEL_ID = "mistralai/Mistral-7B-Instruct-v0.2";
 
@@ -41,9 +37,9 @@ export const sendMessageStreamWithRAG = async (chatSession, userMessage, onChunk
     Câu hỏi: ${userMessage}
     Hãy luận giải sâu sắc và trích dẫn sách. Cuối câu hãy gợi ý 3 câu hỏi tiếp theo theo định dạng:
     [GỢI Ý]
-    - Câu 1?
-    - Câu 2?
-    - Câu 3? [/INST]`;
+    - C?u 1?
+    - C?u 2?
+    - C?u 3? [/INST]`;
 
     const fullResponse = await callHFAPI(fullPrompt);
     

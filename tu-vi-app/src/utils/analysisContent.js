@@ -260,7 +260,7 @@ export const DEFAULT_TONG_QUAN = {
 };
 
 // ===== SỰ NGHIỆP & NGHỀ PHÙ HỢP =====
-export const getCareerAnalysis = (quanLocData, menhData, chartData) => {
+export const getCareerAnalysis = (quanLocData) => {
   const saoChinh = quanLocData?.saoChinh || [];
   const saoTot = quanLocData?.saoTot || [];
   const saoXau = quanLocData?.saoXau || [];
@@ -344,7 +344,7 @@ export const getCareerAnalysis = (quanLocData, menhData, chartData) => {
 };
 
 // ===== TÌNH DUYÊN =====
-export const getLoveAnalysis = (phuTheData, menhData, chartData) => {
+export const getLoveAnalysis = (phuTheData) => {
   const saoChinh = phuTheData?.saoChinh || [];
   const saoTot = phuTheData?.saoTot || [];
   const saoXau = phuTheData?.saoXau || [];
@@ -409,7 +409,7 @@ export const getLoveAnalysis = (phuTheData, menhData, chartData) => {
 };
 
 // ===== TÀI LỘC =====
-export const getWealthAnalysis = (taiBachData, menhData, chartData) => {
+export const getWealthAnalysis = (taiBachData) => {
   const saoChinh = taiBachData?.saoChinh || [];
   const saoTot = taiBachData?.saoTot || [];
   const saoXau = taiBachData?.saoXau || [];
@@ -471,7 +471,7 @@ export const getWealthAnalysis = (taiBachData, menhData, chartData) => {
 };
 
 // ===== SỨC KHỎE =====
-export const getHealthAnalysis = (tatAchData, menhData, chartData) => {
+export const getHealthAnalysis = (tatAchData) => {
   const saoChinh = tatAchData?.saoChinh || [];
   const saoTot = tatAchData?.saoTot || [];
   const saoXau = tatAchData?.saoXau || [];

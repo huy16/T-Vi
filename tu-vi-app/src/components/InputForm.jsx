@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useRef, useEffect } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import './InputForm.css';
 import { solarToLunar } from '../utils/lunarCalendar';
 
@@ -28,27 +28,13 @@ const QUAN_HE = [
   { value: 'ly_hon', label: 'Ly thân / Ly hôn', icon: null },
 ];
 
+const CURRENT_YEAR = new Date().getFullYear();
+
 /* ===== Helper: tính Can Chi năm ===== */
 function canChiNam(year) {
   const canIdx = (year + 6) % 10;
   const chiIdx = (year + 8) % 12;
   return `${CAN[canIdx]} ${CHI[chiIdx]}`;
-}
-
-/* ===== Helper: xác định giờ Chi từ hour ===== */
-function getGioChiFromHour(h) {
-  if (h >= 23 || h < 1) return GIO_CHI[0];
-  if (h < 3)  return GIO_CHI[1];
-  if (h < 5)  return GIO_CHI[2];
-  if (h < 7)  return GIO_CHI[3];
-  if (h < 9)  return GIO_CHI[4];
-  if (h < 11) return GIO_CHI[5];
-  if (h < 13) return GIO_CHI[6];
-  if (h < 15) return GIO_CHI[7];
-  if (h < 17) return GIO_CHI[8];
-  if (h < 19) return GIO_CHI[9];
-  if (h < 21) return GIO_CHI[10];
-  return GIO_CHI[11];
 }
 
 /* ===================================================================== */
@@ -61,12 +47,10 @@ const InputForm = ({ onSubmit }) => {
   const [month, setMonth] = useState('05');
   const [year, setYear] = useState('2000');
   const [gender, setGender] = useState('Nam');
-  const [hour, setHour] = useState('02');
-  const [minute, setMinute] = useState('00');
   const [selectedGioChi, setSelectedGioChi] = useState(GIO_CHI[1]); // Sửu by default
-  const [unknownTime, setUnknownTime] = useState(false);
-  const [isLunar, setIsLunar] = useState(false);
-  const [viewYear, setViewYear] = useState('2026');
+  const unknownTime = false;
+  const isLunar = false;
+  const [viewYear, setViewYear] = useState(String(CURRENT_YEAR));
   const [viewMonth, setViewMonth] = useState('3');
   const [quanHe, setQuanHe] = useState('hen_ho');
 
@@ -78,28 +62,19 @@ const InputForm = ({ onSubmit }) => {
   const [showQuanHeDropdown, setShowQuanHeDropdown] = useState(false);
   const [showViewMonthDropdown, setShowViewMonthDropdown] = useState(false);
 
-  // Lunar conversion
-  const [lunarInfo, setLunarInfo] = useState(null);
-
-  // Refs for click-outside
-  const gioDropdownRef = useRef(null);
-  const quanHeDropdownRef = useRef(null);
-
   // Auto-convert solar to lunar
-  useEffect(() => {
+  const lunarInfo = useMemo(() => {
     const d = parseInt(day) || 1;
     const m = parseInt(month) || 1;
     const y = parseInt(year) || 2000;
     if (y >= 1900 && y <= 2100 && m >= 1 && m <= 12 && d >= 1 && d <= 31) {
       try {
-        const lunar = solarToLunar(d, m, y);
-        setLunarInfo(lunar);
+        return solarToLunar(d, m, y);
       } catch {
-        setLunarInfo(null);
+        return null;
       }
-    } else {
-      setLunarInfo(null);
     }
+    return null;
   }, [day, month, year]);
 
   /* Auto-detect removed for simplified UI */
@@ -153,7 +128,7 @@ const InputForm = ({ onSubmit }) => {
       solarDay,
       solarMonth,
       solarYear,
-      namXem: parseInt(viewYear) || 2026,
+      namXem: parseInt(viewYear) || CURRENT_YEAR,
       thangXem: parseInt(viewMonth) || 1,
       isLunar,
       quanHe,
@@ -236,7 +211,7 @@ const InputForm = ({ onSubmit }) => {
                   </button>
                   {showYearDropdown && (
                     <div className="dropdown-menu dropdown-menu--date dropdown-menu--year">
-                      {Array.from({ length: 121 }, (_, i) => 2026 - i).map(y => (
+                      {Array.from({ length: 121 }, (_, i) => CURRENT_YEAR - i).map(y => (
                         <button key={y} type="button" className="dropdown-item" onClick={() => { setYear(String(y)); setShowYearDropdown(false); }}>
                           {y}
                         </button>
@@ -306,7 +281,6 @@ const InputForm = ({ onSubmit }) => {
                       className={`dropdown-item ${selectedGioChi.key === g.key ? 'selected' : ''}`}
                       onClick={() => {
                         setSelectedGioChi(g);
-                        setHour(g.range.split(':')[0]);
                         setShowZodiacDropdown(false);
                       }}
                     >
@@ -333,7 +307,7 @@ const InputForm = ({ onSubmit }) => {
               className="form-input form-input--center" 
               value={viewYear} 
               onChange={(e) => setViewYear(e.target.value.replace(/\D/g, ''))}
-              placeholder="2026"
+              placeholder={String(CURRENT_YEAR)}
             />
           </div>
           <div className="form-section">

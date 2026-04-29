@@ -9,13 +9,13 @@ export const STAR_IMAGES = {
   'Thiên Đồng': '/images/stars/thien_dong.png',
   'Liêm Trinh': '/images/stars/liem_trinh.png',
   'Thiên Phủ': '/images/stars/thien_phu.png',
-  'Thái Âm': '/images/stars/thai_am.png',
+  'Th�i �m': '/images/stars/thai_am.png',
   'Tham Lang': '/images/stars/tham_lang.png',
   'Cự Môn': '/images/stars/cu_mon.png',
   'Thiên Tướng': '/images/stars/thien_tuong.png',
   'Thiên Lương': '/images/stars/thien_luong.png',
   'Thất Sát': '/images/stars/that_sat.png',
-  'Phá Quân': '/images/stars/pha_quan.png',
+  'Ph� Qu�n': '/images/stars/pha_quan.png',
 };
 
 // Fallback image for cung with no main star (Vô Chính Diệu)

@@ -315,7 +315,7 @@
 
 .star-tooltip {
   visibility: hidden;
-  position: fixed;
+  position: absolute;
   background: var(--text-heading);
   color: #fff;
   padding: 8px 12px;
@@ -336,6 +336,12 @@
 .star-tooltip--visible {
   visibility: visible;
   opacity: 1;
+}
+
+.tooltip-label-wrapper {
+  position: relative;
+  display: inline-block;
+  cursor: help;
 }
 
 /* ===== NGŨ HÀNH COLORS ===== */

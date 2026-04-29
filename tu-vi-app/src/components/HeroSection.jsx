@@ -4,7 +4,6 @@ import './HeroSection.css';
 const HeroSection = ({ chartData }) => {
   const { userInfo } = chartData;
   const genderLabel = userInfo.gender === 'Nam' ? 'Nam' : 'Nữ';
-  const genderSuffix = userInfo.gender === 'Nam' ? 'NAM PHÁI' : 'NỮ PHÁI';
   const solarDate = `${String(userInfo.solarDay || userInfo.day).padStart(2, '0')}/${String(userInfo.solarMonth || userInfo.month).padStart(2, '0')}/${userInfo.solarYear || userInfo.year}`;
 
   return (

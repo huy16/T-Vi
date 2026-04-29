@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback } from 'react';
 import { supabase } from '../utils/supabaseClient';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
@@ -18,37 +18,13 @@ const QUOTES = [
 ];
 
 const AuthPage = () => {
-  const [loading, setLoading] = useState(false);
-  const [errorMsg, setErrorMsg] = useState('');
-  const [currentQuote, setCurrentQuote] = useState("");
+  const [currentQuote] = useState(() => QUOTES[Math.floor(Math.random() * QUOTES.length)]);
   
   const [isLoadingChart, setIsLoadingChart] = useState(false);
   const [pendingData, setPendingData] = useState(null);
 
   const navigate = useNavigate();
   const { user } = useAuth();
-
-  // Pick a random quote on mount
-  useEffect(() => {
-    const randomIndex = Math.floor(Math.random() * QUOTES.length);
-    setCurrentQuote(QUOTES[randomIndex]);
-  }, []);
-
-  const handleGoogleLogin = async () => {
-    try {
-      setLoading(true);
-      const { error } = await supabase.auth.signInWithOAuth({
-        provider: 'google',
-        options: {
-          redirectTo: `${window.location.origin}/auth` 
-        }
-      });
-      if (error) throw error;
-    } catch (error) {
-      setErrorMsg(error.message);
-      setLoading(false);
-    }
-  };
 
   const handleFormSubmit = useCallback(async (data) => {
     try {

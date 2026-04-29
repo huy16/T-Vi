@@ -39,12 +39,14 @@ const StarItem = ({ name, type }) => {
   const meaning = STAR_DICTIONARY[cleanName];
 
   const handleMouseEnter = useCallback((e) => {
-    setTooltipPos({ x: e.clientX, y: e.clientY });
+    const rect = e.currentTarget.getBoundingClientRect();
+    setTooltipPos({ x: e.clientX - rect.left, y: e.clientY - rect.top });
     setShowTooltip(true);
   }, []);
 
   const handleMouseMove = useCallback((e) => {
-    setTooltipPos({ x: e.clientX, y: e.clientY });
+    const rect = e.currentTarget.getBoundingClientRect();
+    setTooltipPos({ x: e.clientX - rect.left, y: e.clientY - rect.top });
   }, []);
 
   const handleMouseLeave = useCallback(() => {
@@ -85,12 +87,14 @@ const TooltipLabel = ({ text, className }) => {
   const meaning = STAR_DICTIONARY[cleanName] || (text.startsWith('ĐV.') ? STAR_DICTIONARY['Đại Vận'] : (text.startsWith('LN.') ? STAR_DICTIONARY['Lưu Niên'] : null));
 
   const handleMouseEnter = useCallback((e) => {
-    setTooltipPos({ x: e.clientX, y: e.clientY });
+    const rect = e.currentTarget.getBoundingClientRect();
+    setTooltipPos({ x: e.clientX - rect.left, y: e.clientY - rect.top });
     setShowTooltip(true);
   }, []);
 
   const handleMouseMove = useCallback((e) => {
-    setTooltipPos({ x: e.clientX, y: e.clientY });
+    const rect = e.currentTarget.getBoundingClientRect();
+    setTooltipPos({ x: e.clientX - rect.left, y: e.clientY - rect.top });
   }, []);
 
   const handleMouseLeave = useCallback(() => {
@@ -116,6 +120,10 @@ const TooltipLabel = ({ text, className }) => {
     </div>
   );
 };
+
+const normalizeDisplayText = (text = '') => text
+  .replace(/Th[?�]n/g, 'Thân')
+  .replace(/TH[?�]N/g, 'THÂN');
 
 const Cung = ({ isCenter, data, onClick, isActive }) => {
   if (isCenter) {
@@ -172,8 +180,9 @@ const Cung = ({ isCenter, data, onClick, isActive }) => {
 
   if (!data) return null;
 
-  const isThan = data.tenCung.includes("/ Thân");
-  const tenCungHienThi = data.tenCung.split(" /")[0].toUpperCase();
+  const normalizedTenCung = normalizeDisplayText(data.tenCung);
+  const isThan = normalizedTenCung.includes("/ Thân");
+  const tenCungHienThi = normalizedTenCung.split(" /")[0].toUpperCase();
   const canChi = data.canChi || "";
   const nguHanhLabel = CHI_NGU_HANH[data.chi] || 'Thổ';
 
@@ -245,9 +254,6 @@ const BoundaryMarker = ({ type, position }) => {
 };
 
 const TuViChart = ({ chartData, selectedChi, onCungSelect }) => {
-  if (!chartData) return null;
-  const { board, userInfo } = chartData;
-
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
 
   useEffect(() => {
@@ -255,6 +261,9 @@ const TuViChart = ({ chartData, selectedChi, onCungSelect }) => {
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
+
+  if (!chartData) return null;
+  const { board, userInfo } = chartData;
 
   const handleCungClick = (cungData) => {
     if (onCungSelect && cungData) {
@@ -287,7 +296,7 @@ const TuViChart = ({ chartData, selectedChi, onCungSelect }) => {
 
     return (
       <svg className="connections-overlay">
-        {targets.map((targetChi, index) => {
+        {targets.map((targetChi) => {
            const endObj = getCenterCoord(targetChi);
            return (
              <line 

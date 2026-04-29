@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './LuanGiai12Cung.css';
-import { CUNG_ICONS, CUNG_DESCRIPTIONS, getStarBrightnessTags } from '../utils/analysisContent';
+import { CUNG_DESCRIPTIONS, getStarBrightnessTags } from '../utils/analysisContent';
 import { STAR_INFO, getMainStarFromCung } from '../utils/starImages';
 
 const CUNG_ORDER = ['Mệnh', 'Phụ Mẫu', 'Phúc Đức', 'Điền Trạch', 'Quan Lộc', 'Nô Bộc', 'Thiên Di', 'Tật Ách', 'Tài Bạch', 'Tử Tức', 'Phu Thê', 'Huynh Đệ'];
@@ -21,10 +21,8 @@ const PALACE_IMAGE_MAP = {
 };
 
 const CungCard = ({ cungName, cungData, onSelect, className }) => {
-  const icon = CUNG_ICONS[cungName] || '☰';
   const description = CUNG_DESCRIPTIONS[cungName] || '';
   const starTags = getStarBrightnessTags(cungData?.saoChinh || []);
-  const isVoChinhDieu = starTags.length === 0;
   
   // Lấy tên chính tinh và thông tin bổ trợ
   const mainStar = getMainStarFromCung(cungData?.saoChinh);

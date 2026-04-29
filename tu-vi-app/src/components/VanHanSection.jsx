@@ -10,14 +10,15 @@ const VanHanSection = ({ chartData }) => {
 
   // Find current tieuHan and daiVan positions
   const solarYear = userInfo.solarYear || userInfo.year;
-  const tuoi = 2026 - solarYear + 1;
+  const namXem = userInfo.namXem || new Date().getFullYear();
+  const tuoi = namXem - solarYear + 1;
 
   // Find cung that has the current Tiểu Hạn (empty tieuHan means it's not highlighted)
   let tieuHanCung = null;
   let tieuHanChi = null;
   for (const chi of Object.keys(board)) {
     const cung = board[chi];
-    // The cung that contains the year 2026's Tiểu Hạn
+    // The cung that contains the selected year's Tiểu Hạn
     if (cung.tieuHan === 'Th.1' || !tieuHanCung) {
       // We need to find the cung where LN.MỆNH is
       if (cung.luuNien === 'LN.MỆNH') {
@@ -46,18 +47,8 @@ const VanHanSection = ({ chartData }) => {
   const tieuHanStars = getStarBrightnessTags(tieuHanCung?.saoChinh || []);
   const daiHanStars = getStarBrightnessTags(daiHanCung?.saoChinh || []);
   
-  // Lấy thêm các sao phụ nếu không có sao chính để luận giải
-  const allDaiHanStars = [
-    ...(daiHanCung?.saoChinh || []),
-    ...(daiHanCung?.saoTot || []),
-    ...(daiHanCung?.saoXau || [])
-  ];
-
   const tieuHanCungName = tieuHanCung?.tenCung?.split(' /')[0]?.split(' <')[0]?.trim() || 'Chưa xác định';
   const daiHanCungName = daiHanCung?.tenCung?.split(' /')[0]?.split(' <')[0]?.trim() || 'Chưa xác định';
-
-  console.log("Debug - Dai Han Cung:", daiHanCungName);
-  console.log("Debug - Stars found:", allDaiHanStars);
 
 
   // Simple analysis based on stars
@@ -92,7 +83,7 @@ const VanHanSection = ({ chartData }) => {
              <div className="vh-badge-text">TỔNG QUAN GIAI ĐOẠN</div>
           </div>
           <div className="vh-overview-meta">
-            {tuoi} tuổi • Giai đoạn {daiHanRange} • Năm 2026.
+            {tuoi} tuổi • Giai đoạn {daiHanRange} • Năm {namXem}.
           </div>
           
           <h3 className="vh-overview-title">
@@ -204,7 +195,7 @@ const VanHanSection = ({ chartData }) => {
                 {tieuHanRating}
               </span>
             </div>
-            <p className="vh-han-meta">Năm 2026 • Cung {tieuHanCungName} ({tieuHanChi})</p>
+            <p className="vh-han-meta">Năm {namXem} • Cung {tieuHanCungName} ({tieuHanChi})</p>
             <div className="vh-han-stars">
               {tieuHanStars.map((s, i) => (
                 <span key={i} className="pill-tag">{s.name}</span>
@@ -214,7 +205,7 @@ const VanHanSection = ({ chartData }) => {
 
             <div className="vh-han-note">
               <div className="content-card-title">ĐIỂM ĐÁNG CHÚ Ý</div>
-              <p>Tiểu hạn {tieuHanStars.length > 0 ? `nhiều biến động — Năm 2026, ${tieuHanStars[0].name}.` : 'cần xem tam hợp chiếu.'}</p>
+              <p>Tiểu hạn {tieuHanStars.length > 0 ? `nhiều biến động — Năm ${namXem}, ${tieuHanStars[0].name}.` : 'cần xem tam hợp chiếu.'}</p>
             </div>
 
             <div className="action-grid">
@@ -234,7 +225,7 @@ const VanHanSection = ({ chartData }) => {
             </div>
 
             <div className="link-arrow" style={{ marginTop: '1rem' }}>
-              <span>XEM PHÂN TÍCH SÂU</span>
+              <span>XEM PH�N T�CH S�U</span>
               <span>→</span>
             </div>
           </div>
@@ -284,7 +275,7 @@ const VanHanSection = ({ chartData }) => {
             </div>
 
             <div className="link-arrow" style={{ marginTop: '1rem' }}>
-              <span>XEM PHÂN TÍCH SÂU</span>
+              <span>XEM PH�N T�CH S�U</span>
               <span>→</span>
             </div>
           </div>

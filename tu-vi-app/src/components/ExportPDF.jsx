@@ -55,14 +55,9 @@ const ExportPDF = ({ chartData }) => {
           windowWidth: 1200
         });
 
-        // Use JPEG instead of PNG to drastically reduce PDF size (90% quality)
-        const imgData = canvas.toDataURL('image/jpeg', 0.9);
         const imgWidth = canvas.width;
         const imgHeight = canvas.height;
-        const ratio = contentWidth / imgWidth;
-        const scaledHeight = imgHeight * ratio;
 
-        // Check if section fits on current page
         const hasForcedBreak = section.classList.contains('luangiai-section') || 
                                section.classList.contains('tongquan-section') ||
                                section.classList.contains('vanhan-section') ||
@@ -77,18 +72,59 @@ const ExportPDF = ({ chartData }) => {
                                section.classList.contains('monthly-section') ||
                                section.classList.contains('stars-analysis-section');
 
-        if (currentY + scaledHeight > maxPageHeight || (hasForcedBreak && i > 0)) {
-          // Add footer before moving to new page
-          addFooter(pdf, currentPage, pdfWidth, pdfHeight, margin);
-          
-          pdf.addPage();
-          currentPage++;
-          currentY = margin;
-        }
+        // --- NEW: ADVANCED IMAGE SPLITTING LOGIC ---
+        let imgRemainingHeight = imgHeight;
+        let imgCurrentY = 0; // Current Y position in the SOURCE image (in pixels)
 
-        // Add image to PDF as JPEG
-        pdf.addImage(imgData, 'JPEG', margin, currentY, contentWidth, scaledHeight);
-        currentY += scaledHeight + 10;
+        while (imgRemainingHeight > 0) {
+            const ratio = contentWidth / imgWidth;
+            const availablePageHeight = maxPageHeight - currentY;
+            
+            // How many pixels of the source image can we fit in the remaining space?
+            let pixelsToFit = availablePageHeight / ratio;
+            
+            // If we are at the start of a section and it can't even fit 20% of a page, 
+            // or it's a forced break section, move to a new page first
+            if (imgCurrentY === 0 && (pixelsToFit < imgHeight * 0.2 || (hasForcedBreak && currentY > margin + 20))) {
+                addFooter(pdf, currentPage, pdfWidth, pdfHeight, margin);
+                pdf.addPage();
+                currentPage++;
+                currentY = margin;
+                pixelsToFit = (maxPageHeight - currentY) / ratio;
+            }
+
+            // Determine how much we will actually take in this step
+            const srcHeightToTake = Math.min(imgRemainingHeight, pixelsToFit);
+            const targetHeight = srcHeightToTake * ratio;
+
+            // Create a temporary canvas to crop the image
+            const tempCanvas = document.createElement('canvas');
+            tempCanvas.width = imgWidth;
+            tempCanvas.height = srcHeightToTake;
+            const ctx = tempCanvas.getContext('2d');
+            
+            // drawImage(image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight)
+            ctx.drawImage(canvas, 0, imgCurrentY, imgWidth, srcHeightToTake, 0, 0, imgWidth, srcHeightToTake);
+            
+            const croppedImgData = tempCanvas.toDataURL('image/jpeg', 0.9);
+            
+            pdf.addImage(croppedImgData, 'JPEG', margin, currentY, contentWidth, targetHeight, undefined, 'FAST');
+
+            imgRemainingHeight -= srcHeightToTake;
+            imgCurrentY += srcHeightToTake;
+            currentY += targetHeight;
+
+            // If we still have image left, it means we hit the bottom of the page
+            if (imgRemainingHeight > 0) {
+                addFooter(pdf, currentPage, pdfWidth, pdfHeight, margin);
+                pdf.addPage();
+                currentPage++;
+                currentY = margin;
+            } else {
+                currentY += 10; // Padding after the section finishes
+            }
+        }
+        // --- END SPLITTING LOGIC ---
 
         setProgress(15 + Math.round(((i + 1) / totalSteps) * 75));
       }
@@ -132,7 +168,7 @@ const ExportPDF = ({ chartData }) => {
       // Offset text by logo size + small gap
       pdf.text(`MENH THU DAI SU - LA SO TU VI`, margin + logoSize + 2, height - 8);
       pdf.text(`Trang ${pageNum}`, width - margin, height - 8, { align: 'right' });
-    } catch (e) {
+    } catch {
       // Fallback if logo fails
       pdf.setFontSize(8.5);
       pdf.setTextColor(179, 145, 88);

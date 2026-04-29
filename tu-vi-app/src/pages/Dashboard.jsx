@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { supabase } from '../utils/supabaseClient';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
@@ -16,9 +16,9 @@ const Dashboard = () => {
       return;
     }
     fetchCharts();
-  }, [user, navigate]);
+  }, [user, navigate, fetchCharts]);
 
-  const fetchCharts = async () => {
+  const fetchCharts = useCallback(async () => {
     try {
       const { data, error } = await supabase
         .from('charts')
@@ -33,7 +33,7 @@ const Dashboard = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [user]);
 
   const handleSignOut = async () => {
     await supabase.auth.signOut();
