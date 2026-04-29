@@ -72,7 +72,8 @@
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   grid-template-rows: repeat(4, minmax(170px, auto));
-  gap: 0px;
+  gap: 8px; /* Thêm khoảng trống giữa các cung */
+  padding: 8px;
   background: var(--bg-section);
   border: 1px solid var(--border-card);
   border-radius: var(--radius-md);
@@ -376,8 +377,6 @@
   font-weight: 700;
   color: var(--text-secondary);
   font-size: 0.72rem;
-  position: relative;
-  top: -6px;
 }
 
 .footer-left { text-align: left; }
