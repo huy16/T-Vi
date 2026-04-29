@@ -40,3 +40,8 @@
 .detail-section .content-card strong {
   font-weight: 600;
 }
+
+/* Layout 2 cột cho các hàng chỉ có 2 card */
+.summary-cards--2 {
+  grid-template-columns: repeat(2, 1fr) !important;
+}

@@ -66,7 +66,7 @@ export const SuNghiepSection = ({ chartData }) => {
         </div>
       </div>
 
-      <div className="summary-cards" style={{ marginTop: '1rem' }}>
+      <div className="summary-cards summary-cards--2" style={{ marginTop: '1rem' }}>
         <div className="summary-card" style={{ background: 'var(--color-good-bg)' }}>
           <div className="summary-card-label" style={{ color: 'var(--color-good)' }}>TRỢ LỰC SỰ NGHIỆP</div>
           <div className="summary-card-value">{quanLoc?.saoTot?.length || 0} Trợ Tinh</div>
@@ -143,19 +143,20 @@ export const TinhDuyenSection = ({ chartData }) => {
         <p>Tình yêu với bạn không chỉ là chuyện hợp hay không hợp.</p>
       </div>
 
-      <div className="summary-cards">
-        <div className="summary-card" style={{ background: 'var(--bg-accent-soft)' }}>
+      <div className="summary-cards summary-cards--2" style={{ alignItems: 'stretch' }}>
+        <div className="summary-card" style={{ background: 'var(--bg-accent-soft)', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
           <div className="summary-card-label" style={{ color: 'var(--accent)' }}>TRẠNG THÁI TÌNH DUYÊN</div>
           <div className="summary-card-value">{analysis.status}</div>
+          <p className="summary-card-desc">Theo lá số Tử Vi</p>
         </div>
-        <div className="summary-card" style={{ background: 'var(--color-info-bg)' }}>
+        <div className="summary-card" style={{ background: 'var(--color-info-bg)', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
           <div className="summary-card-label" style={{ color: 'var(--color-info)' }}>ẢNH HƯỞNG CHÍNH</div>
           <div className="summary-card-value">{starTags[0]?.name || 'Vô Chính Diệu'}</div>
           <p className="summary-card-desc">Tọa ở Phu Thê</p>
         </div>
       </div>
 
-      <div className="summary-cards" style={{ marginTop: '1rem' }}>
+      <div className="summary-cards summary-cards--2" style={{ marginTop: '1rem' }}>
         <div className="summary-card" style={{ background: 'var(--color-good-bg)' }}>
           <div className="summary-card-label" style={{ color: 'var(--color-good)' }}>YẾU TỐ HÒA HỢP</div>
           <div className="summary-card-value">{phuThe?.saoTot?.length || 0} Trợ Tinh</div>
