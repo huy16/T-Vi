@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './VanHanSection.css';
 import { getStarBrightnessTags } from '../utils/analysisContent';
 import { getStarMeaning } from '../utils/starDictionary';
 
 
 const VanHanSection = ({ chartData }) => {
+  const [showTieuHanDetail, setShowTieuHanDetail] = useState(false);
+  const [showDaiHanDetail, setShowDaiHanDetail] = useState(false);
+
   if (!chartData) return null;
   const { board, userInfo } = chartData;
 
@@ -61,6 +64,30 @@ const VanHanSection = ({ chartData }) => {
 
   const tieuHanRating = hasTieuHanGoodStars ? 'Chọn lọc' : 'Cần thận trọng';
   const daiHanRating = hasDaiHanGoodStars ? 'Khá thuận' : 'Bình hòa';
+
+  const getCleanStarName = (name) => name ? name.replace(/^(L\.)+/, '') : '';
+
+  const tieuHanMainStar = tieuHanStars.length > 0 ? tieuHanStars[0].name : null;
+  const tieuHanBadStar = tieuHanCung?.saoXau?.length > 0 ? tieuHanCung.saoXau[0] : null;
+
+  const tieuHanAdvice = tieuHanMainStar 
+    ? (getStarMeaning(getCleanStarName(tieuHanMainStar))?.advice || `Bồi đắp năng lượng cho bộ sao ${tieuHanMainStar}.`) 
+    : 'Giữ tâm thế bình tĩnh, quan sát thời cuộc.';
+
+  const tieuHanWarning = tieuHanBadStar 
+    ? (getStarMeaning(getCleanStarName(tieuHanBadStar))?.warning || `Lưu ý các tác động từ ${tieuHanBadStar}.`) 
+    : 'Tránh quyết định vội vàng trong đầu tư.';
+
+  const daiHanMainStar = daiHanStars.length > 0 ? daiHanStars[0].name : null;
+  const daiHanBadStar = daiHanCung?.saoXau?.length > 0 ? daiHanCung.saoXau[0] : null;
+
+  const daiHanAdvice = daiHanMainStar
+    ? (getStarMeaning(getCleanStarName(daiHanMainStar))?.advice || `Phát huy sức mạnh của ${daiHanMainStar} tại cung ${daiHanCungName}.`)
+    : 'Xây dựng nền tảng vững chắc cho tương lai.';
+
+  const daiHanWarning = daiHanBadStar
+    ? (getStarMeaning(getCleanStarName(daiHanBadStar))?.warning || `Cẩn trọng hạn từ ${daiHanBadStar}.`)
+    : 'Hạn chế thay đổi công việc đột ngột.';
 
   return (
     <section className="result-section result-section--wide vanhan-section">
@@ -212,22 +239,42 @@ const VanHanSection = ({ chartData }) => {
               <div className="action-card action-card--good">
                 <div className="action-card-label">NÊN ƯU TIÊN</div>
                 <p className="action-card-text">
-                  {tieuHanStars.length > 0 ? `Bồi đắp năng lượng cho bộ sao ${tieuHanStars[0].name}.` : 'Giữ tâm thế bình tĩnh, quan sát thời cuộc.'}
+                  {tieuHanAdvice}
                 </p>
               </div>
               <div className="action-card action-card--warning">
                 <div className="action-card-label">CẦN TRÁNH</div>
                 <p className="action-card-text">
-                  {tieuHanCung?.saoXau?.length > 0 ? `Lưu ý các tác động từ ${tieuHanCung.saoXau[0]}.` : 'Tránh quyết định vội vàng trong đầu tư.'}
+                  {tieuHanWarning}
                 </p>
               </div>
 
             </div>
 
-            <div className="link-arrow" style={{ marginTop: '1rem' }}>
-              <span>XEM PH�N T�CH S�U</span>
-              <span>→</span>
+            <div 
+              className="link-arrow" 
+              style={{ marginTop: '1rem', cursor: 'pointer' }}
+              onClick={() => setShowTieuHanDetail(!showTieuHanDetail)}
+            >
+              <span>{showTieuHanDetail ? 'THU GỌN PHÂN TÍCH' : 'XEM PHÂN TÍCH SÂU'}</span>
+              <span>{showTieuHanDetail ? '↑' : '→'}</span>
             </div>
+
+            {showTieuHanDetail && (
+              <div className="vh-han-detailed-analysis animate-fade-in" style={{ marginTop: '1rem', paddingTop: '1rem', borderTop: '1px solid var(--border-color)', fontSize: '0.9rem', color: 'var(--text-secondary)' }}>
+                <div style={{ marginBottom: '0.8rem' }}><strong>Luận giải chi tiết các sao trong Tiểu Hạn:</strong></div>
+                {tieuHanCung?.saoChinh?.concat(tieuHanCung?.saoTot || [], tieuHanCung?.saoXau || []).filter(Boolean).map((sao, idx) => {
+                  const meaning = getStarMeaning(getCleanStarName(sao));
+                  if (!meaning) return null;
+                  return (
+                    <div key={idx} style={{ marginBottom: '0.8rem', lineHeight: '1.5' }}>
+                      <span style={{ color: 'var(--accent)', fontWeight: 'bold' }}>{getCleanStarName(sao)}: </span>
+                      <span>{meaning.overview}</span>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
           </div>
         </div>
 
@@ -262,22 +309,42 @@ const VanHanSection = ({ chartData }) => {
               <div className="action-card action-card--good">
                 <div className="action-card-label">NÊN ƯU TIÊN</div>
                 <p className="action-card-text">
-                  {daiHanStars.length > 0 ? `Phát huy sức mạnh của ${daiHanStars[0].name} tại cung ${daiHanCungName}.` : 'Xây dựng nền tảng vững chắc cho tương lai.'}
+                  {daiHanAdvice}
                 </p>
               </div>
               <div className="action-card action-card--warning">
                 <div className="action-card-label">CẦN TRÁNH</div>
                 <p className="action-card-text">
-                  {daiHanCung?.saoXau?.length > 0 ? `Cẩn trọng hạn từ ${daiHanCung.saoXau[0]}.` : 'Hạn chế thay đổi công việc đột ngột.'}
+                  {daiHanWarning}
                 </p>
               </div>
 
             </div>
 
-            <div className="link-arrow" style={{ marginTop: '1rem' }}>
-              <span>XEM PH�N T�CH S�U</span>
-              <span>→</span>
+            <div 
+              className="link-arrow" 
+              style={{ marginTop: '1rem', cursor: 'pointer' }}
+              onClick={() => setShowDaiHanDetail(!showDaiHanDetail)}
+            >
+              <span>{showDaiHanDetail ? 'THU GỌN PHÂN TÍCH' : 'XEM PHÂN TÍCH SÂU'}</span>
+              <span>{showDaiHanDetail ? '↑' : '→'}</span>
             </div>
+
+            {showDaiHanDetail && (
+              <div className="vh-han-detailed-analysis animate-fade-in" style={{ marginTop: '1rem', paddingTop: '1rem', borderTop: '1px solid var(--border-color)', fontSize: '0.9rem', color: 'var(--text-secondary)' }}>
+                <div style={{ marginBottom: '0.8rem' }}><strong>Luận giải chi tiết các sao trong Đại Vận:</strong></div>
+                {daiHanCung?.saoChinh?.concat(daiHanCung?.saoTot || [], daiHanCung?.saoXau || []).filter(Boolean).map((sao, idx) => {
+                  const meaning = getStarMeaning(getCleanStarName(sao));
+                  if (!meaning) return null;
+                  return (
+                    <div key={idx} style={{ marginBottom: '0.8rem', lineHeight: '1.5' }}>
+                      <span style={{ color: 'var(--accent)', fontWeight: 'bold' }}>{getCleanStarName(sao)}: </span>
+                      <span>{meaning.overview}</span>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
           </div>
         </div>
       </div>

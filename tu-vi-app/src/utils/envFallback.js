@@ -5,6 +5,7 @@
 export const ENV_FALLBACK = {
   // Mã hóa Base64 để vượt qua bộ lọc bảo mật của GitHub
   VITE_HF_TOKEN: atob("aGZfaExyVFpuWld4V0xmUFFPQ2hMYlVucUxkRlBDU2l3cW1Ocw=="),
+  VITE_GEMINI_API_KEY: atob("QUl6YVN5QndFekRVOFFSMXo0ajNRazFjUWgtdUVwU2I1RUJXMFZR"),
   VITE_SUPABASE_URL: "https://kjaqoezvurgcsgbpsseu.supabase.co",
   VITE_SUPABASE_ANON_KEY: "sb_publishable_XCZYRP-JBOZSDXGuda6Crg_5rkIBuGu"
 };

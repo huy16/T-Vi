@@ -4,14 +4,24 @@
  */
 
 import { supabase } from './supabaseClient';
+import { ENV_FALLBACK } from './envFallback';
 
-const GEMINI_API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
+const getGeminiToken = () => {
+  return localStorage.getItem('GEMINI_API_KEY') || import.meta.env.VITE_GEMINI_API_KEY || ENV_FALLBACK.VITE_GEMINI_API_KEY;
+};
+
 const EMBEDDING_MODEL = 'gemini-embedding-001';
 
 /**
  * Generate embedding vector for a query text using Gemini API.
  */
 async function generateEmbedding(text) {
+  const GEMINI_API_KEY = getGeminiToken();
+  if (!GEMINI_API_KEY) {
+    console.warn('RAG: Missing Gemini API Key');
+    return null;
+  }
+
   const response = await fetch(
     `https://generativelanguage.googleapis.com/v1beta/models/${EMBEDDING_MODEL}:embedContent?key=${GEMINI_API_KEY}`,
     {

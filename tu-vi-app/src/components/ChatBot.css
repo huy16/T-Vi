@@ -115,7 +115,7 @@
 }
 
 .chatbot-btn-refresh:hover {
-  transform: rotate(180deg);
+  opacity: 0.7;
 }
 
 .chatbot-header-right button:hover {

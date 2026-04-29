@@ -1,7 +1,7 @@
 import React from 'react';
 import './DetailSections.css';
 import { getCareerAnalysis, getLoveAnalysis, getWealthAnalysis, getHealthAnalysis, getStarBrightnessTags } from '../utils/analysisContent';
-
+import { getStarMeaning } from '../utils/starDictionary';
 // ===== HELPER: find cung by name =====
 const findCungByName = (board, name) => {
   for (const chi of Object.keys(board)) {
@@ -49,25 +49,60 @@ export const SuNghiepSection = ({ chartData }) => {
 
       {/* 3 summary cards */}
       <div className="summary-cards">
-        <div className="summary-card">
-          <div className="summary-card-label">MÔ HÌNH HỢP</div>
+        <div className="summary-card" style={{ background: 'var(--color-info-bg)' }}>
+          <div className="summary-card-label" style={{ color: 'var(--color-info)' }}>MÔ HÌNH HỢP</div>
           <div className="summary-card-value">{analysis.model}</div>
           <p className="summary-card-desc">{analysis.modelDesc}</p>
         </div>
-        <div className="summary-card">
-          <div className="summary-card-label">HƯỚNG HỢP</div>
+        <div className="summary-card" style={{ background: 'var(--bg-accent-soft)' }}>
+          <div className="summary-card-label" style={{ color: 'var(--accent)' }}>HƯỚNG HỢP</div>
           <div className="summary-card-value">{starTags.length > 0 ? starTags[0].name : 'Linh hoạt'}</div>
           <p className="summary-card-desc">{starTags.length > 0 ? `${starTags[0].name} (${starTags[0].label || 'Tọa'}) tại Quan Lộc.` : 'Cung vô chính diệu.'}</p>
         </div>
-        <div className="summary-card">
-          <div className="summary-card-label">THẾ LỰC</div>
+        <div className="summary-card" style={{ background: 'var(--color-warning-bg)' }}>
+          <div className="summary-card-label" style={{ color: 'var(--color-warning)' }}>THẾ LỰC</div>
           <div className="summary-card-value">{analysis.isStrong ? 'Lực tự thân mạnh' : 'Phụ thuộc tam hợp'}</div>
           <p className="summary-card-desc">{analysis.isStrong ? 'Chính tinh miếu vượng' : 'Cần mượn thế lực bên ngoài'}</p>
         </div>
       </div>
 
+      <div className="summary-cards" style={{ marginTop: '1rem' }}>
+        <div className="summary-card" style={{ background: 'var(--color-good-bg)' }}>
+          <div className="summary-card-label" style={{ color: 'var(--color-good)' }}>TRỢ LỰC SỰ NGHIỆP</div>
+          <div className="summary-card-value">{quanLoc?.saoTot?.length || 0} Trợ Tinh</div>
+          <div style={{ marginTop: '0.75rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+            {quanLoc?.saoTot?.slice(0, 3).map((s, i) => {
+              const cleanName = s.replace(/^(L\.)+/, '').split(' (')[0].trim();
+              const meaning = getStarMeaning(cleanName);
+              return (
+                <div key={i}>
+                  <strong style={{ fontSize: '0.85rem', color: 'var(--color-good)' }}>{s}:</strong>
+                  <span style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', marginLeft: '4px' }}>{meaning ? meaning.overview : 'Mang lại cơ hội và thăng tiến.'}</span>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+        <div className="summary-card" style={{ background: 'var(--color-danger-bg)' }}>
+          <div className="summary-card-label" style={{ color: 'var(--color-danger)' }}>CẢN TRỞ & THỬ THÁCH</div>
+          <div className="summary-card-value">{quanLoc?.saoXau?.length || 0} Sát Tinh</div>
+          <div style={{ marginTop: '0.75rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+            {quanLoc?.saoXau?.slice(0, 3).map((s, i) => {
+              const cleanName = s.replace(/^(L\.)+/, '').split(' (')[0].trim();
+              const meaning = getStarMeaning(cleanName);
+              return (
+                <div key={i}>
+                  <strong style={{ fontSize: '0.85rem', color: 'var(--color-danger)' }}>{s}:</strong>
+                  <span style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', marginLeft: '4px' }}>{meaning ? meaning.overview : 'Gây áp lực, thử thách trong công việc.'}</span>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+
       {/* Detail text */}
-      <div className="content-card">
+      <div className="content-card" style={{ marginTop: '1rem' }}>
         <p><strong style={{ color: 'var(--accent)' }}>Điểm Tựa Sự Nghiệp:</strong> {analysis.diemManhNghe}</p>
         <p style={{ marginTop: '0.75rem' }}><strong style={{ color: 'var(--color-warning)' }}>Rủi Ro Cần Tránh:</strong> {analysis.diemCanGiu}</p>
         <p style={{ marginTop: '0.75rem' }}><strong style={{ color: 'var(--color-good)' }}>Chiến Lược Hành Động:</strong> {analysis.nuocDi}</p>
@@ -109,18 +144,53 @@ export const TinhDuyenSection = ({ chartData }) => {
       </div>
 
       <div className="summary-cards">
-        <div className="summary-card">
-          <div className="summary-card-label">TRẠNG THÁI TÌNH DUYÊN</div>
+        <div className="summary-card" style={{ background: 'var(--bg-accent-soft)' }}>
+          <div className="summary-card-label" style={{ color: 'var(--accent)' }}>TRẠNG THÁI TÌNH DUYÊN</div>
           <div className="summary-card-value">{analysis.status}</div>
         </div>
-        <div className="summary-card">
-          <div className="summary-card-label">ẢNH HƯỞNG CHÍNH</div>
+        <div className="summary-card" style={{ background: 'var(--color-info-bg)' }}>
+          <div className="summary-card-label" style={{ color: 'var(--color-info)' }}>ẢNH HƯỞNG CHÍNH</div>
           <div className="summary-card-value">{starTags[0]?.name || 'Vô Chính Diệu'}</div>
           <p className="summary-card-desc">Tọa ở Phu Thê</p>
         </div>
       </div>
 
-      <div className="content-card">
+      <div className="summary-cards" style={{ marginTop: '1rem' }}>
+        <div className="summary-card" style={{ background: 'var(--color-good-bg)' }}>
+          <div className="summary-card-label" style={{ color: 'var(--color-good)' }}>YẾU TỐ HÒA HỢP</div>
+          <div className="summary-card-value">{phuThe?.saoTot?.length || 0} Trợ Tinh</div>
+          <div style={{ marginTop: '0.75rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+            {phuThe?.saoTot?.slice(0, 3).map((s, i) => {
+              const cleanName = s.replace(/^(L\.)+/, '').split(' (')[0].trim();
+              const meaning = getStarMeaning(cleanName);
+              return (
+                <div key={i}>
+                  <strong style={{ fontSize: '0.85rem', color: 'var(--color-good)' }}>{s}:</strong>
+                  <span style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', marginLeft: '4px' }}>{meaning ? meaning.overview : 'Thúc đẩy tình cảm gắn kết.'}</span>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+        <div className="summary-card" style={{ background: 'var(--color-danger-bg)' }}>
+          <div className="summary-card-label" style={{ color: 'var(--color-danger)' }}>YẾU TỐ XUNG KHẮC</div>
+          <div className="summary-card-value">{phuThe?.saoXau?.length || 0} Sát Tinh</div>
+          <div style={{ marginTop: '0.75rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+            {phuThe?.saoXau?.slice(0, 3).map((s, i) => {
+              const cleanName = s.replace(/^(L\.)+/, '').split(' (')[0].trim();
+              const meaning = getStarMeaning(cleanName);
+              return (
+                <div key={i}>
+                  <strong style={{ fontSize: '0.85rem', color: 'var(--color-danger)' }}>{s}:</strong>
+                  <span style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', marginLeft: '4px' }}>{meaning ? meaning.overview : 'Dễ gây hiểu lầm, xa cách.'}</span>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+
+      <div className="content-card" style={{ marginTop: '1rem' }}>
         <p><strong style={{ color: 'var(--accent)' }}>Điểm hợp:</strong> {analysis.diemHop}</p>
         <p style={{ marginTop: '0.75rem' }}><strong style={{ color: 'var(--color-warning)' }}>Dễ lệch nhịp:</strong> {analysis.deLechNhip}</p>
         <p style={{ marginTop: '0.75rem' }}><strong style={{ color: 'var(--color-good)' }}>Nguyên tắc nên giữ:</strong> {analysis.nguyenTac}</p>
@@ -225,37 +295,37 @@ export const SucKhoeSection = ({ chartData }) => {
       </div>
 
       <div className="summary-cards">
-        <div className="summary-card">
-          <div className="summary-card-label">BẢN CHẤT THỂ KHÍ</div>
+        <div className="summary-card" style={{ background: 'var(--color-info-bg)' }}>
+          <div className="summary-card-label" style={{ color: 'var(--color-info)' }}>BẢN CHẤT THỂ KHÍ</div>
           <div className="summary-card-value">{analysis.theKhi}</div>
           <p className="summary-card-desc">Nhịp điệu sinh học cơ bản của khung mệnh.</p>
         </div>
-        <div className="summary-card">
-          <div className="summary-card-label">CƠ QUAN THEO DÕI</div>
+        <div className="summary-card" style={{ background: 'var(--color-warning-bg)' }}>
+          <div className="summary-card-label" style={{ color: 'var(--color-warning)' }}>CƠ QUAN THEO DÕI</div>
           <div className="summary-card-value">{analysis.coQuan}</div>
           <p className="summary-card-desc">Đặc biệt bảo vệ và theo dõi định kỳ theo chính tinh.</p>
         </div>
-        <div className="summary-card">
-          <div className="summary-card-label">ÁP LỰC NGẦM</div>
+        <div className="summary-card" style={{ background: 'var(--color-danger-bg)' }}>
+          <div className="summary-card-label" style={{ color: 'var(--color-danger)' }}>ÁP LỰC NGẦM</div>
           <div className="summary-card-value">{analysis.stress}</div>
           <p className="summary-card-desc">Căn nguyên phá hoại sức khỏe từ môi trường.</p>
         </div>
       </div>
 
       <div className="summary-cards" style={{ marginTop: '1rem' }}>
-        <div className="summary-card">
-          <div className="summary-card-label">NƠI NÊN CANH</div>
+        <div className="summary-card" style={{ background: 'var(--color-danger-bg)' }}>
+          <div className="summary-card-label" style={{ color: 'var(--color-danger)' }}>NƠI NÊN CANH</div>
           <div className="summary-card-value">{analysis.noiCanCanh}</div>
           <p className="summary-card-desc">{analysis.noiCanCanhDesc}</p>
           <p className="summary-card-desc" style={{ marginTop: '0.5rem' }}>Luôn duy trì theo dõi định kỳ.</p>
         </div>
-        <div className="summary-card">
-          <div className="summary-card-label">LUẬT NHÂN QUẢ SỨC KHỎE</div>
+        <div className="summary-card" style={{ background: 'var(--bg-accent-soft)' }}>
+          <div className="summary-card-label" style={{ color: 'var(--accent)' }}>LUẬT NHÂN QUẢ SỨC KHỎE</div>
           <div className="summary-card-value">{analysis.lichGiu}</div>
           <p className="summary-card-desc">{analysis.lichGiuDesc}</p>
         </div>
-        <div className="summary-card">
-          <div className="summary-card-label">CỦA HỒI LẠI</div>
+        <div className="summary-card" style={{ background: 'var(--color-good-bg)' }}>
+          <div className="summary-card-label" style={{ color: 'var(--color-good)' }}>CỦA HỒI LẠI</div>
           <div className="summary-card-value">{analysis.cuaHoiLai}</div>
           <p className="summary-card-desc">{analysis.cuaHoiLaiDesc}</p>
         </div>

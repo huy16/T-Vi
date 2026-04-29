@@ -466,6 +466,11 @@ export const STAR_DICTIONARY = {
     advice: "Nên biến nỗi buồn thành động lực sáng tạo hoặc hoạt động nghệ thuật.",
     warning: "Tránh sự u sầu quá mức ảnh hưởng đến sức khỏe."
   },
+  "Thiên Hư": {
+    overview: "Chủ về sự hư hao, dối trá, buồn phiền rỗng tuếch hoặc sức khỏe suy nhược.",
+    advice: "Nên sống thực tế, bồi dưỡng thể chất và tránh xa những thứ phù phiếm.",
+    warning: "Cẩn thận bị lừa gạt hoặc hao tốn tiền bạc vô ích."
+  },
   "Thiên Trù": {
     overview: "Chủ về lộc ăn uống, tài nấu nướng hoặc bổng lộc thực tế.",
     advice: "Tốt cho việc kinh doanh ẩm thực hoặc tận hưởng các cuộc vui tiệc tùng.",

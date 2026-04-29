@@ -25,7 +25,7 @@ export const CUNG_DESCRIPTIONS = {
   'Tài Bạch': 'Dòng tiền nuôi mệnh – cách kiếm tiền, giữ tiền và tích lũy cho đường dài',
   'Tử Tức': 'Đường con cái và truyền thừa – nhịp duyên con, cách nuôi dạy và kết nối gia đình',
   'Phu Thê': 'Bức tranh hôn nhân – kiểu gắn bó, điểm dễ va chạm và cách đồng hành với nhau',
-  'Huynh Đệ': 'Sợi dây huyết thống – mức độ gắn bó, hỗ trợ và ranh giới giữa tình và tiền',
+  'Huynh Đệ': 'Sợi dây huyết thống – mức độ gắn bó, hỗ trợ và ranhới giữa tình và tiền',
 };
 
 // ===== TỔNG QUAN VẬN MỆNH THEO CHÍNH TINH TẠI MỆNH =====
@@ -115,7 +115,7 @@ export const MENH_TONG_QUAN = {
     socialStyle: 'Biết cách giao tiếp để đạt mục đích, luôn giữ một khoảng cách an toàn.',
     stressResponse: 'Tìm cách kiểm soát tình huống ngầm, hiếm khi cho ai thấy mình đang khó khăn.',
     careers: ['Luật sư', 'Quản lý nhân sự', 'Chính trị', 'Nghệ thuật biểu diễn'],
-    growth: ['Sống thật hơn với bản thân', 'Giảm bo cảm xúc phức tạp', 'Chọn đường thẳng thay vì đường vòng'],
+    growth: ['Sống thật hơn với bản thân', 'Giảm bớt cảm xúc phức tạp', 'Chọn đường thẳng thay vì đường vòng'],
     diemManh: 'Xoay chuyển tình huống bất kỳ nhờ sự tinh tế và nhạy bén.',
     diemCanCanh: 'Đôi khi chính sự khéo léo lại khiến người khác không tin.',
     nenChot: 'Đặt minh bạch lên đầu, dù khó hơn nhưng bền vững.',
@@ -287,7 +287,7 @@ export const getCareerAnalysis = (quanLocData) => {
   const career = careerModels[topStar] || { model: 'Linh hoạt', desc: 'Cung Quan Lộc vô chính diệu, nên sự nghiệp thường mượn hướng từ cung Phu Thê hoặc dựa vào dòng đời xô đẩy.' };
 
   // Generate logical dynamic text based on Combinatorics
-  let diemManh = "Sự nghiệp phát triển đều đặn nhờ năng lực cốt lõi bề vững. Làm việc có độ tin cậy cao.";
+  let diemManh = "Sự nghiệp phát triển đều đặn nhờ năng lực cốt lõi bền vững. Làm việc có độ tin cậy cao.";
   let diemCanGiu = "Chưa có rủi ro lớn hiện diện trên cung này, nhưng cần tự nhắc nhở tránh sự tự mãn khi công việc thái bình.";
   let nuocDi = "Duy trì nhịp làm việc hiện tại, mở rộng mối quan hệ và luôn có kế hoạch dự phòng.";
   let subline = "Sự nghiệp là nơi phản chiếu cách bạn làm việc và tạo giá trị thực tế ra xã hội.";
@@ -324,7 +324,7 @@ export const getCareerAnalysis = (quanLocData) => {
 
   // Brightness analysis
   const brightnessTags = saoChinh.map(s => {
-    const match = s.match(/\(([MVĐHB])\)$/);
+    const match = s.match(/\(([MVĐHB]\)$)/);
     return match ? match[1] : null;
   }).filter(Boolean);
   const isVuong = brightnessTags.some(b => ['M', 'V', 'Đ'].includes(b));
@@ -350,52 +350,79 @@ export const getLoveAnalysis = (phuTheData) => {
   const saoXau = phuTheData?.saoXau || [];
   const cleanStars = saoChinh.map(s => s.replace(/\s\([MVĐHB]\)$/, ''));
   const topStar = cleanStars[0] || '';
-
-  const loveProfiles = {
-    'Tham Lang': { status: 'Duyên đa tình', headline: 'Duyên đến chậm không phải để lỡ, mà để lọc người sai trước khi gặp người đúng.' },
-    'Thiên Cơ': { status: 'Duyên tinh tế', headline: 'Chọn người hiểu cái nết của mình quan trọng hơn vạn lời thề non hẹn biển.' },
-    'Tử Vi': { status: 'Duyên cao', headline: 'Yêu thì chọn kén, kết giao với người ngang tầm hoặc xuất chúng hơn bộ quy chuẩn của mình.' },
-    'Thiên Đồng': { status: 'Duyên trẻ con', headline: 'Tình yêu tìm kiếm sự hồn nhiên, vui vẻ, không dính líu đến tranh giành mệt mỏi.' },
-    'Vũ Khúc': { status: 'Duyên muộn', headline: 'Vũ Khúc cô quả, tiền bạc ổn định tình duyên mới thực sự viên mãn thăng hoa.' },
-    'Thái Dương': { status: 'Duyên rộng rực rỡ', headline: 'Bề ngoài hào nhoáng, thích sự cho đi, nhưng có khi lóa mắt chọn lầm đối tượng.' },
-    'Thái Âm': { status: 'Duyên sâu kín', headline: 'Yêu chuộng sự nhẹ nhàng lãng mạn, nhạy cảm cần sự chở che thấu hiểu vô ngôn.' },
-    'Cự Môn': { status: 'Duyên khắc khẩu', headline: 'Vợ chồng hay bất đồng quan điểm, cần hạ cái tôi xuống mới giữ được nhà.' },
-    'Thất Sát': { status: 'Duyên chớp nhoáng', headline: 'Yêu nhanh, cưới vội, tình cảm đứt rễ hay mặn nồng đều phụ thuộc vào cách nhường nhịn.' },
-    'Thiên Lương': { status: 'Duyên tiền định', headline: 'Lấy người đôi khi lớn tuổi hơn, có thể lo toan cho mình như một người thầy.' },
-  };
-
-  const profile = loveProfiles[topStar] || { status: 'Duyên tùy thời', headline: 'Tình duyên chịu ảnh hưởng từ tam hợp, nên học cách chủ động tạo cơ hội.' };
-
-  // Logic kết hợp Phụ tinh
-  let diemHop = "Tình yêu đến từ sự đồng điệu tự nhiên, biết nhường nhịn và đồng hành lớn lên cùng nhau.";
-  let deLechNhip = "Dễ nhạt nhòa nếu thiếu sự hâm nóng thường xuyên từ hai phía, yêu theo kiểu trả bài rập khuôn.";
-  let nguyenTac = "Duy trì giao tiếp chân thành và chia sẻ kỳ vọng ngay từ đầu để không sinh thất vọng ẩn.";
-
   const textTot = saoTot.map(s => s.replace(/^L\./, ''));
   const textXau = saoXau.map(s => s.replace(/^L\./, ''));
 
+  const loveProfiles = {
+    'Tham Lang': { status: 'Duyên đa tình', headline: 'Tham Lang tại Phu Thê thường mang đến một người bạn đời thông minh, khéo léo nhưng cũng đầy tham vọng và đào hoa.' },
+    'Thiên Cơ': { status: 'Duyên tinh tế', headline: 'Thiên Cơ chủ sự hiền lành, người phối ngẫu thường có tư duy nhanh nhạy, đôi khi hơi kỹ tính hoặc hay lo xa.' },
+    'Tử Vi': { status: 'Duyên cao quý', headline: 'Tử Vi tọa thủ Phu Thê thường lấy được người có danh giá, có trách nhiệm và luôn muốn làm chủ gia đình.' },
+    'Thiên Đồng': { status: 'Duyên hỷ lạc', headline: 'Thiên Đồng chủ sự thay đổi, tình cảm ban đầu hay lận đận nhưng về sau lại rất tình cảm và gắn bó.' },
+    'Vũ Khúc': { status: 'Duyên muộn màng', headline: 'Vũ Khúc là cô tinh, chủ về sự cô đơn hoặc lấy nhau muộn thì mới bền vững, người phối ngẫu thường giỏi kiếm tiền.' },
+    'Thái Dương': { status: 'Duyên rạng rỡ', headline: 'Thái Dương mang lại người bạn đời thẳng thắn, hào sảng, có uy tín xã hội nhưng cái tôi đôi khi quá lớn.' },
+    'Thái Âm': { status: 'Duyên lãng mạn', headline: 'Thái Âm chủ sự dịu dàng, người phối ngẫu thường đảm đang, biết quan tâm và có tâm hồn nghệ sĩ.' },
+    'Cự Môn': { status: 'Duyên khắc khẩu', headline: 'Cự Môn chủ thị phi, vợ chồng dễ có những bất đồng quan điểm ẩn sâu, cần sự thấu hiểu qua lời nói.' },
+    'Thất Sát': { status: 'Duyên quyết liệt', headline: 'Thất Sát chủ sự nhanh chóng, tình cảm thường đến bất ngờ, mạnh mẽ nhưng cũng dễ nảy sinh va chạm.' },
+    'Thiên Lương': { status: 'Duyên ấm áp', headline: 'Thiên Lương là phúc tinh, vợ chồng thường coi nhau như tri kỷ, có sự bao dung và che chở lớn.' },
+    'Phá Quân': { status: 'Duyên biến động', headline: 'Phá Quân chủ sự đổi mới, hôn nhân thường trải qua những bước ngoặt lớn hoặc sự khác biệt về lối sống.' },
+    'Thiên Tướng': { status: 'Duyên chính trực', headline: 'Thiên Tướng mang lại người phối ngẫu tận tâm, chính trực, luôn hết lòng chăm lo cho tổ ấm.' },
+    'Thiên Phủ': { status: 'Duyên bền vững', headline: 'Thiên Phủ chủ sự bao dung, vợ chồng thường có sự ổn định về kinh tế và gắn kết sâu sắc.' },
+    'Liêm Trinh': { status: 'Duyên nồng nhiệt', headline: 'Liêm Trinh chủ sự tinh tế và quyền biến, tình cảm thường mang sắc thái sâu đậm, đôi khi hơi ghen tuông.' },
+  };
+
+  const profile = loveProfiles[topStar] || { status: 'Duyên tùy thời', headline: 'Cung Phu Thê vô chính diệu, tình duyên thường chịu ảnh hưởng mạnh từ cung xung chiếu và tam hợp.' };
+
+  let hopPoints = [];
+  let lechPoints = [];
+  let advicePoints = [];
+
   if (textTot.includes('Đào Hoa') || textTot.includes('Hồng Loan')) {
-    diemHop = "Sức hút người khác giới bẩm sinh cực kỳ cao, tình duyên đến rất gắt và rực rỡ, đi đâu cũng có ánh nhìn theo.";
-  } else if (textTot.includes('Ân Quang') || textTot.includes('Thiên Quý')) {
-    diemHop = "Vợ chồng đến với nhau vì 'cái ân cái nghĩa' sâu nặng. Lấy nhau rồi gia đạo rất hạnh phúc, thủy chung bảo bọc.";
-  } else if (textTot.includes('Hóa Lộc')) {
-    diemHop = "Vợ/chồng mang lại dòng tiền rất tốt, kết hôn xong thì vượng lộc, làm ăn khấm khá lên trông thấy.";
+    hopPoints.push("Hôn nhân mang tính lãng mạn, người bạn đời có sức hút lớn và ngoại hình ưa nhìn.");
+  }
+  if (textTot.includes('Ân Quang') || textTot.includes('Thiên Quý')) {
+    hopPoints.push("Vợ chồng có ân nghĩa sâu nặng, đến với nhau bằng sự trân trọng và thủy chung.");
+  }
+  if (textTot.includes('Thiên Khôi') || textTot.includes('Thiên Việt')) {
+    hopPoints.push("Người phối ngẫu là con trưởng hoặc mang tính cách dẫn dắt, có vị thế trong xã hội.");
+  }
+  if (textTot.includes('Văn Xương') || textTot.includes('Văn Khúc')) {
+    hopPoints.push("Vợ chồng có sự đồng điệu về tâm hồn và tri thức, lối sống thanh cao, tinh tế.");
+  }
+  if (textTot.includes('Tả Phù') || textTot.includes('Hữu Bật')) {
+    hopPoints.push("Được người thân hai bên ủng hộ, vợ chồng hỗ trợ nhau rất tốt trong công việc.");
+  }
+  if (textTot.includes('Hóa Lộc') || textTot.includes('Lộc Tồn')) {
+    hopPoints.push("Kết hôn xong tài vận hanh thông, người phối ngẫu mang lại may mắn về tiền bạc.");
   }
 
   if (textXau.includes('Cô Thần') || textXau.includes('Quả Tú')) {
-    deLechNhip = "Cung phu thê có Cô – Quả, bên trong luôn có một cảm giác cô độc vô hình. Dù ở cạnh nhau đôi khi vẫn thấy người kia không hiểu thấu lòng mình.";
-    nguyenTac = "Tuyệt đối không nên cưới quá sớm (trước 28-30). Đừng ép đối phương phải tự đọc được mọi suy nghĩ của mình.";
-  } else if (textXau.includes('Đà La') || textXau.includes('Hóa Kỵ')) {
-    deLechNhip = "Hay xảy ra chiến tranh lạnh, khắc khẩu cộc cằn, nghi ngờ vô cớ. Tình cảm dễ bị bên thứ ba hoặc lời đồn đại bên ngoài làm chao đảo.";
-    nguyenTac = "Phải tập thói quen nói thẳng vấn đề ra. Miệng có Hóa Kỵ thì nên kiềm lời chê bai bạn đời.";
+    lechPoints.push("Dễ có cảm giác cô độc ngay trong chính cuộc hôn nhân của mình, khó chia sẻ tâm tư.");
   }
-  
-  // Tuần Triệt logic
+  if (textXau.includes('Địa Không') || textXau.includes('Địa Kiếp')) {
+    lechPoints.push("Tình cảm dễ gặp những biến cố bất ngờ hoặc sự can thiệp từ những yếu tố khách quan không lường trước.");
+  }
+  if (textXau.includes('Kình Dương') || textXau.includes('Đà La')) {
+    lechPoints.push("Vợ chồng hay xảy ra tranh cãi, cái tôi quá mạnh dễ gây ra tổn thương bằng lời nói hoặc hành động.");
+  }
+  if (textXau.includes('Hỏa Tinh') || textXau.includes('Linh Tinh')) {
+    lechPoints.push("Tính cách người bạn đời nóng nảy, tình cảm có lúc nồng cháy nhưng cũng dễ bùng nổ xung đột.");
+  }
+  if (textXau.includes('Hóa Kỵ')) {
+    lechPoints.push("Dễ nảy sinh nghi kỵ, thiếu tin tưởng hoặc gặp điều tiếng không hay từ bên ngoài tác động.");
+  }
+  if (textXau.includes('Thiên Hình')) {
+    lechPoints.push("Mối quan hệ có phần cứng nhắc, thiếu sự mềm mại hoặc dễ gặp các vấn đề liên quan đến pháp lý, thủ tục.");
+  }
+
   if (textXau.includes('Tuần') || textXau.includes('Triệt')) {
     profile.status = "Duyên trắc trở ban đầu";
-    profile.headline = "Tuần/Triệt đóng cung Phu Thê: tình duyên đoạn đầu dễ muộn màng lỡ dở, phải trải qua vấp ngã vỡ mộng mới gắn kết bền lâu.";
-    nguyenTac = "Cưới muộn hẳn, hoặc kết duyên với người đã qua một lần đò, sống xa quê, yêu xa sẽ hóa giải được phần lớn nghịch cảnh đổ vỡ.";
+    lechPoints.push("Hôn nhân ban đầu thường bị ngăn trở hoặc lỡ dở, cần sự kiên trì vượt qua rào cản.");
+    advicePoints.push("Nên kết hôn muộn (sau 30 tuổi) hoặc sống xa quê hương sẽ giúp giảm bớt xung kích của Tuần Triệt.");
   }
+
+  const diemHop = hopPoints.length > 0 ? hopPoints.join(' ') : "Tình cảm phát triển dựa trên sự ổn định và trách nhiệm chung.";
+  const deLechNhip = lechPoints.length > 0 ? lechPoints.join(' ') : "Đôi khi thiếu đi sự hâm nóng cảm xúc khiến mối quan hệ trở nên rập khuôn.";
+  const nguyenTac = advicePoints.length > 0 ? advicePoints.join(' ') : "Duy trì sự minh bạch trong giao tiếp và trân trọng những giá trị cốt lõi của người bạn đời.";
 
   return {
     stars: saoChinh,
@@ -417,7 +444,7 @@ export const getWealthAnalysis = (taiBachData) => {
   const topStar = cleanStars[0] || '';
 
   const brightnessTags = saoChinh.map(s => {
-    const match = s.match(/\(([MVĐHB])\)$/);
+    const match = s.match(/\(([MVĐHB]\)$)/);
     return match ? match[1] : null;
   }).filter(Boolean);
   const isStrong = brightnessTags.some(b => ['M', 'V', 'Đ'].includes(b));
@@ -551,6 +578,7 @@ export const getStarBrightnessTags = (saoChinh) => {
     return { name: s, brightness: null, label: null };
   });
 };
+
 // ===== QUÝ NHÂN PHÙ HỘ =====
 export const getQuyNhanAnalysis = (foundQuyNhan = []) => {
   const contexts = {

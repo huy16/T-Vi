@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import './AdvancedSections.css';
 import { getStarBrightnessTags, CUNG_ICONS, getQuyNhanAnalysis } from '../utils/analysisContent';
 import { CHI_NGU_HANH } from '../utils/tuviEngine';
+import { getStarMeaning } from '../utils/starDictionary';
 
 // ===== HELPER =====
 const findCungByName = (board, name) => {
@@ -65,18 +66,18 @@ export const ConCaiSection = ({ chartData }) => {
       </div>
 
       <div className="summary-cards">
-        <div className="summary-card">
-          <div className="summary-card-label">NỀN CUNG</div>
+        <div className="summary-card" style={{ background: 'var(--color-info-bg)' }}>
+          <div className="summary-card-label" style={{ color: 'var(--color-info)' }}>NỀN CUNG</div>
           <div className="summary-card-value">{nenCung}</div>
           <p className="summary-card-desc">{hasGoodStars ? 'Nhiều phúc lộc từ con cái' : 'Con cái tự lập tự cường'}</p>
         </div>
-        <div className="summary-card">
-          <div className="summary-card-label">KHÍ CHẤT NỔI</div>
+        <div className="summary-card" style={{ background: 'var(--color-warning-bg)' }}>
+          <div className="summary-card-label" style={{ color: 'var(--color-warning)' }}>KHÍ CHẤT NỔI</div>
           <div className="summary-card-value">{starTags[0]?.name || 'Tự do'}</div>
           <p className="summary-card-desc">{isVoChinhDieu ? 'Cần xem đối cung' : 'Tọa thủ gốc cung'}</p>
         </div>
-        <div className="summary-card">
-          <div className="summary-card-label">TRỤC NUÔI DẠY</div>
+        <div className="summary-card" style={{ background: 'var(--bg-accent-soft)' }}>
+          <div className="summary-card-label" style={{ color: 'var(--accent)' }}>TRỤC NUÔI DẠY</div>
           <div className="summary-card-value">{trucNuoiDay}</div>
           <p className="summary-card-desc">Phương pháp tối ưu</p>
         </div>
@@ -88,18 +89,36 @@ export const ConCaiSection = ({ chartData }) => {
       </div>
 
       <div className="summary-cards" style={{ marginTop: '1rem' }}>
-        <div className="summary-card">
-          <div className="summary-card-label">YẾU TỐ SAO TỐT</div>
+        <div className="summary-card" style={{ background: 'var(--color-good-bg)' }}>
+          <div className="summary-card-label" style={{ color: 'var(--color-good)' }}>YẾU TỐ SAO TỐT</div>
           <div className="summary-card-value">{tuTuc?.saoTot?.length || 0} Trợ Tinh</div>
-          <div className="pill-tags" style={{ marginTop: '0.5rem' }}>
-            {tuTuc?.saoTot?.slice(0, 3).map((s, i) => <span key={i} className="pill-tag" style={{fontSize: '0.7rem'}}>{s}</span>)}
+          <div style={{ marginTop: '0.75rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+            {tuTuc?.saoTot?.slice(0, 3).map((s, i) => {
+              const cleanName = s.replace(/^(L\.)+/, '').split(' (')[0].trim();
+              const meaning = getStarMeaning(cleanName);
+              return (
+                <div key={i}>
+                  <strong style={{ fontSize: '0.85rem', color: 'var(--color-good)' }}>{s}:</strong>
+                  <span style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', marginLeft: '4px' }}>{meaning ? meaning.overview : 'Phụ tinh mang lại thuận lợi.'}</span>
+                </div>
+              );
+            })}
           </div>
         </div>
-        <div className="summary-card">
-          <div className="summary-card-label">YẾU TỐ SAO XẤU</div>
+        <div className="summary-card" style={{ background: 'var(--color-danger-bg)' }}>
+          <div className="summary-card-label" style={{ color: 'var(--color-danger)' }}>YẾU TỐ SAO XẤU</div>
           <div className="summary-card-value">{tuTuc?.saoXau?.length || 0} Sát Tinh</div>
-          <div className="pill-tags" style={{ marginTop: '0.5rem' }}>
-            {tuTuc?.saoXau?.slice(0, 3).map((s, i) => <span key={i} className="pill-tag" style={{fontSize: '0.7rem'}}>{s}</span>)}
+          <div style={{ marginTop: '0.75rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+            {tuTuc?.saoXau?.slice(0, 3).map((s, i) => {
+              const cleanName = s.replace(/^(L\.)+/, '').split(' (')[0].trim();
+              const meaning = getStarMeaning(cleanName);
+              return (
+                <div key={i}>
+                  <strong style={{ fontSize: '0.85rem', color: 'var(--color-danger)' }}>{s}:</strong>
+                  <span style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', marginLeft: '4px' }}>{meaning ? meaning.overview : 'Sát tinh báo hiệu thử thách.'}</span>
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>
@@ -152,10 +171,33 @@ export const GiaiDoanSection = ({ chartData }) => {
   const selected = daiHanPeriods[selectedIdx];
   if (!selected) return null;
 
-  const hasGoodStars = selected.saoTot?.some(s =>
-    s.includes('Hóa Lộc') || s.includes('Lộc Tồn') || s.includes('Thiên Khôi')
-  );
-  const rating = hasGoodStars ? 'ĐANG TRẢI' : 'ĐANG TRẢI';
+  const PALACE_FOCUS = {
+    'Mệnh': 'định hình cái tôi, phát triển bản thân và tìm kiếm ý nghĩa cuộc đời',
+    'Phụ Mẫu': 'mối quan hệ gia đình, sự hỗ trợ từ trưởng bối và xây dựng nền tảng cốt lõi',
+    'Phúc Đức': 'đời sống tinh thần, nội lực và phúc nền phía sau mọi quyết định',
+    'Điền Trạch': 'xây dựng tổ ấm, mua bán nhà cửa và tích lũy tài sản cố định',
+    'Quan Lộc': 'phát triển sự nghiệp, thăng tiến công danh và khẳng định vị trí xã hội',
+    'Nô Bộc': 'mở rộng quan hệ, xây dựng mạng lưới đối tác và năng lực lãnh đạo',
+    'Thiên Di': 'nắm bắt cơ hội từ bên ngoài, dịch chuyển và thích nghi với môi trường mới',
+    'Tật Ách': 'chăm sóc sức khỏe, phòng ngừa rủi ro và tu tâm dưỡng tính',
+    'Tài Bạch': 'gia tăng thu nhập, đầu tư tài chính và quản lý dòng tiền',
+    'Tử Tức': 'chăm lo con cái, nuôi dưỡng thế hệ sau và những thành quả tinh thần',
+    'Phu Thê': 'đời sống tình cảm, xây dựng gia đình và sự đồng hành của người bạn đời',
+    'Huynh Đệ': 'quan hệ anh em, bạn bè thân thiết, hợp tác làm ăn và chia sẻ nguồn lực'
+  };
+
+  const ratingStatus = selected.isCurrent ? 'HIỆN TẠI' : (tuoi < selected.startAge ? 'TƯƠNG LAI' : 'ĐÃ QUA');
+  const palaceFocus = PALACE_FOCUS[selected.tenCung] || 'sự phát triển toàn diện và cân bằng các khía cạnh trong cuộc sống';
+  
+  const mainStarName = selected.starTags.length > 0 ? selected.starTags[0].name : '';
+  const starImpact = mainStarName 
+    ? `Bộ sao ${mainStarName} tạo lực tác động khá rõ, mang đến những bài học đặc trưng mang tính bước ngoặt.` 
+    : 'Giai đoạn này không có chính tinh tỏa sáng mạnh (Vô Chính Diệu), cần dựa nhiều vào nỗ lực tự thân và sự kiên trì.';
+
+  const isChallenging = mainStarName.includes('Thất Sát') || mainStarName.includes('Phá Quân') || mainStarName.includes('Tham Lang') || mainStarName.includes('Kỵ');
+  const conclusion = isChallenging
+    ? 'Nhịp độ phát triển sẽ có nhiều biến động hoặc thử thách lớn, đòi hỏi bản lĩnh vững vàng để bứt phá qua sóng gió.'
+    : 'Nhịp phát triển nhìn chung tương đối thuận lợi, nhưng kết quả rực rỡ nhất chỉ đến khi bạn duy trì được sự tập trung và kỷ luật.';
 
   return (
     <section className="result-section result-section--wide detail-section stages-section">
@@ -188,16 +230,16 @@ export const GiaiDoanSection = ({ chartData }) => {
           <div>
             <strong style={{ fontSize: '1.1rem' }}>Tuổi {selected.startAge}-{selected.endAge}</strong>
             <span style={{ marginLeft: '0.5rem' }} className="pill-tag pill-tag--accent">{selected.tenCung} ({selected.chi})</span>
-            <span style={{ marginLeft: '0.5rem' }} className="pill-tag">{rating}</span>
+            <span style={{ marginLeft: '0.5rem' }} className="pill-tag">{ratingStatus}</span>
           </div>
         </div>
 
         <div className="pill-tags" style={{ marginBottom: '0.5rem' }}>
-          <span className="pill-tag">🔥 Khởi nghiệp & Tích lũy</span>
+          <span className="pill-tag">🔥 Trọng tâm: {selected.tenCung}</span>
         </div>
 
         <p style={{ marginBottom: '1rem', color: 'var(--text-secondary)', fontSize: '0.9rem' }}>
-          Đọc như xu hướng dải hạn của đại vận này, rồi đối chiếu với hoàn cảnh thực tế ở hiện tại.
+          Đọc như xu hướng dài hạn của đại vận này, rồi đối chiếu với hoàn cảnh thực tế ở hiện tại.
         </p>
 
         <div className="pill-tags" style={{ marginBottom: '1rem' }}>
@@ -208,9 +250,9 @@ export const GiaiDoanSection = ({ chartData }) => {
         </div>
 
         <div className="quote-box">
-          "Đại vận {selected.startAge}-{selected.endAge} tuổi nhấn mạnh đời sống tinh thần, nội lực và phúc nền phía sau mọi quyết định.
-          {selected.starTags.length > 0 ? ` ${selected.starTags[0].name} là dấu ấn nổi bật của chặng này.` : ''}
-          Nhịp phát triển nhìn chung ổn, nhưng kết quả đẹp nhất chỉ đến khi bạn giữ kỷ luật và không phân tán."
+          "Đại vận {selected.startAge}-{selected.endAge} tuổi nhấn mạnh {palaceFocus}.
+          {mainStarName ? ` Sự hiện diện của ${mainStarName} là dấu ấn nổi bật của chặng này.` : ''}
+          {conclusion.replace('Nhịp', ' Nhịp')}"
         </div>
 
         {/* Category buttons */}
@@ -222,10 +264,9 @@ export const GiaiDoanSection = ({ chartData }) => {
         </div>
 
         <p style={{ marginTop: '1rem', fontSize: '0.88rem', color: 'var(--text-secondary)', lineHeight: '1.7' }}>
-          Đại vận {selected.startAge}-{selected.endAge} tuổi đi qua cung {selected.tenCung}, nên trọng tâm tự nhiên nghiêng về
-          đời sống tinh thần, nội lực và phúc nền phía sau mọi quyết định.
-          {selected.starTags.length > 0 ? ` Bộ sao ${selected.starTags[0].name} tạo lực nắng khá rõ, đặc biệt ở quyết đoán, sức ép cao và bài học bản lĩnh.` : ''}
-          Nhịp phát triển nhìn chung ổn, nhưng kết quả đẹp nhất chỉ đến khi bạn giữ kỷ luật và không phân tán.
+          Đại vận {selected.startAge}-{selected.endAge} tuổi đi qua cung {selected.tenCung}, nên trọng tâm tự nhiên nghiêng về {palaceFocus}.
+          {' '}{starImpact}
+          {' '}{conclusion}
         </p>
       </div>
 
@@ -234,13 +275,46 @@ export const GiaiDoanSection = ({ chartData }) => {
         <div className="content-card-title">CHIẾN LƯỢC GIAI ĐOẠN</div>
         <div className="step-list">
           <div className="step-item">
-            <span className="step-text">Giữ nhịp đều ở 1-2 ưu tiên chính; giai đoạn này không hợp ôm quá nhiều hướng cùng lúc.</span>
+            <span className="step-text">
+              {(() => {
+                const PALACE_STRATEGY = {
+                  'Mệnh': 'Tập trung đầu tư vào bản thân, nâng cao năng lực lõi và xây dựng thương hiệu cá nhân.',
+                  'Phụ Mẫu': 'Lắng nghe lời khuyên từ người đi trước, duy trì sự gắn kết gia đình làm điểm tựa.',
+                  'Phúc Đức': 'Tu tâm dưỡng tính, làm việc thiện và tin vào trực giác cá nhân khi ra quyết định lớn.',
+                  'Điền Trạch': 'Ưu tiên dòng tiền cho tài sản cố định, an cư để lập nghiệp lâu dài.',
+                  'Quan Lộc': 'Nắm bắt cơ hội thăng tiến, mở rộng quy mô công việc và củng cố vị trí chuyên môn.',
+                  'Nô Bộc': 'Chọn lọc kỹ các mối quan hệ đối tác, cẩn trọng trong việc ủy quyền hoặc vay mượn.',
+                  'Thiên Di': 'Mạnh dạn bước ra khỏi vùng an toàn, đi lại hoặc thay đổi môi trường sẽ mang lại cát khí.',
+                  'Tật Ách': 'Đừng chủ quan với sức khỏe; làm việc điều độ và tránh những căng thẳng không cần thiết.',
+                  'Tài Bạch': 'Đa dạng hóa nguồn thu, quản lý tài chính chặt chẽ và tránh đầu tư lướt sóng mạo hiểm.',
+                  'Tử Tức': 'Kiên nhẫn trong việc đào tạo thế hệ sau hoặc cấp dưới; đây là lúc gieo hạt chờ ngày hái quả.',
+                  'Phu Thê': 'Cân bằng giữa công việc và gia đình, dùng sự thấu hiểu để hóa giải mọi bất đồng.',
+                  'Huynh Đệ': 'Tận dụng sức mạnh tập thể, nhưng cần minh bạch tài chính khi hợp tác chung.'
+                };
+                return PALACE_STRATEGY[selected.tenCung] || `Tập trung củng cố khía cạnh ${selected.tenCung.toLowerCase()} như một bàn đạp vững chắc.`;
+              })()}
+            </span>
           </div>
           <div className="step-item">
-            <span className="step-text">Hãy xem đời sống tinh thần, nội lực và phúc nền phía sau mọi quyết định là trục chính của 10 năm này.</span>
+            <span className="step-text">
+              {isChallenging 
+                ? "Đây là giai đoạn mang tính thử thách cao, chiến lược tốt nhất là duy trì sự linh hoạt, lấy 'tĩnh' chế 'động' khi đối mặt với rủi ro."
+                : "Với các tinh tú ôn hòa chiếu mệnh, đây là thời kỳ tuyệt vời để tích lũy bền vững, hãy đi những bước vững chắc thay vì nôn nóng."}
+            </span>
           </div>
           <div className="step-item">
-            <span className="step-text">{selected.starTags.length > 0 ? `${selected.starTags[0].name} sáng giúp bạn đề nhìn ra hướng đúng và tạo kết quả đều hơn.` : 'Cung vô chính diệu đòi hỏi bạn phải tự chủ và kiên nhẫn hơn.'}</span>
+            <span className="step-text">
+              {(() => {
+                if (!mainStarName) return "Vì là giai đoạn Vô Chính Diệu (không có sao chính), chiến lược tối ưu là 'tùy cơ ứng biến', mượn sức người khác và hạn chế đứng mũi chịu sào.";
+                if (mainStarName.includes('Tử Vi') || mainStarName.includes('Thiên Phủ')) return `Dưới sự dẫn dắt của ${mainStarName}, bạn cần có tầm nhìn bao quát và mạnh dạn đảm nhận vai trò lãnh đạo.`;
+                if (mainStarName.includes('Thái Dương') || mainStarName.includes('Thái Âm')) return `Sao ${mainStarName} đòi hỏi bạn làm việc minh bạch, tuần tự và nhạy bén để thuận theo thời thế.`;
+                if (mainStarName.includes('Vũ Khúc') || mainStarName.includes('Thiên Đồng')) return `Ảnh hưởng của ${mainStarName} nhắc nhở bạn hành động thực tế, nắm bắt cơ hội tài chính và giữ tinh thần lạc quan.`;
+                if (mainStarName.includes('Cự Môn') || mainStarName.includes('Thiên Cơ')) return `Với ${mainStarName}, hãy cẩn trọng trong lời nói, sử dụng trí tuệ và tư duy phân tích thay vì hành động bộc phát.`;
+                if (mainStarName.includes('Thất Sát') || mainStarName.includes('Phá Quân') || mainStarName.includes('Tham Lang')) return `Bộ sao ${mainStarName} mạnh mẽ đòi hỏi bạn dám nghĩ dám làm, sẵn sàng phá bỏ lối mòn nhưng phải tính toán kỹ rủi ro.`;
+                if (mainStarName.includes('Thiên Lương') || mainStarName.includes('Thiên Tướng')) return `Sao ${mainStarName} mang tính che chở, hãy chú trọng chữ tín, bảo vệ nguyên tắc và sẵn sàng giúp đỡ người khác để tạo phước lành.`;
+                return `Sự hiện diện của ${mainStarName} đòi hỏi bạn phải hiểu rõ sở trường và kiên định với mục tiêu đã chọn.`;
+              })()}
+            </span>
           </div>
         </div>
       </div>
@@ -318,21 +392,32 @@ export const VanTrinh12ThangSection = ({ chartData }) => {
         </div>
       </div>
 
-      <div className="summary-cards">
-        <div className="summary-card">
-          <div className="summary-card-label">🌟 THÁNG TỐT NHẤT (ÂL)</div>
-          <div className="summary-card-value" style={{ color: 'var(--color-good)' }}>Tháng {bestMonth} — {MONTH_RATINGS[bestMonth - 1]}</div>
-          <p className="summary-card-desc">Cung {LUNAR_MONTHS[bestMonth - 1]}</p>
+      <div className="summary-cards" style={{ gap: '1rem' }}>
+        <div className="summary-card" style={{ textAlign: 'center', background: 'var(--color-good-bg)', border: '1px solid rgba(40, 167, 69, 0.2)', display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '1.25rem 1rem' }}>
+          <p style={{ fontSize: '0.72rem', fontWeight: 700, color: 'var(--color-good)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>Tháng Tốt Nhất</p>
+          <div style={{ width: '54px', height: '54px', background: 'var(--bg-section)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.6rem', fontWeight: 800, color: 'var(--color-good)', boxShadow: '0 4px 12px rgba(40, 167, 69, 0.1)', marginBottom: '0.75rem' }}>
+            {bestMonth}
+          </div>
+          <div style={{ fontSize: '0.9rem', fontWeight: 800, color: 'var(--color-good)', marginBottom: '0.2rem' }}>{MONTH_RATINGS[bestMonth - 1]}</div>
+          <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Cung {LUNAR_MONTHS[bestMonth - 1]}</p>
         </div>
-        <div className="summary-card">
-          <div className="summary-card-label">⚠️ CẦN CHÚ Ý NHẤT (ÂL)</div>
-          <div className="summary-card-value" style={{ color: 'var(--color-warning)' }}>Tháng {worstMonth} — {MONTH_RATINGS[worstMonth - 1]}</div>
-          <p className="summary-card-desc">Cung {LUNAR_MONTHS[worstMonth - 1]}</p>
+        
+        <div className="summary-card" style={{ textAlign: 'center', background: 'var(--color-danger-bg)', border: '1px solid rgba(220, 53, 69, 0.2)', display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '1.25rem 1rem' }}>
+          <p style={{ fontSize: '0.72rem', fontWeight: 700, color: 'var(--color-danger)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>Cần Chú Ý Nhất</p>
+          <div style={{ width: '54px', height: '54px', background: 'var(--bg-section)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.6rem', fontWeight: 800, color: 'var(--color-danger)', boxShadow: '0 4px 12px rgba(220, 53, 69, 0.1)', marginBottom: '0.75rem' }}>
+            {worstMonth}
+          </div>
+          <div style={{ fontSize: '0.9rem', fontWeight: 800, color: 'var(--color-danger)', marginBottom: '0.2rem' }}>{MONTH_RATINGS[worstMonth - 1]}</div>
+          <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Cung {LUNAR_MONTHS[worstMonth - 1]}</p>
         </div>
-        <div className="summary-card">
-          <div className="summary-card-label">🔮 TRUNG BÌNH NĂM</div>
-          <div className="summary-card-value">{overallRating}</div>
-          <p className="summary-card-desc">Chỉ số tính toàn diện 12 tháng ÂL</p>
+
+        <div className="summary-card" style={{ textAlign: 'center', background: 'var(--bg-accent-soft)', border: '1px solid var(--accent-light)', display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '1.25rem 1rem' }}>
+          <p style={{ fontSize: '0.72rem', fontWeight: 700, color: 'var(--accent-dark)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>Trung Bình Năm</p>
+          <div style={{ width: '54px', height: '54px', background: 'var(--bg-section)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.6rem', fontWeight: 800, color: 'var(--accent)', boxShadow: '0 4px 12px rgba(160, 120, 48, 0.15)', marginBottom: '0.75rem' }}>
+            ✦
+          </div>
+          <div style={{ fontSize: '0.9rem', fontWeight: 800, color: 'var(--accent-dark)', marginBottom: '0.2rem' }}>{overallRating}</div>
+          <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Tính trên 12 tháng</p>
         </div>
       </div>
 
@@ -370,7 +455,7 @@ export const VanTrinh12ThangSection = ({ chartData }) => {
                   Hạn tại cung {cung.tenCung.split(' /')[0].split(' <')[0]} ({chi})
                 </strong>
                 {rating === 'Đại cát' ? (
-                  <>Tháng này hội tụ nhiều cát tinh như {stars || 'các bộ sao tốt'}, mang lại cơ hội hanh thông, mọi việc như ý và có quý nhân phù trợ nhiệt tình.</>
+                  <>Tháng này hội tụ nhiều cát tinh như {stars || 'các bộ sao tốt'}, mang lại cơ hội hanh thông, mọi việc như ý và có Quý Nhân phù trợ nhiệt tình.</>
                 ) : rating === 'Bình an' ? (
                   <>Vận trình tại cung {cung.tenCung.split(' /')[0].split(' <')[0]} tương đối ổn định, vạn sự bình hòa. Đây là lúc thích hợp để duy trì nhịp độ và bồi đắp nội lực.</>
                 ) : rating === 'Tiểu hung' ? (
@@ -467,15 +552,12 @@ export const PhongThuySection = ({ chartData }) => {
       </div>
 
       <div className="content-card">
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1rem' }}>
-          <span style={{ fontSize: '1.5rem', background: 'var(--bg-accent-soft)', padding: '0.5rem', borderRadius: 'var(--radius-sm)' }}>☯</span>
-          <div>
-            <strong>Mệnh {banMenh}</strong>
-            <p style={{ fontSize: '0.82rem', color: 'var(--text-muted)' }}>
-              Mệnh {banMenh} — bạn là "{banMenh === 'Kim' ? 'thanh kiếm sắc bén' : banMenh === 'Mộc' ? 'cây đại thụ' : banMenh === 'Thủy' ? 'dòng nước' : banMenh === 'Hỏa' ? 'ngọn lửa' : 'mặt đất'}"!
-              Phong thủy của bạn cần sự thanh thoát, tinh tế, tăng cường năng lượng {banMenh}.
-            </p>
-          </div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem', marginBottom: '0.5rem' }}>
+          <strong style={{ fontSize: '1.1rem', color: 'var(--accent)' }}>Mệnh {banMenh}</strong>
+          <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
+            Mệnh {banMenh} — bạn là "{banMenh === 'Kim' ? 'thanh kiếm sắc bén' : banMenh === 'Mộc' ? 'cây đại thụ' : banMenh === 'Thủy' ? 'dòng nước' : banMenh === 'Hỏa' ? 'ngọn lửa' : 'mặt đất'}"!
+            Phong thủy của bạn cần sự thanh thoát, tinh tế, tăng cường năng lượng {banMenh}.
+          </p>
         </div>
       </div>
 
@@ -512,21 +594,33 @@ export const PhongThuySection = ({ chartData }) => {
       </div>
 
       <div className="grid-2" style={{ marginTop: '1rem' }}>
-        <div className="content-card">
-          <div className="content-card-title">SỐ MAY MẮN</div>
-          <div style={{ display: 'flex', gap: '0.5rem' }}>
+        <div className="summary-card" style={{ background: 'var(--bg-accent-soft)', border: '1px solid var(--border-card)' }}>
+          <div className="summary-card-label" style={{ color: 'var(--accent)' }}>✦ SỐ MAY MẮN</div>
+          <div style={{ display: 'flex', gap: '0.75rem', marginTop: '0.75rem', flexWrap: 'wrap' }}>
             {soMay.map((s, i) => (
-              <span key={i} style={{ width: '36px', height: '36px', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid var(--border-card)', borderRadius: 'var(--radius-sm)', fontWeight: 700, color: 'var(--accent)' }}>{s}</span>
+              <span key={i} style={{ 
+                width: '44px', height: '44px', 
+                display: 'flex', alignItems: 'center', justifyContent: 'center', 
+                background: 'var(--bg-section)',
+                border: '1px solid var(--accent-light)', 
+                borderRadius: '50%', 
+                fontWeight: 800, 
+                fontSize: '1.25rem',
+                color: 'var(--accent-dark)',
+                boxShadow: '0 4px 10px rgba(160, 120, 48, 0.1)'
+              }}>{s}</span>
             ))}
           </div>
+          <p style={{ marginTop: '1rem', fontSize: '0.82rem', color: 'var(--text-secondary)' }}>Bạn có thể ứng dụng vào số điện thoại, biển số xe, hay số tầng nhà.</p>
         </div>
-        <div className="content-card">
-          <div className="content-card-title">MÀU CẦN TRÁNH</div>
-          <div className="pill-tags">
+        <div className="summary-card" style={{ background: 'var(--color-danger-bg)', border: '1px solid rgba(220, 53, 69, 0.1)' }}>
+          <div className="summary-card-label" style={{ color: 'var(--color-danger)' }}>✗ MÀU CẦN TRÁNH</div>
+          <div className="pill-tags" style={{ marginTop: '0.75rem' }}>
             {MAU_KY[banMenh]?.map((m, i) => (
-              <span key={i} className="pill-tag" style={{ fontSize: '0.75rem' }}>{m}</span>
+              <span key={i} className="pill-tag" style={{ fontSize: '0.8rem', background: '#fff', color: 'var(--color-danger)', border: '1px solid rgba(220, 53, 69, 0.3)', fontWeight: 600 }}>{m}</span>
             ))}
           </div>
+          <p style={{ marginTop: '1rem', fontSize: '0.82rem', color: 'var(--text-secondary)' }}>Hạn chế dùng làm màu chủ đạo cho những vật dụng lớn hoặc quan trọng.</p>
         </div>
       </div>
     </section>
@@ -550,7 +644,7 @@ export const ThanSatSection = ({ chartData }) => {
 
   const catPercent = Math.round((totalTot / (totalTot + totalXau)) * 100);
 
-  // Count qu� nh�n stars
+  // Count Quý Nhân stars
   const quyNhanStars = ['Thiên Khôi', 'Thiên Việt', 'Lộc Tồn', 'Thiên Mã', 'Tả Phù', 'Hữu Bật', 'Văn Xương', 'Văn Khúc'];
   let quyNhanCount = 0;
   const foundQuyNhan = [];
@@ -563,49 +657,70 @@ export const ThanSatSection = ({ chartData }) => {
     });
   }
 
+  const isGood = totalTot >= totalXau;
+  const balanceText = isGood 
+    ? "Lá số của bạn nhận được nhiều sự trợ lực hơn là thử thách. Các sao tốt sẽ đóng vai trò như lớp khiên bảo vệ, giúp giảm thiểu rủi ro và mang lại may mắn khi gặp hạn." 
+    : "Lá số của bạn mang nhiều thử thách và áp lực từ các sao xấu. Bạn cần rèn luyện nội lực vững vàng, lấy sự cẩn trọng làm nền tảng để tự vượt qua sóng gió.";
+  
+  const balanceTitle = isGood ? "☆ Cán Cân Thuận Lợi" : "⚠️ Cán Cân Thử Thách";
+  const balanceColor = isGood ? "var(--color-good)" : "var(--color-warning)";
+  const balanceBg = isGood ? "var(--color-good-bg)" : "var(--color-warning-bg)";
+
   return (
     <section className="result-section result-section--wide detail-section stars-analysis-section">
       <div className="section-header">
         <div className="section-icon">煞</div>
         <div className="section-header-text">
           <h2 className="section-title">Thần Sát Luận Giải</h2>
-          <p className="section-subtitle">Cát tinh & Hung tinh • Phân tích • Hóa Giải</p>
+          <p className="section-subtitle">Lực lượng phụ tinh tác động • Đánh giá tỷ lệ Cát / Hung toàn lá số</p>
         </div>
       </div>
 
       <div className="content-card">
-        <p>Hệ Thần Sát của bạn nghiêng rõ về cát tinh với {totalTot} sao tốt đang đỡ lực. Ngay cung Mệnh có chính tinh, nên nền bảo hộ và quý nhân khá dày.</p>
+        <p><strong>Thần Sát (Các Phụ Tinh)</strong> giống như "thời tiết" của cuộc đời bạn. Dù Mệnh có vững vàng đến đâu, việc di chuyển trong thời tiết thuận lợi (Cát Tinh) hay giông bão (Hung Tinh) sẽ quyết định mức độ vất vả của bạn.</p>
       </div>
 
-      <div className="content-card" style={{ marginTop: '1rem', background: 'var(--color-good-bg)' }}>
-        <div className="content-card-title" style={{ color: 'var(--color-good)' }}>☆ Cát Tinh Chiếm Ưu Thế</div>
-        <p>Trong hệ Thần Sát, lá số có {totalTot} cát tinh chiếm ưu thế với sức mạnh trung bình {catPercent}%. Các sao tốt bảo vệ và hỗ trợ mạnh, giúp giảm đáng kể tác động của hung tinh trong những chỗ then chốt.</p>
+      <div className="content-card" style={{ marginTop: '1rem', background: balanceBg }}>
+        <div className="content-card-title" style={{ color: balanceColor }}>{balanceTitle}</div>
+        <p>{balanceText}</p>
+      </div>
+
+      <div className="content-card" style={{ marginTop: '1rem' }}>
+        <div className="content-card-title">TỶ LỆ TRỢ LỰC VÀ THỬ THÁCH (TOÀN LÁ SỐ)</div>
+        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem', fontSize: '0.85rem' }}>
+          <span style={{ color: 'var(--color-good)', fontWeight: 700 }}>{totalTot} Cát Tinh ({catPercent}%)</span>
+          <span style={{ color: 'var(--color-danger)', fontWeight: 700 }}>{totalXau} Hung Tinh ({100 - catPercent}%)</span>
+        </div>
+        <div style={{ width: '100%', height: '6px', background: 'var(--color-danger-bg)', borderRadius: '3px', overflow: 'hidden', display: 'flex' }}>
+          <div style={{ width: `${catPercent}%`, height: '100%', background: 'var(--color-good)' }}></div>
+          <div style={{ width: `${100 - catPercent}%`, height: '100%', background: 'var(--color-danger)' }}></div>
+        </div>
       </div>
 
       <div className="grid-2" style={{ marginTop: '1rem' }}>
-        <div className="content-card" style={{ textAlign: 'center' }}>
-          <div className="content-card-title" style={{ color: 'var(--color-good)' }}>● CÁT TINH</div>
-          <div style={{ fontSize: '2rem', fontWeight: 800, color: 'var(--color-good)' }}>{totalTot}</div>
-          <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>sao</p>
+        <div className="summary-card" style={{ background: 'var(--color-good-bg)' }}>
+          <div className="summary-card-label" style={{ color: 'var(--color-good)' }}>SAO HỘ MỆNH TIÊU BIỂU</div>
+          <div style={{ marginTop: '0.75rem', display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
+            {topTot.slice(0, 3).map((s, i) => (
+              <div key={i} style={{ fontSize: '0.85rem', lineHeight: '1.4' }}>
+                <strong style={{ color: 'var(--color-good)' }}>{s}:</strong> <span style={{ color: 'var(--text-secondary)' }}>{getStarMeaning(s.replace(/^(L\.)+/, '').split(' (')[0].trim())?.overview || 'Sao mang lại phúc lộc, may mắn.'}</span>
+              </div>
+            ))}
+          </div>
         </div>
-        <div className="content-card" style={{ textAlign: 'center' }}>
-          <div className="content-card-title" style={{ color: 'var(--color-danger)' }}>● HUNG TINH</div>
-          <div style={{ fontSize: '2rem', fontWeight: 800, color: 'var(--color-danger)' }}>{totalXau}</div>
-          <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>sao</p>
+        <div className="summary-card" style={{ background: 'var(--color-danger-bg)' }}>
+          <div className="summary-card-label" style={{ color: 'var(--color-danger)' }}>SAO THỬ THÁCH TIÊU BIỂU</div>
+          <div style={{ marginTop: '0.75rem', display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
+            {topXau.slice(0, 3).map((s, i) => (
+              <div key={i} style={{ fontSize: '0.85rem', lineHeight: '1.4' }}>
+                <strong style={{ color: 'var(--color-danger)' }}>{s}:</strong> <span style={{ color: 'var(--text-secondary)' }}>{getStarMeaning(s.replace(/^(L\.)+/, '').split(' (')[0].trim())?.overview || 'Sao mang tính cản trở, thử thách.'}</span>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
 
-      <div className="pill-tags" style={{ marginTop: '1rem' }}>
-        {topTot.slice(0, 4).map((s, i) => <span key={i} className="pill-tag">★ {s}</span>)}
-        {topXau.slice(0, 1).map((s, i) => <span key={`x${i}`} className="pill-tag" style={{ color: 'var(--color-danger)' }}>★ {s}</span>)}
-        <span className="pill-tag">+{totalTot + totalXau - 5} sao khác</span>
-      </div>
-
-      <p style={{ marginTop: '1rem', fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
-        Phần luận giải chi tiết từng cát tinh, hung tinh và hướng hóa giải đã được gom vào popup để section này gọn hơn trên trang.
-      </p>
-
-      {/* Qu� Nh�n section */}
+      {/* Quý Nhân section */}
       <div style={{ marginTop: '2rem' }}>
         <div className="section-header">
           <div className="section-icon">貴</div>
@@ -622,7 +737,7 @@ export const ThanSatSection = ({ chartData }) => {
               <div className="content-card" style={{ background: 'var(--color-good-bg)', marginBottom: '1rem' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.75rem' }}>
                   <span style={{ fontWeight: 700, color: 'var(--color-good)' }}>{quyNhanCount > 0 ? 'Tốt' : 'Bình thường'}</span>
-                  <span className="pill-tag pill-tag--accent">{quyNhanCount} qu� nh�n tinh</span>
+                  <span className="pill-tag pill-tag--accent">{quyNhanCount} Quý Nhân tinh</span>
                 </div>
                 <p style={{ fontSize: '0.95rem', fontWeight: 600, color: 'var(--text-heading)', marginBottom: '0.5rem' }}>
                   {qnAnalysis.headline}
@@ -632,18 +747,24 @@ export const ThanSatSection = ({ chartData }) => {
                 </p>
               </div>
 
-              <div className="summary-cards">
-                <div className="summary-card" style={{ textAlign: 'center' }}>
-                  <div style={{ fontSize: '1.8rem', fontWeight: 800, color: 'var(--accent)' }}>{quyNhanCount}</div>
-                  <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Qu� nh�n</p>
+              <div className="summary-cards" style={{ gap: '1rem' }}>
+                <div className="summary-card" style={{ textAlign: 'center', background: 'var(--bg-accent-soft)', border: '1px solid var(--accent-light)', display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '1.25rem 1rem' }}>
+                  <div style={{ width: '54px', height: '54px', background: 'var(--bg-section)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.6rem', fontWeight: 800, color: 'var(--accent)', boxShadow: '0 4px 12px rgba(160, 120, 48, 0.15)', marginBottom: '0.75rem' }}>
+                    {quyNhanCount}
+                  </div>
+                  <p style={{ fontSize: '0.78rem', fontWeight: 700, color: 'var(--accent-dark)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Quý Nhân</p>
                 </div>
-                <div className="summary-card" style={{ textAlign: 'center' }}>
-                  <div style={{ fontSize: '1.8rem', fontWeight: 800, color: 'var(--accent)' }}>2</div>
-                  <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Sao cống</p>
+                <div className="summary-card" style={{ textAlign: 'center', background: 'var(--color-info-bg)', border: '1px solid rgba(23, 162, 184, 0.2)', display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '1.25rem 1rem' }}>
+                  <div style={{ width: '54px', height: '54px', background: 'var(--bg-section)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.6rem', fontWeight: 800, color: 'var(--color-info)', boxShadow: '0 4px 12px rgba(23, 162, 184, 0.1)', marginBottom: '0.75rem' }}>
+                    2
+                  </div>
+                  <p style={{ fontSize: '0.78rem', fontWeight: 700, color: 'var(--color-info)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Sao Củng</p>
                 </div>
-                <div className="summary-card" style={{ textAlign: 'center' }}>
-                  <div style={{ fontSize: '1.8rem', fontWeight: 800, color: 'var(--accent)' }}>5</div>
-                  <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Cung có QN</p>
+                <div className="summary-card" style={{ textAlign: 'center', background: 'var(--color-good-bg)', border: '1px solid rgba(40, 167, 69, 0.2)', display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '1.25rem 1rem' }}>
+                  <div style={{ width: '54px', height: '54px', background: 'var(--bg-section)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.6rem', fontWeight: 800, color: 'var(--color-good)', boxShadow: '0 4px 12px rgba(40, 167, 69, 0.1)', marginBottom: '0.75rem' }}>
+                    5
+                  </div>
+                  <p style={{ fontSize: '0.78rem', fontWeight: 700, color: 'var(--color-good)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Cung có QN</p>
                 </div>
               </div>
 
@@ -657,32 +778,32 @@ export const ThanSatSection = ({ chartData }) => {
                     <div key={idx} className="vt-month-card" style={{ padding: '1.25rem' }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.75rem' }}>
                         <span style={{ color: 'var(--accent)', fontSize: '1.2rem' }}>★</span>
-                        <strong style={{ fontSize: '1.05rem', color: 'var(--accent)' }}>{detail.star}</strong>
+                        <strong style={{ fontSize: '0.95rem', color: 'var(--accent)' }}>{detail.star}</strong>
                       </div>
                       
-                      <div style={{ marginBottom: '0.75rem' }}>
-                        <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.25rem' }}>
-                          📍 Gặp ở đâu?
+                      <div style={{ marginBottom: '0.75rem', padding: '0.5rem 0.75rem', background: 'var(--color-info-bg)', borderRadius: 'var(--radius-sm)' }}>
+                        <div style={{ fontSize: '0.7rem', color: 'var(--color-info)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.25rem', fontWeight: 700 }}>
+                          ❖ Bối cảnh gặp gỡ
                         </div>
-                        <p style={{ fontSize: '0.88rem', color: 'var(--text-main)', lineHeight: '1.5' }}>
+                        <p style={{ fontSize: '0.82rem', color: 'var(--text-main)', lineHeight: '1.5' }}>
                           {detail.place}
                         </p>
                       </div>
 
-                      <div style={{ marginBottom: '0.75rem' }}>
-                        <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.25rem' }}>
-                          ⚡ Sự kiện kích hoạt
+                      <div style={{ marginBottom: '0.75rem', padding: '0.5rem 0.75rem', background: 'var(--color-warning-bg)', borderRadius: 'var(--radius-sm)' }}>
+                        <div style={{ fontSize: '0.7rem', color: 'var(--color-warning)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.25rem', fontWeight: 700 }}>
+                          ❖ Cơ duyên kích hoạt
                         </div>
-                        <p style={{ fontSize: '0.88rem', color: 'var(--text-main)', lineHeight: '1.5' }}>
+                        <p style={{ fontSize: '0.82rem', color: 'var(--text-main)', lineHeight: '1.5' }}>
                           {detail.event}
                         </p>
                       </div>
 
-                      <div>
-                        <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.25rem' }}>
-                          👥 Đặc điểm Quý nhân
+                      <div style={{ padding: '0.5rem 0.75rem', background: 'var(--color-good-bg)', borderRadius: 'var(--radius-sm)' }}>
+                        <div style={{ fontSize: '0.7rem', color: 'var(--color-good)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.25rem', fontWeight: 700 }}>
+                          ❖ Hình tướng Quý Nhân
                         </div>
-                        <p style={{ fontSize: '0.88rem', color: 'var(--text-main)', lineHeight: '1.5' }}>
+                        <p style={{ fontSize: '0.82rem', color: 'var(--text-main)', lineHeight: '1.5' }}>
                           {detail.person}
                         </p>
                       </div>
@@ -729,34 +850,56 @@ export const DienTrachSection = ({ chartData }) => {
           <span style={{ fontWeight: 600 }}>Cung Điền Trạch</span>
         </div>
         <div className="pill-tags" style={{ marginBottom: '0.75rem' }}>
-          <span className="pill-tag">🏠 Hướng tốt: Tây Nam</span>
+          {dienTrach?.saoChinh?.map((s, i) => <span key={i} className="pill-tag">🏠 {s}</span>)}
+          {isVoChinhDieu && <span className="pill-tag">Vô chính diệu</span>}
         </div>
         <p style={{ fontSize: '0.88rem', color: 'var(--text-secondary)', lineHeight: '1.7' }}>
           {isVoChinhDieu
-            ? '🌀 Cung Điền Trạch vô chính diệu, cần xem tam hợp chiếu để đánh giá chi tiết.'
-            : `🌀 Vận nhà đất khá tốt. Cung Điền cho thấy có khả năng sở hữu nhà. Đại Vận Điền Trạch: 34-43 tuổi. Nắm đúng thời cơ, chọn đúng hướng — "nhà chọn hướng tốt, nhịp thuận hơn."`
+            ? '🌀 Cung Điền Trạch vô chính diệu, việc mua bán nhà đất hoặc duy trì cơ ngơi gia tộc sẽ phụ thuộc nhiều vào hoàn cảnh và sự nỗ lực tự thân hơn là được thừa hưởng trực tiếp.'
+            : `🌀 Vận nhà đất khá tốt. Nền cung cho thấy phong cách chọn nhà và quản lý tài sản mang đậm khí chất của ${starTags[0]?.name || 'các sao thủ tọa'}. Nắm đúng thời cơ, chọn đúng hướng — "nhà chọn hướng tốt, nhịp thuận hơn."`
           }
         </p>
 
         <div className="summary-cards" style={{ marginTop: '1rem' }}>
-          <div className="summary-card" style={{ textAlign: 'center' }}>
-            <div style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--accent)' }}>{numChinh}</div>
-            <p style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>Sao chính</p>
+          <div className="summary-card" style={{ background: 'var(--bg-accent-soft)' }}>
+            <div className="summary-card-label" style={{ color: 'var(--accent)' }}>CƠ CẤU SAO CHÍNH</div>
+            <div className="summary-card-value">{numChinh} Sao</div>
+            <div style={{ marginTop: '0.5rem', fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
+              {isVoChinhDieu ? 'Cần xem đối cung (Tử Tức) để đánh giá động lực xây dựng nền tảng.' : starTags.map(s => getStarMeaning(s.name.replace(/^(L\.)+/, '').split(' (')[0].trim())?.overview || '').join(' ')}
+            </div>
           </div>
-          <div className="summary-card" style={{ textAlign: 'center' }}>
-            <div style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--color-good)' }}>{numTot}</div>
-            <p style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>Thuận lợi</p>
+          <div className="summary-card" style={{ background: 'var(--color-good-bg)' }}>
+            <div className="summary-card-label" style={{ color: 'var(--color-good)' }}>YẾU TỐ THUẬN LỢI</div>
+            <div className="summary-card-value">{numTot} Trợ tinh</div>
+            <div style={{ marginTop: '0.5rem', display: 'flex', flexDirection: 'column', gap: '0.3rem' }}>
+              {dienTrach?.saoTot?.slice(0, 3).map((s, i) => {
+                const cleanName = s.replace(/^(L\.)+/, '').split(' (')[0].trim();
+                const meaning = getStarMeaning(cleanName);
+                return (
+                  <div key={i} style={{ fontSize: '0.8rem' }}>
+                    <strong style={{ color: 'var(--color-good)' }}>{s}:</strong> <span style={{ color: 'var(--text-secondary)' }}>{meaning?.overview || 'Hỗ trợ việc tích lũy tài sản.'}</span>
+                  </div>
+                );
+              })}
+            </div>
           </div>
-          <div className="summary-card" style={{ textAlign: 'center' }}>
-            <div style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--color-danger)' }}>{numXau}</div>
-            <p style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>Lưu ý</p>
+          <div className="summary-card" style={{ background: 'var(--color-danger-bg)' }}>
+            <div className="summary-card-label" style={{ color: 'var(--color-danger)' }}>YẾU TỐ LƯU Ý</div>
+            <div className="summary-card-value">{numXau} Sát tinh</div>
+            <div style={{ marginTop: '0.5rem', display: 'flex', flexDirection: 'column', gap: '0.3rem' }}>
+              {dienTrach?.saoXau?.slice(0, 3).map((s, i) => {
+                const cleanName = s.replace(/^(L\.)+/, '').split(' (')[0].trim();
+                const meaning = getStarMeaning(cleanName);
+                return (
+                  <div key={i} style={{ fontSize: '0.8rem' }}>
+                    <strong style={{ color: 'var(--color-danger)' }}>{s}:</strong> <span style={{ color: 'var(--text-secondary)' }}>{meaning?.overview || 'Cẩn trọng tranh chấp hoặc hao hụt.'}</span>
+                  </div>
+                );
+              })}
+            </div>
           </div>
         </div>
       </div>
-
-      <p style={{ marginTop: '1rem', fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
-        Phần luận giải dài về vận nhà đất, phong thủy và chiến lược đầu tư được gom vào popup để layout không bị trải dài.
-      </p>
     </section>
   );
 };

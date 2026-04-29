@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import ReactMarkdown from 'react-markdown';
 import './ChatBot.css';
-import { startTuViChat, sendMessageStreamWithRAG } from '../utils/hfChatService';
+import { startTuViChat, sendMessageStreamWithRAG, setGeminiToken } from '../utils/geminiChatService';
 
 const ChatBot = ({ chartData }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -11,6 +11,9 @@ const ChatBot = ({ chartData }) => {
   const [chatSession, setChatSession] = useState(null);
   const [showTopics, setShowTopics] = useState(true);
   
+  const [isMissingKey, setIsMissingKey] = useState(false);
+  const [apiKeyInput, setApiKeyInput] = useState('');
+
   const messagesEndRef = useRef(null);
 
   const SUGGESTED_QUESTIONS = [
@@ -31,14 +34,22 @@ const ChatBot = ({ chartData }) => {
       
       try {
         setIsLoading(true);
+        setIsMissingKey(false);
         const { chatSession: newSession, initialGreeting } = await startTuViChat(chartData);
         setChatSession(newSession);
         setMessages([{ role: 'model', text: initialGreeting }]);
         setShowTopics(true);
       } catch (err) {
         console.error("Failed to init chat:", err);
-        const errorMsg = `Lỗi kết nối: ${err.message || "Không xác định"}. Con hãy kiểm tra lại Token hoặc đợi model khởi động nhé.`;
-        setMessages([{ role: 'model', text: errorMsg }]);
+        if (err.message && err.message.includes("API Key missing")) {
+          setIsMissingKey(true);
+          setMessages([{ role: 'model', text: "Thầy chưa nhận được kết nối tinh tủy (HuggingFace API Token). Con vui lòng nhập Token vào đây để Thầy luận giải nhé." }]);
+        } else {
+          // Instead of locking out completely, create a dummy session so input works for retries
+          setChatSession({ history: [] });
+          const errorMsg = `Lỗi kết nối: ${err.message || "Không xác định"}. Con hãy kiểm tra lại Token hoặc đợi model khởi động nhé.`;
+          setMessages([{ role: 'model', text: errorMsg }]);
+        }
       } finally {
         setIsLoading(false);
       }
@@ -56,7 +67,8 @@ const ChatBot = ({ chartData }) => {
   };
 
   const handleSendMessage = async (text) => {
-    if (!text.trim() || !chatSession || isLoading) return;
+    const currentSession = chatSession || { history: [] };
+    if (!text.trim() || isLoading) return;
 
     const userText = text.trim();
     setMessages(prev => [...prev, { role: 'user', text: userText }]);
@@ -69,7 +81,7 @@ const ChatBot = ({ chartData }) => {
 
     try {
       const streamResult = await sendMessageStreamWithRAG(
-        chatSession, 
+        currentSession, 
         userText, 
         (_chunk, fullText) => {
           setMessages(prev => {
@@ -114,13 +126,18 @@ const ChatBot = ({ chartData }) => {
         };
         return newMessages;
       });
+      
+      // Update session if it was newly created
+      if (!chatSession) {
+        setChatSession(currentSession);
+      }
     } catch (error) {
       console.error("Chat error:", error);
       setMessages(prev => {
         const newMessages = [...prev];
         newMessages[newMessages.length - 1] = { 
           role: 'model', 
-          text: "Thầy đang gặp chút vấn đề kết nối. Con hỏi lại nhé.",
+          text: `Thầy đang gặp chút vấn đề kết nối (${error.message}). Con hãy kiểm tra lại Token hoặc mạng rồi hỏi lại nhé.`,
           isStreaming: false 
         };
         return newMessages;
@@ -168,6 +185,7 @@ const ChatBot = ({ chartData }) => {
           <span className="chatbot-title">Mệnh Thư Đại Sư</span>
         </div>
         <div className="chatbot-header-right">
+          <button className="chatbot-btn-refresh" onClick={() => setIsMissingKey(!isMissingKey)} title="Cài đặt Token">🔑</button>
           <button className="chatbot-btn-refresh" onClick={handleResetChat} title="Bắt đầu lại">🔄</button>
           <button className="chatbot-btn-minimize" onClick={() => setIsOpen(false)}>−</button>
           <button className="chatbot-btn-close" onClick={() => setIsOpen(false)}>×</button>
@@ -175,7 +193,34 @@ const ChatBot = ({ chartData }) => {
       </div>
 
       <div className="chatbot-messages">
-        {messages.map((msg, idx) => (
+        {isMissingKey && (
+           <div className="chat-bubble-container model">
+             <div className="chat-bubble model-greeting key-input-bubble" style={{ width: '100%', maxWidth: '100%' }}>
+               <ReactMarkdown>Thầy cần kết nối năng lượng (Gemini API Key) để bắt đầu luận giải. Con hãy nhập vào đây nhé:</ReactMarkdown>
+               <div className="key-input-wrapper">
+                 <input 
+                   type="password" 
+                   placeholder="AIzaSy..." 
+                   value={apiKeyInput}
+                   onChange={e => setApiKeyInput(e.target.value)}
+                 />
+                 <button 
+                   onClick={() => {
+                     setGeminiToken(apiKeyInput);
+                     setIsMissingKey(false);
+                     handleResetChat();
+                   }}
+                   disabled={apiKeyInput.length < 10}
+                 >
+                   Kết Nối / Lưu
+                 </button>
+                 <p className="key-help-text">Token này chỉ lưu trên trình duyệt của con, hoàn toàn bảo mật.</p>
+               </div>
+             </div>
+           </div>
+        )}
+
+        {!isMissingKey && messages.map((msg, idx) => (
           <div key={idx} className={`chat-bubble-container ${msg.role === 'user' ? 'user' : 'model'}`}>
             {msg.role === 'model' && messages.length === 1 && (
                <div className="chat-bubble model-greeting">
@@ -263,12 +308,12 @@ const ChatBot = ({ chartData }) => {
             onKeyDown={(e) => {
               if (e.key === 'Enter') handleSendMessage(inputValue);
             }}
-            disabled={isLoading || !chatSession}
+            disabled={isLoading}
           />
           <button 
             className="btn-send" 
             onClick={() => handleSendMessage(inputValue)}
-            disabled={!inputValue.trim() || isLoading || !chatSession}
+            disabled={!inputValue.trim() || isLoading}
           >
             ➔
           </button>
