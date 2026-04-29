@@ -170,13 +170,26 @@ const InputForm = ({ onSubmit }) => {
             <div className="date-inputs">
               <div className="date-input-wrapper date-input-wrapper--day">
                 <div className="custom-dropdown">
-                  <button type="button" className="dropdown-trigger dropdown-trigger--date" onClick={() => setShowDayDropdown(!showDayDropdown)}>
-                    {String(day).padStart(2, '0')}
-                  </button>
+                  <input
+                    type="text"
+                    className="dropdown-trigger dropdown-trigger--date"
+                    value={day}
+                    onChange={(e) => {
+                      const val = e.target.value.replace(/\D/g, '');
+                      if (val.length <= 2) setDay(val);
+                    }}
+                    onBlur={() => {
+                      if (day && parseInt(day) > 31) setDay('31');
+                      if (day && parseInt(day) < 1) setDay('1');
+                      if (day) setDay(String(parseInt(day)).padStart(2, '0'));
+                    }}
+                    onClick={() => setShowDayDropdown(!showDayDropdown)}
+                    placeholder="DD"
+                  />
                   {showDayDropdown && (
                     <div className="dropdown-menu dropdown-menu--date">
                       {Array.from({ length: 31 }, (_, i) => i + 1).map(d => (
-                        <button key={d} type="button" className="dropdown-item" onClick={() => { setDay(String(d)); setShowDayDropdown(false); }}>
+                        <button key={d} type="button" className="dropdown-item" onClick={() => { setDay(String(d).padStart(2, '0')); setShowDayDropdown(false); }}>
                           {String(d).padStart(2, '0')}
                         </button>
                       ))}
@@ -188,13 +201,26 @@ const InputForm = ({ onSubmit }) => {
 
               <div className="date-input-wrapper date-input-wrapper--month">
                 <div className="custom-dropdown">
-                  <button type="button" className="dropdown-trigger dropdown-trigger--date" onClick={() => setShowMonthDropdown(!showMonthDropdown)}>
-                    {String(month).padStart(2, '0')}
-                  </button>
+                  <input
+                    type="text"
+                    className="dropdown-trigger dropdown-trigger--date"
+                    value={month}
+                    onChange={(e) => {
+                      const val = e.target.value.replace(/\D/g, '');
+                      if (val.length <= 2) setMonth(val);
+                    }}
+                    onBlur={() => {
+                      if (month && parseInt(month) > 12) setMonth('12');
+                      if (month && parseInt(month) < 1) setMonth('1');
+                      if (month) setMonth(String(parseInt(month)).padStart(2, '0'));
+                    }}
+                    onClick={() => setShowMonthDropdown(!showMonthDropdown)}
+                    placeholder="MM"
+                  />
                   {showMonthDropdown && (
                     <div className="dropdown-menu dropdown-menu--date">
                       {Array.from({ length: 12 }, (_, i) => i + 1).map(m => (
-                        <button key={m} type="button" className="dropdown-item" onClick={() => { setMonth(String(m)); setShowMonthDropdown(false); }}>
+                        <button key={m} type="button" className="dropdown-item" onClick={() => { setMonth(String(m).padStart(2, '0')); setShowMonthDropdown(false); }}>
                           {String(m).padStart(2, '0')}
                         </button>
                       ))}
@@ -206,9 +232,22 @@ const InputForm = ({ onSubmit }) => {
 
               <div className="date-input-wrapper date-input-wrapper--year">
                 <div className="custom-dropdown">
-                  <button type="button" className="dropdown-trigger dropdown-trigger--date" onClick={() => setShowYearDropdown(!showYearDropdown)}>
-                    {year}
-                  </button>
+                  <input
+                    type="text"
+                    className="dropdown-trigger dropdown-trigger--date"
+                    value={year}
+                    onChange={(e) => {
+                      const val = e.target.value.replace(/\D/g, '');
+                      if (val.length <= 4) setYear(val);
+                    }}
+                    onBlur={() => {
+                      const y = parseInt(year);
+                      if (y < 1900) setYear('1900');
+                      if (y > CURRENT_YEAR) setYear(String(CURRENT_YEAR));
+                    }}
+                    onClick={() => setShowYearDropdown(!showYearDropdown)}
+                    placeholder="YYYY"
+                  />
                   {showYearDropdown && (
                     <div className="dropdown-menu dropdown-menu--date dropdown-menu--year">
                       {Array.from({ length: 121 }, (_, i) => CURRENT_YEAR - i).map(y => (
